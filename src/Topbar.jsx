@@ -24,8 +24,24 @@ export default function TopBar({ logined, title, data }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
     setAnchorEl(null);
+    if (e === "logout") {
+      fetch("/api/logout", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      }).then(res => res.json())
+        .then((res) => {
+          if (res.ok) {
+            window.location.reload()
+          } else {
+            alert("登出失敗，請再試一次")
+          }
+        })
+    }
   };
 
   return (
@@ -73,7 +89,7 @@ export default function TopBar({ logined, title, data }) {
               >
                 <MenuItem onClick={handleClose}>{data.username}，歡迎使用!</MenuItem>
                 <MenuItem onClick={handleClose}>個人資料</MenuItem>
-                <MenuItem onClick={handleClose}>登出</MenuItem>
+                <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
               </Menu>
             </div>
           )}

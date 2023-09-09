@@ -39,6 +39,11 @@ app.post("/api/checklogin", (req, res) => {
     res.send(JSON.stringify({ logined: req.session.loggedin }))
 })
 
+app.post("/api/logout", (req, res) => {
+    req.session.destroy()
+    res.send(JSON.stringify({ message: 'logout successful', ok: true }))
+})
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
