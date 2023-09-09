@@ -10,6 +10,20 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+const mysql = require('mysql2');
+var sql_Connect = mysql.createPool({
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    port: process.env.MYSQLPORT,
+    database: process.env.MYSQLDATABASE,
+
+    // 無可用連線時是否等待pool連線釋放(預設為true)
+    waitForConnections: true,
+    // 連線池可建立的總連線數上限(預設最多為10個連線數)
+    connectionLimit: 15
+});
+
 // app.use(express.json());
 app.get('*', (req, res) => {
     res.sendFile('index.html', { root: './build' });
@@ -25,14 +39,23 @@ app.post('/api/login', (req, res) => {
 
     const user = users.find((user) => user.userid === userid && user.password === password);
 
-    if (user) {
-        // 登录成功，返回认证令牌或其他信息
-        req.session.loggedin = true;
-        res.send(JSON.stringify({ message: 'Login successful', data: { userid: user.userid, username: user.username }, ok: true }));
-    } else {
-        // 登录失败
-        res.status(401).json({ message: 'Invalid credentials', ok: false });
-    }
+    sql_Connect.getConnection(function (err, connection) {
+        connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
+            if (error) throw error;
+            if (results.length > 0) {
+                request.session.loggedin = true;
+                request.session.username = results[0].username;
+                request.session.role = results[0].role
+                res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+            } else {
+                res.status(401).json({ message: 'Invalid credentials', ok: false });
+            }
+
+            res.end();
+            connection.release();
+        })
+    })
+
 });
 
 app.post("/api/checklogin", (req, res) => {
