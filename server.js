@@ -43,9 +43,9 @@ app.post('/api/login', (req, res) => {
         connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {
-                request.session.loggedin = true;
-                request.session.username = results[0].username;
-                request.session.role = results[0].role
+                req.session.loggedin = true;
+                req.session.username = results[0].username;
+                req.session.role = results[0].role
                 res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
                 res.status(401).json({ message: 'Invalid credentials', ok: false });
