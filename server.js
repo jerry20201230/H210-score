@@ -86,8 +86,6 @@ app.post("/api/getscorebyid", (req, res) => {
                 if (results.length > 0) {
 
                     //繼續查最高/最低/平均
-
-
                     sql_Connect.getConnection(function (err, connection2) {
                         connection2.query('SELECT ? FROM scoreData ', [req.id], function (error2, results2, fields2) {
                             if (error2) throw error2;
@@ -109,7 +107,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     res.status(404).json({ message: 'Invalid credentials', ok: false });
                 }
 
-                res.end();
+                ////     res.end();
                 connection.release();
             })
         })
