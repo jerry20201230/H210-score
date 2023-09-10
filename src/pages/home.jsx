@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, Paper } from '@mui/material'
+import { Box, Button, Paper, Typography } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -60,8 +60,8 @@ export function Homepage({ user, data }) {
       <TopBar logined={true} data={data.data} user={user} title={"首頁"} />
       <Box sx={{ p: 3 }}>
 
-        <h2 style={{ margin: 0 }}>Hi, {data.data.username}</h2>
-        <h5>選擇成績，開始查詢</h5>
+        <Typography variant='h5'> Hi, {data.data.username}</Typography>
+        <Typography variant='h6'>選擇成績，開始查詢</Typography>
 
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <nav aria-label="main mailbox folders">
