@@ -84,8 +84,27 @@ app.post("/api/getscorebyid", (req, res) => {
             connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid], function (error, results, fields) {
                 if (error) throw error;
                 if (results.length > 0) {
-                    console.log(results)
-                    res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+                    //繼續查最高/最低/平均
+
+
+                    sql_Connect.getConnection(function (err, connection2) {
+                        connection2.query('SELECT ? FROM scoreData ', [req.id], function (error2, results2, fields2) {
+                            if (error2) throw error2;
+                            if (results2.length > 0) {
+                                console.log(results2)
+                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
+                            } else {
+                                res.status(404).json({ message: 'Invalid credentials', ok: false });
+                            }
+
+                            res.end();
+                            connection2.release();
+                        })
+                    })
+
+                    //    console.log(results)
+                    //    res.send(JSON.stringify({ message: 'Login successful', data: { result: {yourScore:results[i][req.id],} }, ok: true }));
                 } else {
                     res.status(404).json({ message: 'Invalid credentials', ok: false });
                 }
