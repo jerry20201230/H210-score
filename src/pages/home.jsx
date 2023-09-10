@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Paper } from '@mui/material'
+import { Box, Button, Paper } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -19,6 +19,10 @@ export function Homepage({ user, data }) {
   ])
 
   React.useEffect(() => {
+    getScore()
+  }, [])
+
+  function getScore() {
     fetch("/api/getscore", {
       method: 'POST',
       headers: {
@@ -31,7 +35,7 @@ export function Homepage({ user, data }) {
         console.log(res)
         //  setScoreList(res.data)
       })
-  }, [])
+  }
 
   return (
     <>
@@ -57,6 +61,7 @@ export function Homepage({ user, data }) {
         </Box>
 
 
+        <Button onClick={() => getScore()}>重新整理</Button>
       </Box>
     </>
   )
