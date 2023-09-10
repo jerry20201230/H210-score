@@ -28,16 +28,10 @@ var sql_Connect = mysql.createPool({
 app.get('*', (req, res) => {
     res.sendFile('index.html', { root: './build' });
 })
-// 假设这是用户数据
-const users = [
-    { userid: 'user1', password: '', username: "測試人員1" },
-    // ...
-];
+
 
 app.post('/api/login', (req, res) => {
     const { userid, password } = req.body;
-
-    const user = users.find((user) => user.userid === userid && user.password === password);
 
     sql_Connect.getConnection(function (err, connection) {
         connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
@@ -45,6 +39,7 @@ app.post('/api/login', (req, res) => {
             if (results.length > 0) {
                 req.session.loggedin = true;
                 req.session.username = results[0].username;
+                req.session.userid = results[0].userid
                 req.session.role = results[0].role
                 res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
@@ -57,6 +52,25 @@ app.post('/api/login', (req, res) => {
     })
 
 });
+
+app.post("/api/getscore", (req, res) => {
+
+    sql_Connect.getConnection(function (err, connection) {
+        connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid], function (error, results, fields) {
+            if (error) throw error;
+            if (results.length > 0) {
+                console.log(results)
+                res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+            } else {
+                res.status(404).json({ message: 'Invalid credentials', ok: false });
+            }
+
+            res.end();
+            connection.release();
+        })
+    })
+
+})
 
 app.post("/api/checklogin", (req, res) => {
     res.send(JSON.stringify({ logined: req.session.loggedin }))
