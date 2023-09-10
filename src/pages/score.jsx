@@ -15,12 +15,12 @@ export function Score({ data, user }) {
   }
 
   function getScore(id) {
-    fetch("/api/getscore", {
+    fetch("/api/getscorebyid", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ id: UrlParam("q") }),
     })
       .then(res => res.json())
       .then(res => {
@@ -35,31 +35,10 @@ export function Score({ data, user }) {
         })
           .then(res2 => res2.json())
           .then(res2 => {
-            console.log(res2)
-            var t = false
-            for (let i = 0; i < res2.data.result.length; i++) {
-              if (res2.data.result[i].uid === id) {
-                setScoreData(res2.data.result[i])
-                t = true
-                break
-              }
-              if (!t) {
-                setScoreData(
-                  {
-                    "title": "找不到成績",
-                    "id": "",
-                    "averageScore": 0,
-                    "highest": 0,
-                    "lowest": 0,
-                    "myScore": 0
-                  }
-                )
-              }
-              //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
-            }
 
           })
       })
+    //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
 
   React.useEffect(() => {
@@ -68,7 +47,7 @@ export function Score({ data, user }) {
 
   return (
     <>
-      <TopBar logined={true} data={data.data} user={user} title={"首頁"} />
+      <TopBar logined={true} data={data.data} user={user} title={scoreData.title ? scoreData.title : "資料讀取中..."} />
 
       <Box sx={{ p: 3 }}>
 
