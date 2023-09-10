@@ -60,9 +60,10 @@ export function Homepage({ user, data }) {
       <TopBar logined={true} data={data.data} user={user} title={"首頁"} />
       <Box sx={{ p: 3 }}>
 
+        <h2 style={{ margin: 0 }}>Hi, {user.username}</h2>
+        <h5>選擇成績，開始查詢</h5>
 
-
-        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <nav aria-label="main mailbox folders">
             <List>{scorelist.map((d, i) => {
               return (

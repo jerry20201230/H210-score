@@ -3,6 +3,7 @@ import LoginForm from './LoginForm';
 import React, { useState } from 'react';
 import { Homepage } from './pages/home';
 import { Route, Routes } from 'react-router-dom'
+import { Score } from './pages/score';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem(""));
@@ -14,7 +15,8 @@ function App() {
   return (
     isLoggedIn ?
       <Routes>
-        <Route path='*' element=<Homepage data={userData} /> ></Route>
+        <Route path='/' element=<Homepage data={userData} /> ></Route>
+        <Route path='/score' element=<Score data={userData} />></Route>
       </Routes>
       :
       <Routes>
