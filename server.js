@@ -72,6 +72,23 @@ app.post("/api/getscore", (req, res) => {
 
 })
 
+app.post("/api/getscoremap", (req, res) => {
+    sql_Connect.getConnection(function (err, connection) {
+        connection.query('SELECT * FROM scoreUid', function (error, results, fields) {
+            if (error) throw error;
+            if (results.length > 0) {
+                console.log(results)
+                res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+            } else {
+                res.status(404).json({ message: 'Invalid credentials', ok: false });
+            }
+
+            res.end();
+            connection.release();
+        })
+    })
+})
+
 app.post("/api/checklogin", (req, res) => {
     res.send(JSON.stringify({ logined: req.session.loggedin }))
 })

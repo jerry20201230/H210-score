@@ -30,10 +30,24 @@ export function Homepage({ user, data }) {
       },
       body: JSON.stringify({}),
     })
-      .then(res => res.json)
+      .then(res => res.json())
       .then(res => {
         console.log(res)
-        //  setScoreList(res.data)
+
+
+
+        fetch("/api/getscoremap", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        })
+          .then(res2 => res.json())
+          .then(res2 => {
+            console.log(res2)
+            //  setScoreList(res.data)
+          })
       })
   }
 
