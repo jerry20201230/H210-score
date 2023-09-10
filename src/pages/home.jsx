@@ -68,8 +68,8 @@ export function Homepage({ user, data }) {
               return (
 
                 <ListItem disablePadding key={d.id}>
-                  <ListItemButton component={Link} to={`/score/?q=${data.id}`}>
-                    <ListItemText primary={data.title} />
+                  <ListItemButton component={Link} to={`/score/?q=${d.id}`}>
+                    <ListItemText primary={d.title} />
                   </ListItemButton>
                 </ListItem>
 
