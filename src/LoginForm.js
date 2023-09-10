@@ -43,8 +43,8 @@ function LoginForm({ set, callback }) {
       alignContent: "space-around"
     }}>
       <center>
-        <h1>H210</h1>
-        <h2>成績查詢系統</h2>
+        <h1 style={{ margin: 0 }}>H210</h1>
+        <h2 style={{ margin: 0 }}>成績查詢系統</h2>
         <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
         <p></p>
         <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
