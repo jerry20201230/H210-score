@@ -88,11 +88,11 @@ app.post("/api/getscorebyid", (req, res) => {
 
                     //繼續查最高/最低/平均
                     sql_Connect.getConnection(function (err, connection2) {
-                        connection2.query('SELECT * FROM scoreData', function (error2, results2, fields2) {
+                        connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
                             if (error2) throw error2;
                             if (results2.length > 0) {
                                 console.log(results2)
-                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2, b: req.body }, ok: true }));
+                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
                             } else {
                                 res.status(404).json({ message: 'Invalid credentials', ok: false });
                             }
