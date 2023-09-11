@@ -89,7 +89,9 @@ app.post("/api/getscorebyid", (req, res) => {
                     //繼續查最高/最低/平均
                     sql_Connect.getConnection(function (err, connection2) {
                         connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
-                            if (error2) throw error2;
+                            if (error2) {
+                                res.status(404).json({ message: 'Invalid credentials', ok: false });
+                            };
                             if (results2.length > 0) {
                                 var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
@@ -102,9 +104,8 @@ app.post("/api/getscorebyid", (req, res) => {
 
                                 avg = (tot / results2.length).toFixed(2)
 
-
                                 console.log(results2)
-                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2, hi: hi, lo: lo, avg: avg, rs1: results }, ok: true }));
+                                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id] }, ok: true }));
                             } else {
                                 res.status(404).json({ message: 'Invalid credentials', ok: false });
                             }
