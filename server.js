@@ -102,7 +102,8 @@ app.post("/api/getscorebyid", (req, res) => {
                                     }
                                     tot += results2[i][req.body.id]
                                 }
-                                avg = (results2[i][req.body.id] / results2.length).toFixed(2)
+
+                                //  avg = (results2[i][req.body.id] / results2.length).toFixed(2)
 
 
                                 console.log(results2)
