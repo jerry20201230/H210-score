@@ -91,8 +91,22 @@ app.post("/api/getscorebyid", (req, res) => {
                         connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
                             if (error2) throw error2;
                             if (results2.length > 0) {
+                                var hi = 0, lo = 0, avg = 0, tot = 0
+
+                                for (i = 0; i < results2.length; i++) {
+                                    if (results2[i][req.body.id] > hi) {
+                                        hi = results2[i][req.body.id]
+                                    }
+                                    if (results2[i][req.body.id] < lo) {
+                                        lo = results2[i][req.body.id]
+                                    }
+                                    tot += results2[i][req.body.id]
+                                }
+                                avg = (results2[i][req.body.id] / results2.length).toFixed(2)
+
+
                                 console.log(results2)
-                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
+                                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2, hi: hi, lo: lo, avg: avg, rs1: results }, ok: true }));
                             } else {
                                 res.status(404).json({ message: 'Invalid credentials', ok: false });
                             }

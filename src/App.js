@@ -17,6 +17,11 @@ function App() {
       <Routes>
         <Route path='/' element=<Homepage data={userData} /> ></Route>
         <Route path='/score' element=<Score data={userData} />></Route>
+
+        {userData.data.role === "teacher" ?
+          <Route path='/backend' element=<Score data={userData} />></Route>
+          : <></>}
+
       </Routes>
       :
       <Routes>
