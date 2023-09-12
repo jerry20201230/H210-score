@@ -6,15 +6,18 @@ import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { your: 0, avg: 0, hi: 0, lo: 0 }
+    { your: -1, avg: -1, hi: -1, lo: -1 }
   )
 
   const [scoreTitle, serScoreTitle] = React.useState({ title: "", id: "" })
 
+  const [loading, setLoading] = React.useState(true)
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -43,18 +46,36 @@ export function Score({ data, user }) {
       .then(res => res.json())
       .then(res => {
         console.log(res)
+        var list = [], k = false
+        for (let i = 0; i < res.data.result.length; i++) {
+          list.push(res.data.result[i].uid)
 
-        fetch("/api/getscorebyid", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: UrlParam("q") }),
-        })
-          .then(res2 => res2.json())
-          .then(res2 => {
-            setScoreData(res2.data)
-          })
+          if (res.data.result[i].uid == UrlParam("q")) {
+            k = true
+            fetch("/api/getscorebyid", {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: UrlParam("q") }),
+            })
+              .then(res2 => res2.json())
+              .then(res2 => {
+                setScoreData(res2.data)
+                setLoading(false)
+
+              })
+          }
+        }
+        if (!k) {
+          alert("找不到考試")
+          setLoading(false)
+        }
+
+
+
+
+
       })
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
@@ -65,7 +86,7 @@ export function Score({ data, user }) {
 
   return (
     <>
-      <TopBar logined={true} data={data.data} user={user} title={scoreData.title ? scoreData.title : "資料讀取中..."} />
+      <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
       <Box sx={{ p: 3 }}>
         <Box sx={{ flexGrow: 1 }}>
@@ -98,6 +119,15 @@ export function Score({ data, user }) {
         </Box>
 
       </Box>
+
+
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   )
 }
