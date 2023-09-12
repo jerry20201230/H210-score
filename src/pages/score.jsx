@@ -15,7 +15,7 @@ export function Score({ data, user }) {
     { your: -1, avg: -1, hi: -1, lo: -1 }
   )
 
-  const [scoreTitle, serScoreTitle] = React.useState({ title: "", id: "" })
+  const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
 
   const [loading, setLoading] = React.useState(true)
 
@@ -52,6 +52,7 @@ export function Score({ data, user }) {
 
           if (res.data.result[i].uid == UrlParam("q")) {
             k = true
+            setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
             fetch("/api/getscorebyid", {
               method: 'POST',
               headers: {
@@ -86,6 +87,17 @@ export function Score({ data, user }) {
 
   return (
     <>
+
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+
+
       <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
       <Box sx={{ p: 3 }}>
@@ -122,12 +134,7 @@ export function Score({ data, user }) {
 
 
 
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+
     </>
   )
 }
