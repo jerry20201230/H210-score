@@ -10,8 +10,10 @@ import { styled } from '@mui/material/styles';
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { title: "", id: "", myScore: 0, averageScore: 0, highest: 0, lowest: 0 }
+    { your: 0, avg: 0, hi: 0, lo: 0 }
   )
+
+  const [scoreTitle, serScoreTitle] = React.useState({ title: "", id: "" })
 
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -47,11 +49,11 @@ export function Score({ data, user }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({id:UrlParam("q")}),
+          body: JSON.stringify({ id: UrlParam("q") }),
         })
           .then(res2 => res2.json())
           .then(res2 => {
-
+            setScoreData(res2.data)
           })
       })
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
@@ -71,7 +73,25 @@ export function Score({ data, user }) {
             <Grid xs={6}>
               <Item>
                 <h3>你的成績</h3>
-
+                <p>{scoreData.your}</p>
+              </Item>
+            </Grid>
+            <Grid xs={6}>
+              <Item>
+                <h3>全班平均</h3>
+                <p>{scoreData.avg}</p>
+              </Item>
+            </Grid>
+            <Grid xs={6}>
+              <Item>
+                <h3>班級最高分</h3>
+                <p>{scoreData.hi}</p>
+              </Item>
+            </Grid>
+            <Grid xs={6}>
+              <Item>
+                <h3>班級最低分</h3>
+                <p>{scoreData.lo}</p>
               </Item>
             </Grid>
           </Grid>
