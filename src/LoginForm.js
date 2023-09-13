@@ -84,7 +84,7 @@ function LoginForm({ set, callback }) {
         </DialogContent>
         <DialogActions>
 
-          <Button onClick={setShowDialog(false)} autoFocus>
+          <Button onClick={() => setShowDialog(false)} autoFocus>
             確定
           </Button>
         </DialogActions>
