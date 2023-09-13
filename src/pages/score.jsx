@@ -108,7 +108,7 @@ export function Score({ data, user }) {
           <Grid container spacing={2}>
             <Grid xs={6}>
               <Item>
-                <h3>你的成績</h3>
+                <h3>{data.data.userid.toLowerCase().includes("s")?"你":"孩子"}的成績</h3>
                 <p>{scoreData.your}</p>
               </Item>
             </Grid>
