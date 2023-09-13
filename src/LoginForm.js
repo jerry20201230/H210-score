@@ -37,8 +37,12 @@ function LoginForm({ set, callback }) {
 
   };
 
+  function showDialogF() {
+    setShowDialog(true)
+  }
+
   return (
-    <>1231213
+    <>
       <div style={{
         height: "100%",
         display: "flex",
@@ -56,7 +60,7 @@ function LoginForm({ set, callback }) {
           <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
           <p></p>
           <Button variant="contained" onClick={handleLogin}>開始查詢</Button>
-          <Button variant="outlined" onClick={() => setShowDialog(true)}>帳密提示</Button>
+          <Button variant="outlined" onClick={showDialogF}>帳密提示</Button>
         </center>
       </div>
 
