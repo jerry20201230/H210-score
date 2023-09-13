@@ -97,6 +97,7 @@ export default function TopBar({ logined, title, data }) {
           )}
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </Box>
   );
 }
