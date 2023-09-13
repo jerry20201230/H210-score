@@ -12,7 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState('');
   const [password, setPassword] = useState('');
-  const [showDialog,setShowDialog] = useState(false)
+  const [showDialog, setShowDialog] = useState(false)
 
   const handleLogin = async () => {
     await fetch('/api/login', {
@@ -56,7 +56,7 @@ function LoginForm({ set, callback }) {
           <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
           <p></p>
           <Button variant="contained" onClick={handleLogin}>開始查詢</Button>
-          <Button onClick={()=>setShowDialog(true)}>帳密提示</Button>
+          <Button variant="outlined" onClick={() => setShowDialog(true)}>帳密提示</Button>
         </center>
       </div>
 
@@ -72,16 +72,16 @@ function LoginForm({ set, callback }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            〈學生〉<br/>
+            〈學生〉<br />
             帳號為s加學號，密碼為身份證後四碼
             <p></p>
             〈家長〉
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-        
+
           <Button onClick={setShowDialog(false)} autoFocus>
-          確定
+            確定
           </Button>
         </DialogActions>
       </Dialog>
