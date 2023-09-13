@@ -60,7 +60,8 @@ function LoginForm({ set, callback }) {
           <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
           <p></p>
           <Button variant="contained" onClick={handleLogin}>開始查詢</Button>
-          <Button variant="outlined" onClick={() => showDialogF()}>帳密提示</Button>
+          &nbsp;
+          <Button variant="outlined" sx={{ ml: 1 }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>
       </div>
 
