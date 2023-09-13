@@ -37,7 +37,7 @@ export default function TopBar({ logined, title, data }) {
       }).then(res => res.json())
         .then((res) => {
           if (res.ok) {
-            window.location.reload()
+            window.location.href = "/"
           } else {
             alert("登出失敗，請再試一次")
           }
