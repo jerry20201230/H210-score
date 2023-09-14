@@ -28,10 +28,10 @@ export function TeacherHomePage({ data, user }) {
                 <h1>歡迎使用 成績查詢系統 教師後臺</h1>
                 <Grid container spacing={2} >
                     <Grid xs={6}>
-                        <Item><h1>帳號管理</h1></Item>
+                        <Item><h1>帳號管理</h1>更改密碼</Item>
                     </Grid>
                     <Grid xs={6}>
-                        <Item><h1>成績管理</h1></Item>
+                        <Item><h1>成績管理</h1>新增成績</Item>
                     </Grid>
 
                 </Grid>
