@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Score } from './pages/score';
 import { TeacherHomePage } from './pages/teacherHome';
 import { AllScoreSheet } from './pages/allscores';
+import { PushNewScore } from './pages/pushNewScore';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem(""));
@@ -28,6 +29,8 @@ function App() {
           <>
             <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
             <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
+            <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
+
           </>
           : <></>}
         <Route path='*' element=<h1>ERROR 404</h1>></Route>
