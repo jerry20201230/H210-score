@@ -8,6 +8,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
 
 export function TeacherHomePage({ data, user }) {
 
@@ -25,7 +26,7 @@ export function TeacherHomePage({ data, user }) {
         <>
             <TopBar logined={true} data={data.data} user={user} title={"教師後臺"} />
             <Box sx={{ p: 3 }}>
-                <h1>歡迎使用 成績查詢系統 教師後臺</h1>
+                <h1>教師後臺</h1>
                 <Grid container spacing={2} >
                     <Grid xs={6} component={Link} to={"/backend/account"}>
                         <Item><h1>帳號管理</h1>學生帳號、密碼設定</Item>
