@@ -61,7 +61,7 @@ function LoginForm({ set, callback }) {
           <p></p>
           <Button variant="contained" onClick={handleLogin}>開始查詢</Button>
           &nbsp;
-          <Button variant="outlined" sx={{ ml: 1 }} onClick={() => showDialogF()}>帳密提示</Button>
+          <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>
       </div>
 
