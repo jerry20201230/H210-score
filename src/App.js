@@ -25,7 +25,13 @@ function App() {
       body: JSON.stringify({}),
     })
       .then(res => res.json())
-      .then(res => { setIsLoggedIn(res.logined) })
+      .then(res => {
+        if (res.logined) {
+          setIsLoggedIn(res.logined)
+          setUserData(res.data)
+        }
+
+      })
   }, [])
 
   return (

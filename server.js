@@ -82,13 +82,13 @@ app.post("/api/getscorebyid", (req, res) => {
     console.log(req.body, "---+-+-+-+-++--+---s")
     if (req.session.role) {
         sql_Connect.getConnection(function (err, connection) {
-            connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p","s")], function (error, results, fields) {
+            connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
                 if (error) throw error;
                 if (results.length > 0) {
 
                     //繼續查最高/最低/平均
                     sql_Connect.getConnection(function (err, connection2) {
-                        connection2.query(`SELECT ${req.body.id.replace("p","s")} FROM scoreData`, function (error2, results2, fields2) {
+                        connection2.query(`SELECT ${req.body.id.replace("p", "s")} FROM scoreData`, function (error2, results2, fields2) {
                             if (error2) {
                                 res.status(404).json({ message: 'Invalid credentials', ok: false });
                             };
@@ -150,7 +150,17 @@ app.post("/api/getscoremap", (req, res) => {
 })
 
 app.post("/api/checklogin", (req, res) => {
-    res.send(JSON.stringify({ logined: req.session.loggedin }))
+    res.send(JSON.stringify(
+        {
+            logined: req.session.loggedin,
+            data: {
+                data: {
+                    userid: req.session.userid,
+                    username: req.session.username,
+                    role: req.session.role
+                }
+            }
+        }))
 })
 
 app.post("/api/logout", (req, res) => {
