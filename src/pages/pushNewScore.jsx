@@ -31,10 +31,25 @@ export function PushNewScore({ data, user }) {
         createData('Gingerbread', 356, 16.0, 49, 3.9),
     ];
 
+
+    React.useEffect(() => {
+        fetch("/api/getallstudents", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(".......0", res)
+            })
+    }, [])
+
     return (
         <>
             <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
-            <h5>輸入新的成績資料</h5>
+            <h1>輸入新的成績資料</h1>
             <Box sx={{ p: 3 }}>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -55,9 +70,9 @@ export function PushNewScore({ data, user }) {
                                     <TableCell component="th" scope="row">
                                         {i + 1}
                                     </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
+                                    <TableCell>{row.calories}</TableCell>
+                                    <TableCell>{row.fat}</TableCell>
+                                    <TableCell>{row.carbs}</TableCell>
 
                                 </TableRow>
                             ))}

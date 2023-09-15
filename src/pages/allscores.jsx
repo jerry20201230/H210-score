@@ -29,13 +29,14 @@ export function AllScoreSheet({ data, user }) {
             <Box sx={{ p: 3 }}>
                 <h1>成績管理</h1>
                 <Grid container spacing={2} >
-                    <Grid xs={6} component={Link} to={"/backend/score/search"}>
+                    <Grid xs={6} component={Link} to={"/backend/score/search"} sx={{ textDecoration: "none" }}>
                         <Item><h1>查詢成績</h1>查詢現有成績</Item>
                     </Grid>
-                    <Grid xs={6} component={Link} to={"/backend/score/push"}>
+                    <Grid xs={6} component={Link} to={"/backend/score/push"} sx={{ textDecoration: "none" }}>
                         <Item><h1>新增成績</h1>寫入新成績</Item>
                     </Grid>
-                </Grid></Box>
+                </Grid>
+            </Box>
         </>
     )
 }

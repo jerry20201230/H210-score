@@ -78,6 +78,28 @@ app.post("/api/getscore", (req, res) => {
 
 })
 
+app.post("/api/getallstudents", (req, res) => {
+    if (req.session.role === "teacher") {
+        sql_Connect.getConnection(function (err, connection) {
+            connection.query('SELECT id,username,userid FROM userData', function (error, results, fields) {
+                if (error) throw error;
+                if (results.length > 0) {
+                    console.log(results)
+                    res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+                } else {
+                    res.status(404).json({ message: 'Invalid credentials', ok: false });
+                }
+
+                res.end();
+                connection.release();
+            })
+        })
+    } else {
+        res.status(403).json({ message: 'Invalid credentials', ok: false });
+        res.end();
+    }
+})
+
 app.post("/api/getscorebyid", (req, res) => {
     console.log(req.body, "---+-+-+-+-++--+---s")
     if (req.session.role) {
