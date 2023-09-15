@@ -18,7 +18,7 @@ export function Score({ data, user }) {
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
 
   const [loading, setLoading] = React.useState(true)
-  const [loadingState, setLoadingState] = React.useState("資料讀取中")
+  const [loadingState, setLoadingState] = React.useState("")
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -95,7 +95,11 @@ export function Score({ data, user }) {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
-        <CircularProgress color="inherit" />
+        {loadingState.includes("發生錯誤") ?
+          <></> :
+          <CircularProgress color="inherit" />
+
+        }
         <br />
         <p>{loadingState}</p>
       </Backdrop>
