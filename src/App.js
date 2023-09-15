@@ -15,6 +15,19 @@ function App() {
     console.log(data)
     setUserData(data)
   }
+
+  React.useEffect(() => {
+    fetch("/api/checklogin", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(res => res.json())
+      .then(res => { setIsLoggedIn(res.logined) })
+  }, [])
+
   return (
     isLoggedIn ?
       <Routes>

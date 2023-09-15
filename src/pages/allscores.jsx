@@ -26,16 +26,16 @@ export function AllScoreSheet({ data, user }) {
     return (
         <>
             <TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
-            <h1>成績管理</h1>
-            <Grid container spacing={2} >
-                <Grid xs={6} component={Link} to={"/backend/score/search"}>
-                    <Item><h1>查詢成績</h1>查詢現有成績</Item>
-                </Grid>
-                <Grid xs={6} component={Link} to={"/backend/score/push"}>
-                    <Item><h1>新增成績</h1>寫入新成績</Item>
-                </Grid>
-
-            </Grid>
+            <Box sx={{ p: 3 }}>
+                <h1>成績管理</h1>
+                <Grid container spacing={2} >
+                    <Grid xs={6} component={Link} to={"/backend/score/search"}>
+                        <Item><h1>查詢成績</h1>查詢現有成績</Item>
+                    </Grid>
+                    <Grid xs={6} component={Link} to={"/backend/score/push"}>
+                        <Item><h1>新增成績</h1>寫入新成績</Item>
+                    </Grid>
+                </Grid></Box>
         </>
     )
 }

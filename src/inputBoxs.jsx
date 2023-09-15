@@ -26,4 +26,3 @@ export function InputForm({ i }) {
     );
 }
 
-export default DynamicInputForm;
