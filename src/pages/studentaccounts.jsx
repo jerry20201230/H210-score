@@ -20,8 +20,8 @@ import TextField from '@mui/material/TextField';
 
 export function StudentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([])
-    const [password, setPassword] = useState('');
-
+    const [password, setPassword] = React.useState('');
+    const [auth, setAuth] = React.useState(false)
     function createData(seatnum, name, scoreInput, summeryInput) {
         return { seatnum, name, scoreInput, summeryInput };
     }
@@ -63,9 +63,9 @@ export function StudentAccounts({ data, user }) {
             .then(
                 (res) => {
                     if (res.ok) {
-
+                        setAuth(true)
                     } else {
-                        alert("帳號或密碼不正確!!\n你已經被自動登出，請重新登入")
+                        alert("密碼錯誤!!\n你已經被自動登出，請重新登入")
                         window.location.reload()
                     }
                 }
@@ -74,39 +74,46 @@ export function StudentAccounts({ data, user }) {
     };
 
     React.useEffect(() => {
-        fetch("/api/getallstudents", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log(".......0", res)
-                var list = []
-                for (let i = 0; i < res.data.result.length; i++) {
-                    if (res.data.result[i].userid.includes("s")) {
+        if (auth) {
 
-                        var object = res.data.result[i]
-                        object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-                        object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
-                        console.log(object, i, "nioh", inputValues[i])
-                        list.push(object)
-                    }
-                }
-                setStudents(list)
-                console.log(students, list)
+            fetch("/api/getallstudents", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
             })
-    }, [])
+                .then(res => res.json())
+                .then(res => {
+                    console.log(".......0", res)
+                    var list = []
+                    for (let i = 0; i < res.data.result.length; i++) {
+                        if (res.data.result[i].userid.includes("s")) {
+
+                            var object = res.data.result[i]
+                            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
+                            object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
+
+                            console.log(object, i, "nioh", inputValues[i])
+                            list.push(object)
+                        }
+                    }
+                    setStudents(list)
+                    console.log(students, list)
+                })
+
+        } else {
+
+        }
+    }, [auth])
 
 
     return (
         <>
 
             <Box sx={{
-                width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: "flex", alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
+                width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: (!auth ? "flex" : "none"), alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
                 flexDirection: "column", justifyContent: "center"
             }}>
                 <h1>身分驗證</h1>
