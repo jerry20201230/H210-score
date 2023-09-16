@@ -56,7 +56,7 @@ function LoginForm({ set, callback }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [submitButttonRef])
+  }, [submitButttonRef, userid, password])
 
   return (
     <>

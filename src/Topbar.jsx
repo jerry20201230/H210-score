@@ -45,6 +45,10 @@ export default function TopBar({ logined, title, data }) {
     }
   };
 
+  React.useEffect(() => {
+    document.title = title + " - H210成績查詢系統"
+  }, [title])
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
