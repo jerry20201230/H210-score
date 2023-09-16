@@ -9,6 +9,7 @@ import { AllScoreSheet } from './pages/allscores';
 import { PushNewScore } from './pages/pushNewScore';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { SearchScoreSheet } from './pages/searchScores';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -48,13 +49,21 @@ function App() {
             : <Route path='/' element=<Homepage data={userData} /> ></Route>
           }
 
-          <Route path='/score' element=<Score data={userData} /> ></Route>
+          {
+            userData.data.role !== "teacher" ?
+              <Route path='/score' element=<Score data={userData} /> ></Route>
+              :
+              <Route path='/score' element=<SearchScoreSheet data={userData} /> ></Route>
+
+          }
+
 
           {userData.data.role === "teacher" ?
             <>
               <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
               <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
               <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
+              <Route path='/bachend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
 
             </>
             : <></>}
