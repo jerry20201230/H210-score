@@ -71,7 +71,7 @@ function App() {
               <Route path='/backend/account/student' element=<StudentAccounts data={userData} />></Route>
             </>
             : <></>}
-          <Route path='*' element=<h1>ERROR 404</h1>></Route>
+          <Route path='*' element=<Homepage data={userData} />></Route>
 
         </Routes>
         :

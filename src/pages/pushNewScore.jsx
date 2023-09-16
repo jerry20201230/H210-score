@@ -88,10 +88,13 @@ export function PushNewScore({ data, user }) {
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
         <TextField label="成績標題" variant="standard" />
-
+        <p></p>
         <TextField
           label="對全班的公告"
           multiline
+
+
+          sx={{ width: "100%" }}
           rows={2}
           variant="standard"
         />
