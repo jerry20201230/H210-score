@@ -16,6 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 
 export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
@@ -55,8 +56,16 @@ export function PushNewScore({ data, user }) {
   return (
     <>
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
-      <h1>輸入新的成績資料</h1>
+
       <Box sx={{ p: 3 }}>
+        <h1>輸入新的成績資料</h1>
+        <TextField
+          label="對全班的公告"
+          multiline
+          rows={3}
+          variant="standard"
+        />
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -70,13 +79,13 @@ export function PushNewScore({ data, user }) {
             <TableBody>
               {students.map((row, i) => (
                 <TableRow
-                  key={row.seatnum}
+                  key={row.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.seatnum}
+                    {row.id}
                   </TableCell>
-                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.username}</TableCell>
                   <TableCell>{row.scoreInput}</TableCell>
                   <TableCell>{row.summeryInput}</TableCell>
 

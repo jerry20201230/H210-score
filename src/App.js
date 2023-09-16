@@ -10,6 +10,7 @@ import { PushNewScore } from './pages/pushNewScore';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { SearchScoreSheet } from './pages/searchScores';
+import { AllAccountSheet } from './pages/allaccounts';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -65,6 +66,7 @@ function App() {
               <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
               <Route path='/backend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
 
+              <Route path='/backend/account' element=<AllAccountSheet data={userData} />></Route>
             </>
             : <></>}
           <Route path='*' element=<h1>ERROR 404</h1>></Route>
