@@ -18,7 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 export function SearchScoreSheet({ data, user }) {
 
     const [scoreList, setScoreList] = React.useState(
-        { title: "", id: "" }
+        [{ title: "", id: "" }]
     )
 
     const Item = styled(Paper)(({ theme }) => ({
