@@ -82,7 +82,7 @@ app.post("/api/getscore", (req, res) => {
 app.post("/api/getallstudents", (req, res) => {
     if (req.session.role === "teacher") {
         sql_Connect.getConnection(function (err, connection) {
-            connection.query('SELECT id,username,userid FROM userData', function (error, results, fields) {
+            connection.query('SELECT id,username,userid,userpassword FROM userData', function (error, results, fields) {
                 if (error) throw error;
                 if (results.length > 0) {
                     console.log(results)

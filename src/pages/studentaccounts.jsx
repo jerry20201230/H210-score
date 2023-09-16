@@ -22,11 +22,9 @@ export function StudentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([])
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
-    function createData(seatnum, name, scoreInput, summeryInput) {
-        return { seatnum, name, scoreInput, summeryInput };
-    }
-    const [inputValues, setInputValues] = React.useState(Array(45));
-    const [summeryValue, setSummeryValue] = React.useState(Array(45))
+
+    const [accountValues, setaccountValues] = React.useState(Array(45));
+    const [passwordValue, setPasswordValue] = React.useState(Array(45))
     /*const handleInputChange = (index, value) => {
       console.log(index, value, "000151656464")
       var updatedValues = [...];
@@ -40,14 +38,14 @@ export function StudentAccounts({ data, user }) {
         newGrades[index] = newValue;
         setInputValues(newGrades);
     };
-    const handleSummeryChange = (index, newValue) => {
-        const newSummery = summeryValue;
-        newSummery[index] = newValue;
-        setSummeryValue(newSummery);
+    const handlePasswordChange = (index, newValue) => {
+        const newPass = passwordValue;
+        newPass[index] = newValue;
+        setPasswordValue(newPass);
     };
     const handleSubmit = () => {
         // 在這裡處理提交操作，您可以使用inputValues數組中的值
-        console.log('輸入框的值：', inputValues, summeryValue);
+        console.log('輸入框的值：', passwordValue);
         console.log(inputValues[10])
     };
 
@@ -92,10 +90,11 @@ export function StudentAccounts({ data, user }) {
                         if (res.data.result[i].userid.includes("s")) {
 
                             var object = res.data.result[i]
-                            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-                            object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
+                            object.accountInput = res.data.result[i].userid
+                            passwordValue[i] = res.data.result[i].userpassword
+                            object.passwordInput = <TextField value={passwordValue[i]} onChange={(e) => handlePasswordChange(i, e.target.value)} label="輸入密碼" variant="standard" />
 
-                            console.log(object, i, "nioh", inputValues[i])
+
                             list.push(object)
                         }
                     }
@@ -152,8 +151,8 @@ export function StudentAccounts({ data, user }) {
                                         {row.id}
                                     </TableCell>
                                     <TableCell>{row.username}</TableCell>
-                                    <TableCell>{row.scoreInput}</TableCell>
-                                    <TableCell>{row.summeryInput}</TableCell>
+                                    <TableCell>{row.accountInput}</TableCell>
+                                    <TableCell>{row.passwordInput}</TableCell>
 
                                 </TableRow>
                             ))}
