@@ -84,9 +84,11 @@ export function StudentAccounts({ data, user }) {
     return (
         <>
 
-            <Box sx={{ width: "100%", height: "100%", position: "fixed", left: 0, top: 0 }}>
-
-                123123123
+            <Box sx={{ width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: "flex", alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)" }}>
+                <h1>身分驗證</h1>
+                <p>即將顯示所有學生的帳號密碼，因此，我們需要先驗證你的身分，確保你是 {data.data.username} 本人</p>
+                <p>請輸入你的密碼，一旦輸入錯誤，將被強制登出</p>
+                <TextField type='password' variant="standard" label="輸入你的密碼" />
             </Box>
 
 
