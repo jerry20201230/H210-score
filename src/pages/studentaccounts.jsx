@@ -83,25 +83,25 @@ export function StudentAccounts({ data, user }) {
 
     return (
         <>
+
+            <Box sx={{ width: "100%", height: "100%", position: "fixed", left: 0, top: 0 }}>
+
+                123123123
+            </Box>
+
+
             <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
 
             <Box sx={{ p: 3 }}>
-                <h1>輸入新的成績資料</h1>
-                <TextField
-                    label="對全班的公告"
-                    multiline
-                    rows={3}
-                    variant="standard"
-                />
-                <p></p>
+                <h1>所有學生的帳號密碼</h1>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>座號</TableCell>
                                 <TableCell>姓名</TableCell>
-                                <TableCell>成績</TableCell>
-                                <TableCell>備註</TableCell>
+                                <TableCell>帳號</TableCell>
+                                <TableCell>密碼</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
