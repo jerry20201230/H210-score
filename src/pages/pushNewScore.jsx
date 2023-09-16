@@ -35,7 +35,7 @@ export function PushNewScore({ data, user }) {
     (updatedValues);
   };*/
   const handleGradeChange = (index, newValue) => {
-    const newGrades = [...inputValues];
+    const newGrades = inputValues;
     console.log(newGrades)
     newGrades[index] = newValue;
     setInputValues(newGrades);
