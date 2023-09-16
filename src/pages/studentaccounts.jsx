@@ -33,11 +33,7 @@ export function StudentAccounts({ data, user }) {
       console.log(inputValues, updatedValues)
       (updatedValues);
     };*/
-    const handleGradeChange = (index, newValue) => {
-        const newGrades = inputValues;
-        newGrades[index] = newValue;
-        setInputValues(newGrades);
-    };
+
     const handlePasswordChange = (index, newValue) => {
         const newPass = passwordValue;
         newPass[index] = newValue;
@@ -46,8 +42,11 @@ export function StudentAccounts({ data, user }) {
     const handleSubmit = () => {
         // 在這裡處理提交操作，您可以使用inputValues數組中的值
         console.log('輸入框的值：', passwordValue);
-        console.log(inputValues[10])
     };
+
+    const editPass = (i, p) => {
+        console.log(i, p)
+    }
 
     const handleLogin = async () => {
         await fetch('/api/login', {
@@ -91,9 +90,9 @@ export function StudentAccounts({ data, user }) {
 
                             var object = res.data.result[i]
                             object.accountInput = res.data.result[i].userid
-                            passwordValue[i] = res.data.result[i].userpassword
-                            object.passwordInput = <TextField value={passwordValue[i]} onChange={(e) => handlePasswordChange(i, e.target.value)} label="輸入密碼" variant="standard" />
+                            object.passwordInput = res.data.result[i].userpassword
 
+                            object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
 
                             list.push(object)
                         }
@@ -139,6 +138,7 @@ export function StudentAccounts({ data, user }) {
                                 <TableCell>姓名</TableCell>
                                 <TableCell>帳號</TableCell>
                                 <TableCell>密碼</TableCell>
+                                <TableCell>編輯</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
