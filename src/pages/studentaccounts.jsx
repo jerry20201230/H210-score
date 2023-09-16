@@ -20,6 +20,7 @@ import TextField from '@mui/material/TextField';
 
 export function StudentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([])
+    const [password, setPassword] = useState('');
 
     function createData(seatnum, name, scoreInput, summeryInput) {
         return { seatnum, name, scoreInput, summeryInput };
@@ -50,7 +51,27 @@ export function StudentAccounts({ data, user }) {
         console.log(inputValues[10])
     };
 
+    const handleLogin = async () => {
+        await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userid: (data.data.userid), password: password }),
+        })
+            .then(res => res.json())
+            .then(
+                (res) => {
+                    if (res.ok) {
 
+                    } else {
+                        alert("帳號或密碼不正確!!\n你已經被自動登出，請重新登入")
+                        window.location.reload()
+                    }
+                }
+            )
+
+    };
 
     React.useEffect(() => {
         fetch("/api/getallstudents", {
@@ -84,15 +105,23 @@ export function StudentAccounts({ data, user }) {
     return (
         <>
 
-            <Box sx={{ width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: "flex", alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)" }}>
+            <Box sx={{
+                width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: "flex", alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
+                flexDirection: "column", justifyContent: "center"
+            }}>
                 <h1>身分驗證</h1>
                 <p>即將顯示所有學生的帳號密碼，因此，我們需要先驗證你的身分，確保你是 {data.data.username} 本人</p>
                 <p>請輸入你的密碼，一旦輸入錯誤，將被強制登出</p>
-                <TextField type='password' variant="standard" label="輸入你的密碼" />
+                <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
+                <p>
+                    <Button variant='outlined' onClick={() => { window.location.href = "/" }}>取消</Button>
+                    &nbsp;
+                    <Button variant='contained' onClick={handleLogin}>確定</Button>
+                </p>
             </Box>
 
 
-            <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
+            <TopBar logined={true} data={data.data} user={user} title={"學生帳密"} />
 
             <Box sx={{ p: 3 }}>
                 <h1>所有學生的帳號密碼</h1>

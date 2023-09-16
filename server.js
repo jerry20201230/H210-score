@@ -43,6 +43,7 @@ app.post('/api/login', (req, res) => {
                 req.session.role = results[0].role
                 res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
+                req.session.destroy()
                 res.status(401).json({ message: 'Invalid credentials', ok: false });
             }
 
