@@ -26,15 +26,19 @@ export function PushNewScore({ data, user }) {
   }
   const [inputValues, setInputValues] = React.useState(Array(45).fill(''));
 
-  const handleInputChange = (index, value) => {
+  /*const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
-    var updatedValues = [...inputValues];
+    var updatedValues = [...];
     updatedValues[index] = value;
     console.log(updatedValues[index])
     console.log(inputValues, updatedValues)
-    setInputValues(updatedValues);
+    (updatedValues);
+  };*/
+  const handleGradeChange = (index, newValue) => {
+    const newGrades = [...inputValues];
+    newGrades[index] = newValue;
+    setInputValues(newGrades);
   };
-
   const handleSubmit = () => {
     // 在這裡處理提交操作，您可以使用inputValues數組中的值
     console.log('輸入框的值：', inputValues);
@@ -58,7 +62,7 @@ export function PushNewScore({ data, user }) {
           if (res.data.result[i].userid.includes("s")) {
 
             var object = res.data.result[i]
-            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入成績" variant="standard" />
+            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
             object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
             console.log(object, i, "nioh")
@@ -82,7 +86,7 @@ export function PushNewScore({ data, user }) {
           rows={3}
           variant="standard"
         />
-
+        <p></p>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
