@@ -47,6 +47,11 @@ export function PushNewScore({ data, user }) {
       })
   }, [])
 
+
+  React.useEffect(() => {
+    console.log(students, "58484rs98g89489")
+  }, [students])
+
   return (
     <>
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />

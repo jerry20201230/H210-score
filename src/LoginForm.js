@@ -42,6 +42,9 @@ function LoginForm({ set, callback }) {
   function showDialogF() {
     setShowDialog(true)
   }
+  React.useEffect(() => {
+    document.title = "登入 - H210成績查詢系統"
+  }, [])
 
   React.useEffect(() => {
 
