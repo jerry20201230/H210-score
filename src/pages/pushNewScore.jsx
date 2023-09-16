@@ -28,10 +28,10 @@ export function PushNewScore({ data, user }) {
 
   const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
-    var updatedValues = inputValues;
+    var updatedValues = [...inputValues];
     updatedValues[index] = value;
     console.log(updatedValues[index])
-    console.log(inputValues)
+    console.log(inputValues, updatedValues)
     setInputValues(updatedValues);
   };
 
