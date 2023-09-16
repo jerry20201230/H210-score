@@ -30,6 +30,7 @@ function App() {
     })
       .then(res => res.json())
       .then(res => {
+        setLoading(false)
         if (res.logined) {
           setIsLoggedIn(res.logined)
           setUserData(res.data)
