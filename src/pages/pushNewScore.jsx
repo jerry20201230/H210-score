@@ -56,10 +56,12 @@ export function PushNewScore({ data, user }) {
         var list = []
         for (let i = 0; i < res.data.result.length; i++) {
           if (res.data.result[i].userid.includes("s")) {
+
             var object = res.data.result[i]
             object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入成績" variant="standard" />
             object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
+            console.log(object, i, "nioh")
             list.push(object)
           }
         }
