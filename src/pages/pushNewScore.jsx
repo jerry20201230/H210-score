@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -117,6 +117,8 @@ export function PushNewScore({ data, user }) {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Button variant='contained' onClick={handleSubmit}>送出</Button>
       </Box>
 
     </>
