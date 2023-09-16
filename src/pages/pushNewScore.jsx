@@ -18,69 +18,70 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 export function PushNewScore({ data, user }) {
+  const [students, setStudents] = React.useState([])
 
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
-    }
-
-    const rows = [
-        createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-        createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-        createData('Eclair', 262, 16.0, 24, 6.0),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Gingerbread', 356, 16.0, 49, 3.9),
-    ];
+  function createData(seatnum, name, scoreInput, summeryInput) {
+    return { seatnum, name, scoreInput, summeryInput };
+  }
 
 
-    React.useEffect(() => {
-        fetch("/api/getallstudents", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log(".......0", res)
-            })
-    }, [])
 
-    return (
-        <>
-            <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
-            <h1>輸入新的成績資料</h1>
-            <Box sx={{ p: 3 }}>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>座號</TableCell>
-                                <TableCell>姓名</TableCell>
-                                <TableCell>成績</TableCell>
-                                <TableCell>備註</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.map((row, i) => (
-                                <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {i + 1}
-                                    </TableCell>
-                                    <TableCell>{row.calories}</TableCell>
-                                    <TableCell>{row.fat}</TableCell>
-                                    <TableCell>{row.carbs}</TableCell>
+  React.useEffect(() => {
+    fetch("/api/getallstudents", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(".......0", res)
+        var list = []
+        for (let i = 0; i < res.data.result.length; i++) {
+          if (res.data.result[i].userid.includes("s")) {
+            list.push(res.data.result[i])
+          }
+        }
+        setStudents(list)
+      })
+  }, [])
 
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
+  return (
+    <>
+      <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
+      <h1>輸入新的成績資料</h1>
+      <Box sx={{ p: 3 }}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>座號</TableCell>
+                <TableCell>姓名</TableCell>
+                <TableCell>成績</TableCell>
+                <TableCell>備註</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {students.map((row, i) => (
+                <TableRow
+                  key={row.seatnum}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.seatnum}
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.scoreInput}</TableCell>
+                  <TableCell>{row.summeryInput}</TableCell>
 
-        </>
-    )
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+
+    </>
+  )
 }

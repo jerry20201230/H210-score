@@ -7,8 +7,12 @@ import { Score } from './pages/score';
 import { TeacherHomePage } from './pages/teacherHome';
 import { AllScoreSheet } from './pages/allscores';
 import { PushNewScore } from './pages/pushNewScore';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function App() {
+  const [loading, setLoading] = React.useState(true)
+
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem(""));
   const [userData, setUserData] = useState([])
   function handleCallBack(data) {
@@ -35,30 +39,39 @@ function App() {
   }, [])
 
   return (
-    isLoggedIn ?
-      <Routes>
-        {userData.data.role === "teacher" ?
-          <Route path='/' element=<TeacherHomePage data={userData} /> ></Route>
-          : <Route path='/' element=<Homepage data={userData} /> ></Route>
-        }
+    !loading ?
+      isLoggedIn ?
+        <Routes>
+          {userData.data.role === "teacher" ?
+            <Route path='/' element=<TeacherHomePage data={userData} /> ></Route>
+            : <Route path='/' element=<Homepage data={userData} /> ></Route>
+          }
 
-        <Route path='/score' element=<Score data={userData} /> ></Route>
+          <Route path='/score' element=<Score data={userData} /> ></Route>
 
-        {userData.data.role === "teacher" ?
-          <>
-            <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
-            <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
-            <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
+          {userData.data.role === "teacher" ?
+            <>
+              <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
+              <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
+              <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
 
-          </>
-          : <></>}
-        <Route path='*' element=<h1>ERROR 404</h1>></Route>
+            </>
+            : <></>}
+          <Route path='*' element=<h1>ERROR 404</h1>></Route>
 
-      </Routes>
+        </Routes>
+        :
+        <Routes>
+          <Route path='*' element=<LoginForm set={setIsLoggedIn} callback={handleCallBack} /> ></Route>
+        </Routes>
       :
-      <Routes>
-        <Route path='*' element=<LoginForm set={setIsLoggedIn} callback={handleCallBack} /> ></Route>
-      </Routes>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
 
   );
 }
