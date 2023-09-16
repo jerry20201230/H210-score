@@ -68,7 +68,7 @@ export function PushNewScore({ data, user }) {
           if (res.data.result[i].userid.includes("s")) {
 
             var object = res.data.result[i]
-            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
+            object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
             object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
             console.log(object, i, "nioh", inputValues[i])
@@ -87,10 +87,12 @@ export function PushNewScore({ data, user }) {
 
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
+        <TextField label="成績標題" variant="standard" />
+
         <TextField
           label="對全班的公告"
           multiline
-          rows={3}
+          rows={2}
           variant="standard"
         />
         <p></p>
