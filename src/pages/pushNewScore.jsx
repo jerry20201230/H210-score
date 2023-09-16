@@ -36,7 +36,7 @@ export function PushNewScore({ data, user }) {
   };*/
   const handleGradeChange = (index, newValue) => {
     const newGrades = [...inputValues];
-    newGrades[index] = newValue;
+    newGrades[2] = newValue;
     setInputValues(newGrades);
   };
   const handleSubmit = () => {
@@ -63,7 +63,7 @@ export function PushNewScore({ data, user }) {
 
             var object = res.data.result[i]
             object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-            object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入備註" variant="standard" />
+            object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
             console.log(object, i, "nioh")
             list.push(object)
