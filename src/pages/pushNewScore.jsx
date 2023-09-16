@@ -27,6 +27,7 @@ export function PushNewScore({ data, user }) {
   const [inputValues, setInputValues] = React.useState(Array(45).fill(''));
 
   const handleInputChange = (index, value) => {
+    console.log(index, value, "000151656464")
     const updatedValues = [...inputValues];
     updatedValues[index] = value;
     setInputValues(updatedValues);
