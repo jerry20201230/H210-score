@@ -70,6 +70,8 @@ export function StudentAccounts({ data, user }) {
 
     };
 
+
+
     React.useEffect(() => {
         if (auth) {
 
@@ -153,7 +155,7 @@ export function StudentAccounts({ data, user }) {
                                     <TableCell>{row.username}</TableCell>
                                     <TableCell>{row.accountInput}</TableCell>
                                     <TableCell>{row.passwordInput}</TableCell>
-
+                                    <TableCell>{row.changePasswordBtn}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
