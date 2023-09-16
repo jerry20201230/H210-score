@@ -7,12 +7,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useRef } from 'react';
 
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState('');
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
+  const submitButttonRef = useRef()
 
   const handleLogin = async () => {
     await fetch('/api/login', {
@@ -44,8 +46,8 @@ function LoginForm({ set, callback }) {
   React.useEffect(() => {
 
     const handleKeyDown = (event) => {
-      if (event.keyCode === 13) {
-        handleLogin()
+      if (event.keyCode === 13 && submitButttonRef.current) {
+        submitButttonRef.current.click()
       }
     };
 
@@ -54,7 +56,7 @@ function LoginForm({ set, callback }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [])
+  }, [submitButttonRef])
 
   return (
     <>
@@ -74,7 +76,7 @@ function LoginForm({ set, callback }) {
           <p></p>
           <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
           <p></p>
-          <Button variant="contained" onClick={handleLogin}>開始查詢</Button>
+          <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}>開始查詢</Button>
           &nbsp;
           <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>

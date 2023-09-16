@@ -7,8 +7,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import { Link } from 'react-router-dom';
 
 
@@ -80,7 +78,7 @@ export function Homepage({ user, data }) {
         </Box>
 
 
-        <Button onClick={() => getScore()}>重新整理</Button>
+        <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
       </Box>
     </>
   )

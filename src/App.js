@@ -63,7 +63,7 @@ function App() {
               <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
               <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
               <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
-              <Route path='/bachend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
+              <Route path='/backend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
 
             </>
             : <></>}
