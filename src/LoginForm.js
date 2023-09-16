@@ -41,6 +41,21 @@ function LoginForm({ set, callback }) {
     setShowDialog(true)
   }
 
+  React.useEffect(() => {
+
+    const handleKeyDown = (event) => {
+      if (event.keyCode === 13) {
+        handleLogin()
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [])
+
   return (
     <>
       <div style={{
