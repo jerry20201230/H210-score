@@ -24,6 +24,18 @@ export function PushNewScore({ data, user }) {
   function createData(seatnum, name, scoreInput, summeryInput) {
     return { seatnum, name, scoreInput, summeryInput };
   }
+  const [inputValues, setInputValues] = React.useState(Array(45).fill(''));
+
+  const handleInputChange = (index, value) => {
+    const updatedValues = [...inputValues];
+    updatedValues[index] = value;
+    setInputValues(updatedValues);
+  };
+
+  const handleSubmit = () => {
+    // 在這裡處理提交操作，您可以使用inputValues數組中的值
+    console.log('輸入框的值：', inputValues);
+  };
 
 
 
@@ -41,17 +53,17 @@ export function PushNewScore({ data, user }) {
         var list = []
         for (let i = 0; i < res.data.result.length; i++) {
           if (res.data.result[i].userid.includes("s")) {
-            list.push(res.data.result[i])
+            var object = res.data.result[i]
+            object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入成績" variant="standard" />
+            object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleInputChange(i, e.target.value)} label="輸入備註" variant="standard" />
+
+            list.push(object)
           }
         }
         setStudents(list)
       })
   }, [])
 
-
-  React.useEffect(() => {
-    console.log(students, "58484rs98g89489")
-  }, [students])
 
   return (
     <>

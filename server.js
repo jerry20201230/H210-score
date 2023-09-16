@@ -100,6 +100,16 @@ app.post("/api/getallstudents", (req, res) => {
     }
 })
 
+app.post("/api/getallstudentscorebyid", (req, res) => {
+    if (req.session.role === "teacher") {
+
+    } else {
+        res.status(403).json({ message: 'Invalid credentials', ok: false });
+        res.end();
+    }
+})
+
+
 app.post("/api/getscorebyid", (req, res) => {
     if (req.session.role) {
         sql_Connect.getConnection(function (err, connection) {
