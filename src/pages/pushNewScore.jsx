@@ -24,7 +24,7 @@ export function PushNewScore({ data, user }) {
   function createData(seatnum, name, scoreInput, summeryInput) {
     return { seatnum, name, scoreInput, summeryInput };
   }
-  const [inputValues, setInputValues] = React.useState(Array(45).fill('100'));
+  const [inputValues, setInputValues] = React.useState(Array(45));
 
   /*const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
@@ -71,6 +71,7 @@ export function PushNewScore({ data, user }) {
           }
         }
         setStudents(list)
+        console.log(students, list)
       })
   }, [])
 
