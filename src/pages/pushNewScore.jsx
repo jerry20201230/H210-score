@@ -25,7 +25,7 @@ export function PushNewScore({ data, user }) {
     return { seatnum, name, scoreInput, summeryInput };
   }
   const [inputValues, setInputValues] = React.useState(Array(45));
-
+  const [summeryValue, setSummeryValue] = React.useState(Array(45))
   /*const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
     var updatedValues = [...];
@@ -36,13 +36,18 @@ export function PushNewScore({ data, user }) {
   };*/
   const handleGradeChange = (index, newValue) => {
     const newGrades = inputValues;
-    console.log(newGrades)
     newGrades[index] = newValue;
     setInputValues(newGrades);
   };
+  const handleSummeryChange = (index, newValue) => {
+    const newSummery = summeryValue;
+    newSummery[index] = newValue;
+    setSummeryValue(newSummery);
+  };
   const handleSubmit = () => {
     // 在這裡處理提交操作，您可以使用inputValues數組中的值
-    console.log('輸入框的值：', inputValues);
+    console.log('輸入框的值：', inputValues, summeryValue);
+    console.log(inputValues[10])
   };
 
 
@@ -64,7 +69,7 @@ export function PushNewScore({ data, user }) {
 
             var object = res.data.result[i]
             object.scoreInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-            object.summeryInput = <TextField value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入備註" variant="standard" />
+            object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
             console.log(object, i, "nioh", inputValues[i])
             list.push(object)

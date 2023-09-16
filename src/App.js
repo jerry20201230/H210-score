@@ -11,6 +11,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { SearchScoreSheet } from './pages/searchScores';
 import { AllAccountSheet } from './pages/allaccounts';
+import { StudentAccounts } from './pages/studentaccounts';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -67,6 +68,7 @@ function App() {
               <Route path='/backend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
 
               <Route path='/backend/account' element=<AllAccountSheet data={userData} />></Route>
+              <Route path='/backend/account/student' element=<StudentAccounts data={userData} />></Route>
             </>
             : <></>}
           <Route path='*' element=<h1>ERROR 404</h1>></Route>
