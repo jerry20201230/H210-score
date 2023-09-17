@@ -41,9 +41,11 @@ export function StudentAccounts({ data, user }) {
       (updatedValues);
     };*/
     const [open, setOpen] = React.useState(false);
+    const [openingId, setOpeningId] = React.useState()
 
     const handleClickOpen = (n) => {
         setOpen(true);
+        setOpeningId(n)
     };
 
     const handleClose = (n) => {
@@ -203,18 +205,19 @@ export function StudentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    {"更新 " + students[openingId].username + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
+                        目前密碼:{students[openingId].userpassword}<br />
+                        <p></p>
+                        <TextField type='text' variant="standard" label="輸入新密碼" />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
+                    <Button onClick={handleClose}>取消</Button>
+                    <Button onClick={handleClose}>
+                        更新
                     </Button>
                 </DialogActions>
             </Dialog>
