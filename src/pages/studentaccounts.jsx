@@ -17,11 +17,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export function StudentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([])
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
+
+    const authBtnRef = React.useRef()
 
     const [accountValues, setaccountValues] = React.useState(Array(45));
     const [passwordValue, setPasswordValue] = React.useState(Array(45))
@@ -33,12 +40,16 @@ export function StudentAccounts({ data, user }) {
       console.log(inputValues, updatedValues)
       (updatedValues);
     };*/
+    const [open, setOpen] = React.useState(false);
 
-    const handlePasswordChange = (index, newValue) => {
-        const newPass = passwordValue;
-        newPass[index] = newValue;
-        setPasswordValue(newPass);
+    const handleClickOpen = (n) => {
+        setOpen(true);
     };
+
+    const handleClose = (n) => {
+        setOpen(false);
+    };
+
     const handleSubmit = () => {
         // 在這裡處理提交操作，您可以使用inputValues數組中的值
         console.log('輸入框的值：', passwordValue);
@@ -46,6 +57,7 @@ export function StudentAccounts({ data, user }) {
 
     const editPass = (i, p) => {
         console.log(i, p)
+        handleClickOpen(i)
     }
 
     const handleLogin = async () => {
@@ -108,6 +120,21 @@ export function StudentAccounts({ data, user }) {
         }
     }, [auth])
 
+    React.useEffect(() => {
+
+        const handleKeyDown = (event) => {
+            if (event.keyCode === 13 && authBtnRef.current && !auth) {
+                authBtnRef.current.click()
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [authBtnRef])
+
 
     return (
         <>
@@ -123,7 +150,7 @@ export function StudentAccounts({ data, user }) {
                 <p>
                     <Button variant='outlined' onClick={() => { window.location.href = "/" }}>取消</Button>
                     &nbsp;
-                    <Button variant='contained' onClick={handleLogin}>確定</Button>
+                    <Button variant='contained' onClick={handleLogin} ref={authBtnRef}>確定</Button>
                 </p>
             </Box>
 
@@ -165,6 +192,32 @@ export function StudentAccounts({ data, user }) {
                 <Button variant='contained' onClick={handleSubmit}>送出</Button>
             </Box>
 
+
+
+
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Use Google's location service?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Let Google help apps determine location. This means sending anonymous
+                        location data to Google, even when no apps are running.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleClose} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }
