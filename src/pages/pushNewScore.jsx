@@ -127,6 +127,7 @@ export function PushNewScore({ data, user }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <p></p>
 
         <Button variant='contained' onClick={handleSubmit}>送出</Button>
       </Box>

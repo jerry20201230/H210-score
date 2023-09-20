@@ -112,12 +112,39 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
 
 app.post("/api/changepassword/student",(req,res)=>{
     if(req.session.role === "teacher"){
-        
+        sql_Connect.getConnection(function (err, connection) {
+            connection.query(`
+            UPDATE userData
+            SET userpassword = ${req.body.password}
+            WHERE id = ${req.body.id}
+            `, function (error, results, fields) {
+                if (error) throw error;
+                if (results.length > 0) {
+                    console.log(results)
+                    res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+                } else {
+                    res.status(404).json({ message: 'Invalid credentials', ok: false });
+                }
+    
+                res.end();
+                connection.release();
+    
+            })
+        })     
     } else {
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();
     }
-} )
+})
+
+app.post("/api/uploadnewscore",(req,res)=>{
+    if(req.session.role === "teacher"){
+
+    }else{
+        res.status(403).json({ message: 'Invalid credentials', ok: false });
+        res.end();
+    }
+})
 
 app.post("/api/getscorebyid", (req, res) => {
     if (req.session.role) {

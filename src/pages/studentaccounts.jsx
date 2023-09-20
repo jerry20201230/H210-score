@@ -33,6 +33,8 @@ export function StudentAccounts({ data, user }) {
     const authBtnRef = React.useRef()
     const newPasswordInputRef = React.useRef()
 
+    const[ dialogSubmitBtnText,setDialogSubmitBtnText ]=React.useState(<>更新</>) 
+
     const [accountValues, setaccountValues] = React.useState(Array(45));
     const [passwordValue, setPasswordValue] = React.useState(Array(45))
     /*const handleInputChange = (index, value) => {
@@ -52,7 +54,7 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-        setOpen(false);
+        
         if(n === "update"){
         fetch('/api/changepassword/student', {
                 method: 'POST',
@@ -64,12 +66,9 @@ export function StudentAccounts({ data, user }) {
                 .then(res => res.json())
                 .then(
                     (res) => {
-                        if (res.ok) {
-                            setAuth(true)
-                        } else {
-                            alert("密碼錯誤!!\n你已經被自動登出，請重新登入")
-                            window.location.reload()
-                        }
+                setDialogSubmitBtnText("更新完畢")
+                setOpen(false)
+
                     }
                 )
     
@@ -108,39 +107,40 @@ export function StudentAccounts({ data, user }) {
 
     };
 
+function getAllStdPass(){
+    fetch("/api/getallstudents", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+    })
+        .then(res => res.json())
+        .then(res => {
+            console.log(".......0", res)
+            var list = []
+            for (let i = 0; i < res.data.result.length; i++) {
+                if (res.data.result[i].userid.includes("s")) {
+
+                    var object = res.data.result[i]
+                    object.accountInput = res.data.result[i].userid
+                    object.passwordInput = res.data.result[i].userpassword
+
+                    object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
+
+                    list.push(object)
+                }
+            }
+            setStudents(list)
+            console.log(students, list)
+        })
+
+}
 
 
     React.useEffect(() => {
         if (auth) {
-
-
-            fetch("/api/getallstudents", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({}),
-            })
-                .then(res => res.json())
-                .then(res => {
-                    console.log(".......0", res)
-                    var list = []
-                    for (let i = 0; i < res.data.result.length; i++) {
-                        if (res.data.result[i].userid.includes("s")) {
-
-                            var object = res.data.result[i]
-                            object.accountInput = res.data.result[i].userid
-                            object.passwordInput = res.data.result[i].userpassword
-
-                            object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
-
-                            list.push(object)
-                        }
-                    }
-                    setStudents(list)
-                    console.log(students, list)
-                })
-
+            getAllStdPass()
         } else {
 
         }
@@ -214,8 +214,6 @@ export function StudentAccounts({ data, user }) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                <Button variant='contained' onClick={handleSubmit}>送出</Button>
             </Box>
 
 
@@ -241,7 +239,7 @@ export function StudentAccounts({ data, user }) {
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
                     <Button onClick={()=>handleClose("update")}>
-                        更新
+                        {dialogSubmitBtnText}
                     </Button>
                 </DialogActions>
             </Dialog>
