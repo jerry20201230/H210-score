@@ -24,16 +24,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export function StudentAccounts({ data, user }) {
-    const [students, setStudents] = React.useState([
-        {username:"",userpassword:""}
-    ])
+    const [students, setStudents] = React.useState([])
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
 
     const authBtnRef = React.useRef()
-    const newPasswordInputRef = React.useRef()
-
-    const[ dialogSubmitBtnText,setDialogSubmitBtnText ]=React.useState(<>更新</>) 
 
     const [accountValues, setaccountValues] = React.useState(Array(45));
     const [passwordValue, setPasswordValue] = React.useState(Array(45))
@@ -46,7 +41,7 @@ export function StudentAccounts({ data, user }) {
       (updatedValues);
     };*/
     const [open, setOpen] = React.useState(false);
-    const [openingId, setOpeningId] = React.useState(0)
+    const [openingId, setOpeningId] = React.useState()
 
     const handleClickOpen = (n) => {
         setOpen(true);
@@ -54,25 +49,7 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-        
-        if(n === "update"){
-        fetch('/api/changepassword/student', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: (openingId), password: newPasswordInputRef.current.value}),
-            })
-                .then(res => res.json())
-                .then(
-                    (res) => {
-                setDialogSubmitBtnText("更新完畢")
-                setOpen(false)
-
-                    }
-                )
-    
-        }
+        setOpen(false);
     };
 
     const handleSubmit = () => {
@@ -107,40 +84,39 @@ export function StudentAccounts({ data, user }) {
 
     };
 
-function getAllStdPass(){
-    fetch("/api/getallstudents", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-    })
-        .then(res => res.json())
-        .then(res => {
-            console.log(".......0", res)
-            var list = []
-            for (let i = 0; i < res.data.result.length; i++) {
-                if (res.data.result[i].userid.includes("s")) {
-
-                    var object = res.data.result[i]
-                    object.accountInput = res.data.result[i].userid
-                    object.passwordInput = res.data.result[i].userpassword
-
-                    object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
-
-                    list.push(object)
-                }
-            }
-            setStudents(list)
-            console.log(students, list)
-        })
-
-}
 
 
     React.useEffect(() => {
         if (auth) {
-            getAllStdPass()
+
+
+            fetch("/api/getallstudents", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(res => res.json())
+                .then(res => {
+                    console.log(".......0", res)
+                    var list = []
+                    for (let i = 0; i < res.data.result.length; i++) {
+                        if (res.data.result[i].userid.includes("s")) {
+
+                            var object = res.data.result[i]
+                            object.accountInput = res.data.result[i].userid
+                            object.passwordInput = res.data.result[i].userpassword
+
+                            object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
+
+                            list.push(object)
+                        }
+                    }
+                    setStudents(list)
+                    console.log(students, list)
+                })
+
         } else {
 
         }
@@ -214,6 +190,8 @@ function getAllStdPass(){
                         </TableBody>
                     </Table>
                 </TableContainer>
+
+                <Button variant='contained' onClick={handleSubmit}>送出</Button>
             </Box>
 
 
@@ -233,13 +211,13 @@ function getAllStdPass(){
                     <DialogContentText id="alert-dialog-description">
                         目前密碼:{students[openingId].userpassword || "???"}<br />
                         <p></p>
-                        <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} />
+                        <TextField type='text' variant="standard" label="輸入新密碼" />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
-                    <Button onClick={()=>handleClose("update")}>
-                        {dialogSubmitBtnText}
+                    <Button onClick={handleClose}>
+                        更新
                     </Button>
                 </DialogActions>
             </Dialog>

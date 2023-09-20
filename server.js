@@ -110,8 +110,8 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
     }
 })
 
-app.post("/api/changepassword/student",(req,res)=>{
-    if(req.session.role === "teacher"){
+app.post("/api/changepassword/student", (req, res) => {
+    if (req.session.role === "teacher") {
         sql_Connect.getConnection(function (err, connection) {
             connection.query(`
             UPDATE userData
@@ -125,24 +125,24 @@ app.post("/api/changepassword/student",(req,res)=>{
                 } else {
                     res.status(404).json({ message: 'Invalid credentials', ok: false });
                 }
-    
+
                 res.end();
                 connection.release();
-    
+
             })
-        })     
+        })
     } else {
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();
     }
 })
 
-app.post("/api/uploadnewscore",(req,res)=>{
-    if(req.session.role === "teacher"){
+app.post("/api/uploadnewscore", (req, res) => {
+    if (req.session.role === "teacher") {
         //create uuid
         //add new column
         //put all data
-    }else{
+    } else {
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();
     }
