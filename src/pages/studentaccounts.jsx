@@ -24,11 +24,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export function StudentAccounts({ data, user }) {
-    const [students, setStudents] = React.useState([])
+    const [students, setStudents] = React.useState([
+        {username:"",userpassword:""}
+    ])
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
 
     const authBtnRef = React.useRef()
+    const newPasswordInputRef = React.useRef()
 
     const [accountValues, setaccountValues] = React.useState(Array(45));
     const [passwordValue, setPasswordValue] = React.useState(Array(45))
@@ -41,7 +44,7 @@ export function StudentAccounts({ data, user }) {
       (updatedValues);
     };*/
     const [open, setOpen] = React.useState(false);
-    const [openingId, setOpeningId] = React.useState()
+    const [openingId, setOpeningId] = React.useState(0)
 
     const handleClickOpen = (n) => {
         setOpen(true);
@@ -50,6 +53,27 @@ export function StudentAccounts({ data, user }) {
 
     const handleClose = (n) => {
         setOpen(false);
+        if(n === "update"){
+        fetch('/api/changepassword/student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: (openingId), password: newPasswordInputRef.current.value}),
+            })
+                .then(res => res.json())
+                .then(
+                    (res) => {
+                        if (res.ok) {
+                            setAuth(true)
+                        } else {
+                            alert("密碼錯誤!!\n你已經被自動登出，請重新登入")
+                            window.location.reload()
+                        }
+                    }
+                )
+    
+        }
     };
 
     const handleSubmit = () => {
@@ -211,12 +235,12 @@ export function StudentAccounts({ data, user }) {
                     <DialogContentText id="alert-dialog-description">
                         目前密碼:{students[openingId].userpassword || "???"}<br />
                         <p></p>
-                        <TextField type='text' variant="standard" label="輸入新密碼" />
+                        <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
-                    <Button onClick={handleClose}>
+                    <Button onClick={()=>handleClose("update")}>
                         更新
                     </Button>
                 </DialogActions>
