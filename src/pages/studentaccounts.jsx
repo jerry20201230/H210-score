@@ -72,6 +72,8 @@ export function StudentAccounts({ data, user }) {
                     }
                 )
 
+        } else {
+            setOpen(false)
         }
     };
 
