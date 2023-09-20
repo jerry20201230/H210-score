@@ -54,14 +54,14 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-
+        console.log(newPasswordInputRef.current.value, "8878686464")
         if (n === "update") {
             fetch('/api/changepassword/student', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId), password: newPasswordInputRef.current.value }),
+                body: JSON.stringify({ id: (openingId), password: (newPasswordInputRef.current.value) }),
             })
                 .then(res => res.json())
                 .then(
@@ -84,7 +84,7 @@ export function StudentAccounts({ data, user }) {
 
     const editPass = (i, p) => {
         console.log(i, p)
-        handleClickOpen(i)
+        handleClickOpen(i - 1)
     }
 
     const handleLogin = async () => {
