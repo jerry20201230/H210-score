@@ -116,7 +116,7 @@ app.post("/api/changepassword/student", (req, res) => {
         sql_Connect.getConnection(function (err, connection) {
             connection.query(`
             UPDATE userData
-            SET userpassword = ${req.body.password}
+            SET userpassword = "${req.body.password}"
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
                 if (error) throw error;
