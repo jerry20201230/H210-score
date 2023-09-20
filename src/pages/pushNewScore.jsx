@@ -97,7 +97,7 @@ export function PushNewScore({ data, user }) {
           disablePortal
           freeSolo
           options={["國文", "數學", "物理", "化學", "地理", "公民", "英文"]}
-          renderInput={(params) => <TextField {...params} label="Movie" variant="standard" />}
+          renderInput={(params) => <TextField {...params} label="科目" variant="standard" />}
         />
         <p></p>
         <TextField

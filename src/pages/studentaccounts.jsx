@@ -236,11 +236,11 @@ export function StudentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (students[openingId].username || "???") + " 的密碼"}
+                    {"更新 " + (students[openingId].username ? students[openingId].username : "") + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        目前密碼:{students[openingId].userpassword || "???"}<br />
+                        目前密碼:{students[openingId].userpassword ? students[openingId].userpassword : "" || "???"}<br />
                         <p></p>
                         <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
