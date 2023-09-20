@@ -61,7 +61,7 @@ export function StudentAccounts({ data, user }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId), password: (newPass) }),
+                body: JSON.stringify({ id: (openingId - 1), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
