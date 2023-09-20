@@ -17,6 +17,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
@@ -87,10 +88,18 @@ export function PushNewScore({ data, user }) {
 
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
-        <TextField label="成績標題" variant="standard" />
         <p>
           輸入每位同學的成績，然後儲存或發布
         </p>
+        <TextField label="成績標題" variant="standard" />
+        <p></p>
+        <Autocomplete
+          disablePortal
+          freeSolo
+          options={["國文", "數學", "物理", "化學", "地理", "公民", "英文"]}
+          renderInput={(params) => <TextField {...params} label="Movie" variant="standard" />}
+        />
+        <p></p>
         <TextField
           label="對全班的公告"
           multiline

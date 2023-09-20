@@ -54,23 +54,27 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-        //  console.log(newPasswordInputRef.current.value, "8878686464")
+        console.log(newPass, openingId, "8878686464")
+        setDialogSubmitBtnText(<><CircularProgress size="1rem" /> 更新中</>)
         if (n === "update") {
             fetch('/api/changepassword/student', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId - 1), password: (newPass) }),
+                body: JSON.stringify({ id: (openingId + 1), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
                     (res) => {
                         setDialogSubmitBtnText("更新完畢")
                         setOpen(false)
+                        getAllStdPass()
 
                     }
-                )
+                ).catch((e) => {
+                    getAllStdPass()
+                })
 
         } else {
             setOpen(false)
@@ -195,7 +199,7 @@ export function StudentAccounts({ data, user }) {
                                 <TableCell>姓名</TableCell>
                                 <TableCell>帳號</TableCell>
                                 <TableCell>密碼</TableCell>
-                                <TableCell>編輯</TableCell>
+                                <TableCell>動作</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

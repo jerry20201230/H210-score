@@ -120,12 +120,9 @@ app.post("/api/changepassword/student", (req, res) => {
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
                 if (error) throw error;
-                if (results.length > 0) {
-                    console.log(results)
-                    res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
-                } else {
-                    res.status(404).json({ message: 'Invalid credentials', ok: false });
-                }
+
+                console.log(results)
+                res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
                 res.end();
                 connection.release();
