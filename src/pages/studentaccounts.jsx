@@ -32,7 +32,7 @@ export function StudentAccounts({ data, user }) {
 
     const authBtnRef = React.useRef()
     const newPasswordInputRef = React.useRef()
-
+    const [newPass, setNewPass] = React.useState()
     const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
 
     const [accountValues, setaccountValues] = React.useState(Array(45));
@@ -54,14 +54,14 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-        console.log(newPasswordInputRef.current.value, "8878686464")
+        //  console.log(newPasswordInputRef.current.value, "8878686464")
         if (n === "update") {
             fetch('/api/changepassword/student', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId), password: (newPasswordInputRef.current.value) }),
+                body: JSON.stringify({ id: (openingId), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
@@ -235,7 +235,7 @@ export function StudentAccounts({ data, user }) {
                     <DialogContentText id="alert-dialog-description">
                         目前密碼:{students[openingId].userpassword || "???"}<br />
                         <p></p>
-                        <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} />
+                        <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
