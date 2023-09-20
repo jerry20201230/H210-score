@@ -71,10 +71,12 @@ export function StudentAccounts({ data, user }) {
                         setOpen(false)
                         setStudents([{ username: "", userpassword: "" }])
                         getAllStdPass()
+                        setNewPass("")
                     }
                 ).catch((e) => {
                     setStudents([{ username: "", userpassword: "" }])
                     getAllStdPass()
+                    setNewPass("")
                 })
 
         } else {
