@@ -111,6 +111,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
 })
 
 app.post("/api/changepassword/student", (req, res) => {
+    console.lo("/api/changepassword/student", req.body)
     if (req.session.role === "teacher") {
         sql_Connect.getConnection(function (err, connection) {
             connection.query(`

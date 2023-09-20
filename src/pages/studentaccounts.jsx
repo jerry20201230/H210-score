@@ -227,7 +227,7 @@ export function StudentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + students[openingId].username || "???" + " 的密碼"}
+                    {"更新 " + (students[openingId].username || "???") + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
