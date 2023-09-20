@@ -139,7 +139,9 @@ app.post("/api/changepassword/student",(req,res)=>{
 
 app.post("/api/uploadnewscore",(req,res)=>{
     if(req.session.role === "teacher"){
-
+        //create uuid
+        //add new column
+        //put all data
     }else{
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();

@@ -88,7 +88,9 @@ export function PushNewScore({ data, user }) {
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
         <TextField label="成績標題" variant="standard" />
-        <p></p>
+        <p>
+          輸入每位同學的成績，然後儲存或發布
+        </p>
         <TextField
           label="對全班的公告"
           multiline
