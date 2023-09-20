@@ -69,10 +69,11 @@ export function StudentAccounts({ data, user }) {
                     (res) => {
                         setDialogSubmitBtnText("更新完畢")
                         setOpen(false)
+                        setStudents([{ username: "", userpassword: "" }])
                         getAllStdPass()
-
                     }
                 ).catch((e) => {
+                    setStudents([{ username: "", userpassword: "" }])
                     getAllStdPass()
                 })
 
