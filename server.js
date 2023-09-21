@@ -143,6 +143,22 @@ app.post("/api/uploadnewscore", (req, res) => {
         //create uuid
         //add new column
         //put all data
+
+        sql_Connect.getConnection(function (err, connection) {
+            connection.query(`
+            INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
+            VALUES("${theUUID}","${req.body.score.title}","${theUUID}","${req.body.score.subject}","${req.body.score.annousment}",${req.body.method === "publish"})
+            `, function (error, results, fields) {
+                if (error) throw error;
+
+                console.log(results)
+                res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+                res.end();
+                connection.release();
+
+            })
+        })
     } else {
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();
