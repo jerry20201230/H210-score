@@ -18,13 +18,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
+  const [open, setOpen] = React.useState(false);
 
-  function createData(seatnum, name, scoreInput, summeryInput) {
-    return { seatnum, name, scoreInput, summeryInput };
+  function handleClose() {
+    setOpen(false)
   }
+
   const [inputValues, setInputValues] = React.useState(Array(45));
   const [summeryValue, setSummeryValue] = React.useState(Array(45))
 
@@ -62,6 +69,7 @@ export function PushNewScore({ data, user }) {
     setSummeryValue(newSummery);
   };
   const handleSubmit = (m) => {
+    setOpen(true)
     console.log({
       method: m,
       score: {
@@ -200,6 +208,25 @@ export function PushNewScore({ data, user }) {
         <Button variant='contained' onClick={() => handleSubmit("publish")}>直接發布</Button>
       </Box>
 
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"正在寫入資料"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            正在將 {gradeTitle} 的資料寫入資料庫，請稍候...<br />
+            完成後，頁面將自動重整
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>取消</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }
