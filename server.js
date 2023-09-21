@@ -151,14 +151,21 @@ app.post("/api/uploadnewscore", (req, res) => {
             `, function (error, results, fields) {
                 if (error) throw error;
 
-                console.log(results)
-                res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+                sql_Connect.getConnection(function (err, connection2) {
+                    connection.query(`
+                    ALTER TABLE scoreData
+                    ALTER COLUMN ${theUUID} TEXT;
+                    `, function (error, results, fields) {
+                        if (error) throw error;
+                        res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
+                        connection2.release();
 
-                res.end();
+                    })
+                })
                 connection.release();
-
             })
         })
+
     } else {
         res.status(403).json({ message: 'Invalid credentials', ok: false });
         res.end();
