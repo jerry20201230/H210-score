@@ -152,7 +152,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                 if (error) throw error;
 
                 sql_Connect.getConnection(function (err, connection2) {
-                    connection.query(`
+                    connection2.query(`
                     ALTER TABLE scoreData
                     ALTER COLUMN ${theUUID} TEXT;
                     `, function (error, results, fields) {
