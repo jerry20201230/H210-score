@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const uuid = require("uuid")
+const { v4: uuidv4 } = require('uuid');
 
 app.use(bodyParser.json());
 app.use(express.static('./build'));
@@ -139,6 +139,7 @@ app.post("/api/changepassword/student", (req, res) => {
 
 app.post("/api/uploadnewscore", (req, res) => {
     if (req.session.role === "teacher") {
+        const theUUID = uuidv4().slice(0, 7)
         //create uuid
         //add new column
         //put all data

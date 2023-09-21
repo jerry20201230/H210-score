@@ -54,7 +54,7 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleClose = (n) => {
-        console.log(newPass, openingId, "8878686464")
+
         setDialogSubmitBtnText(<><CircularProgress size="1rem" /> 更新中</>)
         if (n === "update") {
             fetch('/api/changepassword/student', {
@@ -80,6 +80,8 @@ export function StudentAccounts({ data, user }) {
 
         } else {
             setOpen(false)
+            setDialogSubmitBtnText("更新")
+
         }
     };
 

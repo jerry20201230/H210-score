@@ -27,6 +27,22 @@ export function PushNewScore({ data, user }) {
   }
   const [inputValues, setInputValues] = React.useState(Array(45));
   const [summeryValue, setSummeryValue] = React.useState(Array(45))
+
+  const [gradeTitle, setGradeTitle] = React.useState()
+  const [gradeSubject, setGradeSubject] = React.useState()
+  const [annousment, setAnnousment] = React.useState()
+
+  function handleChange(input, value) {
+    if (input === "gradeTitle") {
+      setGradeTitle(value)
+    }
+    else if (input === "gradeSubject") {
+      setGradeSubject(value)
+    }
+    else if (input === "annousment") {
+      setAnnousment(value)
+    }
+  }
   /*const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
     var updatedValues = [...];
@@ -45,10 +61,39 @@ export function PushNewScore({ data, user }) {
     newSummery[index] = newValue;
     setSummeryValue(newSummery);
   };
-  const handleSubmit = () => {
-    // 在這裡處理提交操作，您可以使用inputValues數組中的值
+  const handleSubmit = (m) => {
+    console.log({
+      method: m,
+      score: {
+        title: gradeTitle,
+        subject: gradeSubject,
+        annousment: annousment,
+        scoreData: inputValues,
+        summeryData: summeryValue,
+      }
+
+    })
     console.log('輸入框的值：', inputValues, summeryValue);
-    console.log(inputValues[10])
+    fetch("/api/uploadnewscore", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        method: m,
+        score: {
+          title: gradeTitle,
+          subject: gradeSubject,
+          annousment: annousment,
+          scoreData: inputValues,
+          summeryData: summeryValue,
+        }
+
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+      })
   };
 
 
@@ -91,9 +136,16 @@ export function PushNewScore({ data, user }) {
         <p>
           輸入每位同學的成績，然後儲存或發布
         </p>
-        <TextField label="成績標題" variant="standard" />
+        <TextField label="成績標題" variant="standard"
+          value={gradeTitle}
+          onInput={(e) => handleChange("gradeTitle", e.target.value)}
+        />
         <p></p>
         <Autocomplete
+          value={gradeSubject}
+          onChange={(event, newValue) => {
+            handleChange(newValue);
+          }}
           disablePortal
           freeSolo
           options={["國文", "數學", "物理", "化學", "地理", "公民", "英文"]}
@@ -103,11 +155,11 @@ export function PushNewScore({ data, user }) {
         <TextField
           label="對全班的公告"
           multiline
-
-
           sx={{ width: "100%" }}
           rows={2}
           variant="standard"
+          value={annousment}
+          onInput={(e) => setAnnousment(e.target.value)}
         />
         <p></p>
         <TableContainer component={Paper}>
@@ -117,7 +169,7 @@ export function PushNewScore({ data, user }) {
                 <TableCell>座號</TableCell>
                 <TableCell>姓名</TableCell>
                 <TableCell>成績</TableCell>
-                <TableCell>備註</TableCell>
+                <TableCell>私人留言(僅該學生與家長可查看)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -138,9 +190,14 @@ export function PushNewScore({ data, user }) {
             </TableBody>
           </Table>
         </TableContainer>
-        <p></p>
+        <p>
+          儲存:學生與家長無法查到這筆成績<br />
+          發布:學生與家長可立即查到這筆成績
+        </p>
 
-        <Button variant='contained' onClick={handleSubmit}>送出</Button>
+        <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
+        &nbsp;
+        <Button variant='contained' onClick={() => handleSubmit("publish")}>直接發布</Button>
       </Box>
 
     </>
