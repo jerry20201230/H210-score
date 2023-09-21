@@ -71,6 +71,8 @@ export function StudentAccounts({ data, user }) {
                         setOpen(false)
                         getAllStdPass()
                         setNewPass("")
+                        setDialogSubmitBtnText("更新")
+
                     }
                 ).catch((e) => {
                     getAllStdPass()
