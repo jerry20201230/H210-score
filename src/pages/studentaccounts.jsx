@@ -69,14 +69,13 @@ export function StudentAccounts({ data, user }) {
                     (res) => {
                         setDialogSubmitBtnText("更新完畢")
                         setOpen(false)
-                        setStudents([{ username: "", userpassword: "" }])
                         getAllStdPass()
                         setNewPass("")
                     }
                 ).catch((e) => {
-                    setStudents([{ username: "", userpassword: "" }])
                     getAllStdPass()
                     setNewPass("")
+                    setDialogSubmitBtnText("更新失敗，請重試")
                 })
 
         } else {
