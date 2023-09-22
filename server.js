@@ -157,9 +157,19 @@ app.post("/api/uploadnewscore", (req, res) => {
                     ADD COLUMN ${theUUID} json
                     `, function (error, results, fields) {
                         if (error) throw error;
-                        res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
+                        for (i = 0; i < req.body.score.scoreData.length; i++) {
+                            sql_Connect.getConnection(function (err, connection3) {
+                                connection3.query(`
+                                UPDATE scoreData
+                                SET ${theUUID} = {"score":${req.body.score.scoreData[i]} , "summery":${req.body.score.summeryData[i]} }
+                                `, function (error, results, fields) {
+                                    if (error) throw error;
+                                    connection3.release();
+                                })
+                            })
+                        }
                         connection2.release();
-
+                        res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
                     })
                 })
                 connection.release();
