@@ -154,14 +154,14 @@ app.post("/api/uploadnewscore", (req, res) => {
                 sql_Connect.getConnection(function (err, connection2) {
                     connection2.query(`
                     ALTER TABLE scoreData
-                    ADD COLUMN ${theUUID} json
+                    ADD COLUMN ${theUUID} TEXT
                     `, function (error, results, fields) {
                         if (error) throw error;
                         for (i = 0; i < req.body.score.scoreData.length; i++) {
                             sql_Connect.getConnection(function (err, connection3) {
                                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = {"score":${req.body.score.scoreData[i]} , "summery":${req.body.score.summeryData[i]} }
+                                SET ${theUUID} = ${req.body.score.scoreData[i]}%|%${req.body.score.summeryData[i]}}
                                 `, function (error, results, fields) {
                                     if (error) throw error;
                                     connection3.release();
@@ -199,16 +199,18 @@ app.post("/api/getscorebyid", (req, res) => {
                                 var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
                                 for (i = 0; i < results2.length; i++) {
-                                    tot += results2[i][req.body.id]
-                                    scoreList.push(results2[i][req.body.id])
+                                    if (results2[i][req.body.id]) {
+                                        tot += results2[i][req.body.id].split("%|%")[0]
+                                        scoreList.push(results2[i][req.body.id].split("%|%")[0])
+                                    }
                                 }
                                 hi = Math.max(...scoreList)
                                 lo = Math.min(...scoreList)
 
-                                avg = (tot / results2.length).toFixed(2)
+                                avg = (tot / scoreList.length).toFixed(2)
 
                                 console.log(results2)
-                                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id] }, ok: true }));
+                                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0] }, ok: true }));
                             } else {
                                 res.status(404).json({ message: 'Invalid credentials', ok: false });
                             }
