@@ -154,7 +154,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                 sql_Connect.getConnection(function (err, connection2) {
                     connection2.query(`
                     ALTER TABLE scoreData
-                    ALTER COLUMN ${theUUID} json
+                    ADD COLUMN ${theUUID} json
                     `, function (error, results, fields) {
                         if (error) throw error;
                         res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
