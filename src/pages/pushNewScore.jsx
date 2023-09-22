@@ -101,6 +101,11 @@ export function PushNewScore({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
+        setOpen(false)
+        window.location.href = "/backend/score/search"
+      })
+      .catch(() => {
+        alert("發生錯誤")
       })
   };
 
@@ -199,7 +204,7 @@ export function PushNewScore({ data, user }) {
           </Table>
         </TableContainer>
         <p>
-          儲存:學生與家長無法查到這筆成績<br />
+          儲存:學生與家長暫時無法查到這筆成績<br />
           發布:學生與家長可立即查到這筆成績
         </p>
 
