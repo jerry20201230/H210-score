@@ -102,7 +102,7 @@ export function PushNewScore({ data, user }) {
       .then(res => res.json())
       .then(res => {
         setOpen(false)
-        window.location.href = "/backend/score/search"
+
       })
       .catch(() => {
         alert("發生錯誤")

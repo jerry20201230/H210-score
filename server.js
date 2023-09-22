@@ -161,7 +161,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                             sql_Connect.getConnection(function (err, connection3) {
                                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = ${req.body.score.scoreData[i]}%|%${req.body.score.summeryData[i]}}
+                                SET ${theUUID} = "${req.body.score.scoreData[i]}%|%${req.body.score.summeryData[i]}"
                                 `, function (error, results, fields) {
                                     if (error) throw error;
                                     connection3.release();
