@@ -71,6 +71,7 @@ function App() {
               <Route path='/backend/account' element=<AllAccountSheet data={userData} />></Route>
               <Route path='/backend/account/student' element=<StudentAccounts data={userData} />></Route>
               <Route path='/backend/account/parent' element=<ParentAccounts data={userData} />></Route>
+              <Route path='/score/class' element></Route>
 
             </>
             : <></>}

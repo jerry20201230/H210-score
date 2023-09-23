@@ -65,7 +65,7 @@ export function ParentAccounts({ data, user }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId), password: (newPass) }),
+                body: JSON.stringify({ id: (openingId.id), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
@@ -141,7 +141,7 @@ export function ParentAccounts({ data, user }) {
                         object.accountInput = res.data.result[i].userid
                         object.passwordInput = res.data.result[i].userpassword
 
-                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(object) }}>編輯密碼</Button>
+                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(res.data.result[i]) }}>編輯密碼</Button>
 
                         list.push(object)
                         idList.push(object.id)

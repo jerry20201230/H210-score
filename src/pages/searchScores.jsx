@@ -62,7 +62,7 @@ export function SearchScoreSheet({ data, user }) {
                         return (
 
                             <ListItem disablePadding key={d.id}>
-                                <ListItemButton component={Link} to={`/score/?q=${d.id}`}>
+                                <ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
                                     <ListItemText primary={d.title} />
                                 </ListItemButton>
                             </ListItem>
