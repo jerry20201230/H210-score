@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -8,6 +8,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
 
 export function Score({ data, user }) {
 
@@ -67,6 +68,10 @@ export function Score({ data, user }) {
                 setLoading(false)
 
               })
+              .catch(() => {
+
+                setLoadingState("發生錯誤")
+              })
           }
         }
         if (!k) {
@@ -92,16 +97,19 @@ export function Score({ data, user }) {
 
 
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
         open={loading}
       >
+        <p>{loadingState}</p>
         {loadingState.includes("發生錯誤") ?
-          <></> :
+          <>
+            <Button component={Link} to="/">回首頁</Button>
+          </> :
           <CircularProgress color="inherit" />
 
         }
         <br />
-        <p>{loadingState}</p>
+
       </Backdrop>
 
 
@@ -115,7 +123,7 @@ export function Score({ data, user }) {
             <Grid xs={6}>
               <Item>
                 <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
-                <p>{(scoreData.your !== null && scoreData.your !== undefined) ? scoreData.your : "缺考"}</p>
+                <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
               </Item>
             </Grid>
             <Grid xs={6}>
