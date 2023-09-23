@@ -47,7 +47,9 @@ export function ParentAccounts({ data, user }) {
       (updatedValues);
     };*/
     const [open, setOpen] = React.useState(false);
-    const [openingId, setOpeningId] = React.useState(0)
+    const [openingId, setOpeningId] = React.useState(
+        { username: "", userpassword: "" }
+    )
 
     const handleClickOpen = (n) => {
         setOpen(true);
@@ -94,7 +96,6 @@ export function ParentAccounts({ data, user }) {
     };
 
     const editPass = (i, p) => {
-        console.log(i, p)
         handleClickOpen(i)
     }
 
@@ -140,7 +141,7 @@ export function ParentAccounts({ data, user }) {
                         object.accountInput = res.data.result[i].userid
                         object.passwordInput = res.data.result[i].userpassword
 
-                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(object.id) }}>編輯密碼</Button>
+                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(object) }}>編輯密碼</Button>
 
                         list.push(object)
                         idList.push(object.id)
@@ -240,11 +241,11 @@ export function ParentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (students[idList.indexOf(openingId) || 0].username ? students[idList.indexOf(openingId) || 0].username : "") + " 的密碼"}
+                    {"更新 " + (openingId.username ? openingId.username : "") + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        目前密碼:{students[idList.indexOf(openingId) || 0].userpassword ? students[idList.indexOf(openingId) || 0].userpassword : "" || "???"}<br />
+                        目前密碼:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
                         <p></p>
                         <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
