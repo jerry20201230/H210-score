@@ -147,7 +147,7 @@ export function ParentAccounts({ data, user }) {
                     }
                 }
                 setStudents(list)
-                console.log(students, list)
+                console.log(students, list, idList)
             })
 
     }
@@ -196,7 +196,7 @@ export function ParentAccounts({ data, user }) {
             </Box>
 
 
-            <TopBar logined={true} data={data.data} user={user} title={"學生帳密"} />
+            <TopBar logined={true} data={data.data} user={user} title={"家長帳密"} />
 
             <Box sx={{ p: 3 }}>
                 <h1>所有家長的帳號密碼</h1>
@@ -240,11 +240,11 @@ export function ParentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (students[idList.indexOf(openingId)].username ? students[idList.indexOf(openingId)].username : "") + " 的密碼"}
+                    {"更新 " + (students[idList.indexOf(openingId) || 0].username ? students[idList.indexOf(openingId) || 0].username : "") + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        目前密碼:{students[idList.indexOf(openingId)].userpassword ? students[idList.indexOf(openingId)].userpassword : "" || "???"}<br />
+                        目前密碼:{students[idList.indexOf(openingId) || 0].userpassword ? students[idList.indexOf(openingId) || 0].userpassword : "" || "???"}<br />
                         <p></p>
                         <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
