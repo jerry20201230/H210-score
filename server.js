@@ -158,7 +158,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                     `, function (error, results, fields) {
                         if (error) throw error;
                         for (i = 0; i < req.body.score.scoreData.length; i++) {
-                            console.log(i, theUUID, "SQL")
+                            console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, "STILL PROCESSING")
                             sql_Connect.getConnection(function (err, connection3) {
                                 connection3.query(`
                                 UPDATE scoreData
@@ -166,6 +166,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                                 WHERE id = ${i + 1};
                                 `, function (error, results, fields) {
                                     if (error) throw error;
+                                    console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, "COMPLETE [SUCCESS]")
                                     connection3.release();
                                 })
                             })
