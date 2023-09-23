@@ -288,7 +288,7 @@ app.post("/api/changepass", (req, res) => {
 
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
-          UPDATE TABLE userData
+          UPDATE userData
           SET userpassword = "${req.body.newpass}"
           WHERE userid = "${req.body.userid}"
           `, function (error, results2, fields) {
