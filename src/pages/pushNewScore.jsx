@@ -157,9 +157,10 @@ export function PushNewScore({ data, user }) {
         <p></p>
 
         <TextField
+          variant="standard"
           value={gradeSubject}
           onChange={(e) => {
-            handleChange("gradeSubject", e);
+            handleChange("gradeSubject", e.target.value);
           }}
           inputProps={
             { list: "list0" }

@@ -27,6 +27,7 @@ export function ParentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([
         { username: "", userpassword: "" }
     ])
+    var idList = []
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
 
@@ -62,7 +63,7 @@ export function ParentAccounts({ data, user }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId + 1), password: (newPass) }),
+                body: JSON.stringify({ id: (openingId), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
@@ -141,6 +142,7 @@ export function ParentAccounts({ data, user }) {
                         object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(object.id) }}>編輯密碼</Button>
 
                         list.push(object)
+                        idList.push(object.id)
                     }
                 }
                 setStudents(list)
@@ -237,11 +239,11 @@ export function ParentAccounts({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (students[openingId].username ? students[openingId].username : "") + " 的密碼"}
+                    {"更新 " + (students[idList.indexOf(openingId)].username ? students[idList.indexOf(openingId)].username : "") + " 的密碼"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        目前密碼:{students[openingId].userpassword ? students[openingId].userpassword : "" || "???"}<br />
+                        目前密碼:{students[idList.indexOf(openingId)].userpassword ? students[idList.indexOf(openingId)].userpassword : "" || "???"}<br />
                         <p></p>
                         <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
