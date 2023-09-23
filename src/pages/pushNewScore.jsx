@@ -155,16 +155,23 @@ export function PushNewScore({ data, user }) {
           onInput={(e) => handleChange("gradeTitle", e.target.value)}
         />
         <p></p>
-        <Autocomplete
+
+        <TextField
           value={gradeSubject}
-          onChange={(event, newValue) => {
-            handleChange("gradeSubject", newValue);
+          onChange={(e) => {
+            handleChange("gradeSubject", e);
           }}
-          disablePortal
-          freeSolo
-          options={["國文", "數學", "物理", "化學", "地理", "公民", "英文"]}
-          renderInput={(params) => <TextField {...params} label="科目" variant="standard" />}
+          label="科目"
         />
+        <datalist>
+          {
+            ["國文", "數學", "物理", "化學", "地理", "公民", "英文"].map((data, i) => {
+              return (
+                <option key={i + "opt"} value={data}>{data}</option>
+              )
+            })
+          }
+        </datalist>
         <p></p>
         <TextField
           label="對全班的公告"

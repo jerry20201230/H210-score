@@ -103,7 +103,7 @@ export function Score({ data, user }) {
         <p>{loadingState}</p>
         {loadingState.includes("發生錯誤") ?
           <>
-            <Button component={Link} to="/">回首頁</Button>
+            <Button component={Link} to="/" variant="contained">回首頁</Button>
           </> :
           <CircularProgress color="inherit" />
 
