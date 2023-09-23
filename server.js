@@ -204,7 +204,7 @@ app.post("/api/getscorebyid", (req, res) => {
                 var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
                 for (i = 0; i < results2.length; i++) {
-                  if (results2[i][req.body.id]) {
+                  if (results2[i][req.body.id].split("%|%")[0] !== null && results2[i][req.body.id].split("%|%")[0] !== undefined) {
                     tot += results2[i][req.body.id].split("%|%")[0]
                     scoreList.push(results2[i][req.body.id].split("%|%")[0])
                   }

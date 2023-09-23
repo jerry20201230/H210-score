@@ -115,7 +115,7 @@ export function Score({ data, user }) {
             <Grid xs={6}>
               <Item>
                 <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
-                <p>{scoreData.your ? scoreData.your : "缺考"}</p>
+                <p>{(scoreData.your !== null && scoreData.your !== undefined) ? scoreData.your : "缺考"}</p>
               </Item>
             </Grid>
             <Grid xs={6}>
