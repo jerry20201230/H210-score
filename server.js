@@ -277,7 +277,7 @@ app.post("/api/changepass", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-    SELECT * FROM uaerData
+    SELECT * FROM userData
     WHERE userid = "${req.body.userid}"
     `, function (error, results, fields) {
         if (error) throw error;
