@@ -147,7 +147,8 @@ export function PushNewScore({ data, user }) {
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
         <p>
-          輸入每位同學的成績，然後儲存或發布
+          輸入每位同學的成績，然後儲存或發布<br />
+          若該學生缺考，請將成績欄位留空即可
         </p>
         <TextField label="成績標題" variant="standard"
           value={gradeTitle}

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "H210 成績查詢系統",
+  "name": "H210成績查詢",
   "icons": [
     {
       "src": "favicon.ico",
