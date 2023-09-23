@@ -48,6 +48,8 @@ function App() {
     !loading ?
       isLoggedIn ?
         <Routes>
+          <Route path='/profile' element=<SearchScoreSheet data={userData} /> ></Route>
+
           {userData.data.role === "teacher" ?
             <Route path='/' element=<TeacherHomePage data={userData} /> ></Route>
             : <Route path='/' element=<Homepage data={userData} /> ></Route>

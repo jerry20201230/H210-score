@@ -42,6 +42,8 @@ export default function TopBar({ logined, title, data }) {
             alert("登出失敗，請再試一次")
           }
         })
+    } else if (e === "profile") {
+      window.location.href = "/profile"
     }
   };
 
@@ -93,8 +95,8 @@ export default function TopBar({ logined, title, data }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>{data.username}，歡迎使用!</MenuItem>
-                <MenuItem onClick={handleClose}>個人資料</MenuItem>
+                <MenuItem onClick={() => { handleClose("profile") }}>{data.username}，歡迎使用!</MenuItem>
+                <MenuItem onClick={() => { handleClose("profile") }}>個人資料</MenuItem>
                 <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
               </Menu>
             </div>
