@@ -157,7 +157,7 @@ export function PushNewScore({ data, user }) {
         <Autocomplete
           value={gradeSubject}
           onChange={(event, newValue) => {
-            handleChange(newValue);
+            handleChange("gradeSubject", newValue);
           }}
           disablePortal
           freeSolo

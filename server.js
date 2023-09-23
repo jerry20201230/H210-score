@@ -166,10 +166,10 @@ app.post("/api/uploadnewscore", (req, res) => {
                                 connection3.query(`
                                 UPDATE scoreData
                                 SET ${theUUID} = "${req.body.score.scoreData[index]}%|%${req.body.score.summeryData[index]}"
-                                WHERE id = ${i + 1};
+                                WHERE id = ${index};
                                 `, function (error, results, fields) {
                                     if (error) throw error;
-                                    console.log("SQL DATA WRITING : ", theUUID, " ", index + 1, " COMPLETE [SUCCESS]")
+                                    console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
                                     connection3.release();
                                 })
                             })
