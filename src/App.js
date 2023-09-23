@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { SearchScoreSheet } from './pages/searchScores';
 import { AllAccountSheet } from './pages/allaccounts';
 import { StudentAccounts } from './pages/studentaccounts';
+import { ParentAccounts } from './pages/parentaccounts';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -69,6 +70,8 @@ function App() {
 
               <Route path='/backend/account' element=<AllAccountSheet data={userData} />></Route>
               <Route path='/backend/account/student' element=<StudentAccounts data={userData} />></Route>
+              <Route path='/backend/account/parent' element=<ParentAccounts data={userData} />></Route>
+
             </>
             : <></>}
           <Route path='*' element=<Homepage data={userData} />></Route>

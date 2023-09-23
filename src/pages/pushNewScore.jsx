@@ -161,9 +161,12 @@ export function PushNewScore({ data, user }) {
           onChange={(e) => {
             handleChange("gradeSubject", e);
           }}
+          inputProps={
+            { list: "list0" }
+          }
           label="科目"
         />
-        <datalist>
+        <datalist id='list-0'>
           {
             ["國文", "數學", "物理", "化學", "地理", "公民", "英文"].map((data, i) => {
               return (
