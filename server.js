@@ -282,7 +282,7 @@ app.post("/api/changepass", (req, res) => {
     `, function (error, results, fields) {
         if (error) throw error;
         console.log(results)
-        if (results[0].userpassword === req.body.newpass) {
+        if (results[0].userpassword === req.body.oldpass) {
 
 
           sql_Connect.getConnection(function (err, connection2) {
@@ -307,7 +307,7 @@ app.post("/api/changepass", (req, res) => {
 
 
         } else {
-          res.status(401).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false });
         }
 
         connection.release();

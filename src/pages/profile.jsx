@@ -38,8 +38,9 @@ export function Profile({ data, user }) {
         },
         body: JSON.stringify({
           userid: data.data.userid,
-          newpass: newPassword
-        }),
+          oldpass: oldPassword,
+          newpass: newPassword,
+        })
       })
         .then(res => res.json())
         .then(res => {
