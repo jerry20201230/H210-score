@@ -27,7 +27,7 @@ export function ParentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([
         { username: "", userpassword: "" }
     ])
-    var idList = []
+    var idList = [0]
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
 
@@ -132,6 +132,7 @@ export function ParentAccounts({ data, user }) {
             .then(res => {
                 console.log(".......0", res)
                 var list = []
+                idList = []
                 for (let i = 0; i < res.data.result.length; i++) {
                     if (res.data.result[i].userid.includes("p")) {
 
