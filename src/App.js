@@ -14,6 +14,7 @@ import { AllAccountSheet } from './pages/allaccounts';
 import { StudentAccounts } from './pages/studentaccounts';
 import { ParentAccounts } from './pages/parentaccounts';
 import { TeacherScore } from './pages/teacherscore';
+import { Profile } from './pages/profile';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -48,7 +49,7 @@ function App() {
     !loading ?
       isLoggedIn ?
         <Routes>
-          <Route path='/profile' element=<SearchScoreSheet data={userData} /> ></Route>
+          <Route path='/profile' element=<Profile data={userData} /> ></Route>
 
           {userData.data.role === "teacher" ?
             <Route path='/' element=<TeacherHomePage data={userData} /> ></Route>

@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
-export function Score({ data, user }) {
+export function Profile({ data, user }) {
 
 
     function UrlParam(name) {
