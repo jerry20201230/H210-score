@@ -158,6 +158,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                     `, function (error, results, fields) {
                         if (error) throw error;
                         for (i = 0; i < req.body.score.scoreData.length; i++) {
+                            console.log(i, theUUID, "SQL")
                             sql_Connect.getConnection(function (err, connection3) {
                                 connection3.query(`
                                 UPDATE scoreData
