@@ -158,15 +158,18 @@ app.post("/api/uploadnewscore", (req, res) => {
                     `, function (error, results, fields) {
                         if (error) throw error;
                         for (i = 0; i < req.body.score.scoreData.length; i++) {
-                            console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, "STILL PROCESSING")
+                            console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, " STILL PROCESSING")
                             sql_Connect.getConnection(function (err, connection3) {
+
+                                var index = i
+
                                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = "${req.body.score.scoreData[i]}%|%${req.body.score.summeryData[i]}"
+                                SET ${theUUID} = "${req.body.score.scoreData[index]}%|%${req.body.score.summeryData[index]}"
                                 WHERE id = ${i + 1};
                                 `, function (error, results, fields) {
                                     if (error) throw error;
-                                    console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, "COMPLETE [SUCCESS]")
+                                    console.log("SQL DATA WRITING : ", theUUID, " ", index + 1, " COMPLETE [SUCCESS]")
                                     connection3.release();
                                 })
                             })
