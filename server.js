@@ -272,6 +272,7 @@ app.post("/api/getscoremap", (req, res) => {
 })
 
 app.post("/api/changepass", (req, res) => {
+  console.log("[CHANGE PASSWORD] \n-FROM: ", req.body, "\n -SESSION: ", req.session)
   if (req.session.userid === req.body.userid) {
     //要再檢查一遍舊密碼
 
@@ -303,8 +304,6 @@ app.post("/api/changepass", (req, res) => {
               connection2.release();
             })
           })
-
-
 
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false });
