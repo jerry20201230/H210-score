@@ -109,6 +109,7 @@ export function Score({ data, user }) {
       <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
       <Box sx={{ p: 3 }}>
+        <p>以下是{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</p>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid xs={6}>

@@ -205,8 +205,8 @@ export function PushNewScore({ data, user }) {
           </Table>
         </TableContainer>
         <p>
-          儲存:學生與家長暫時無法查到這筆成績<br />
-          發布:學生與家長可立即查到這筆成績
+          儲存:成績將以未公開的狀態儲存，在設為公開前，學生與家長無法查到這筆成績<br />
+          發布:成績將直接設為公開，學生與家長可立即查到這筆成績
         </p>
 
         <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
