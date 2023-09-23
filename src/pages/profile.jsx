@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, TextField } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, TextField } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -35,10 +35,11 @@ export function Profile({ data, user }) {
                 <h1>個人資料</h1>
 
                 <Paper>
-                    <div style={{ display: "flex" }}>
-                        <FaceIcon />
-                        <h2>{data.data.username}
-                            &nbsp;
+                    <div>
+
+                        <h2>
+                            {data.data.username}<br />
+
                             {
                                 data.data.role === "std" ?
                                     <Chip label="學生" color="primary" />
@@ -48,15 +49,21 @@ export function Profile({ data, user }) {
                                         :
                                         <Chip label="老師" color="success" />
                             }</h2>
-                        <h3>{data.data.userid}</h3>
+                        <h3>帳號:{data.data.userid}</h3>
                     </div>
                 </Paper>
                 <p></p>
                 <Paper>
                     <h2>變更密碼</h2>
-                    <TextField type='password' label="輸入原本密碼" />
-                    <TextField type='password' label="輸入新密碼" />
-                    <TextField type='password' label="再次輸入新密碼" />
+                    <Alert variant='warning'>
+                        <AlertTitle>請注意</AlertTitle>
+                        請妥善保管新密碼，如果忘記密碼，{data.data.role !== "teacher" ? "需要請老師協助重設密碼" : "就無法再使用此系統"}
+                    </Alert>
+                    <TextField type='password' label="輸入原本密碼" variant="standard" />
+                    <p></p>
+                    <TextField type='password' label="輸入新密碼" variant="standard" />
+                    <br />
+                    <TextField type='password' label="再次輸入新密碼" variant="standard" />
                     <Button variant='contained'>送出</Button>
                 </Paper>
 
