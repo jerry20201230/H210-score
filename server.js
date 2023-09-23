@@ -273,24 +273,50 @@ app.post("/api/getscoremap", (req, res) => {
 
 app.post("/api/changepass", (req, res) => {
   if (req.session.userid === req.body.userid) {
+    //要再檢查一遍舊密碼
+
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-    ALTER TABLE userData
-    SET userpassword = ${req.body.newpass}
-    WHERE userid = ${req.body.userid}
+    SELECT * FROM uaerData
+    WHERE userid = "${req.body.userid}"
     `, function (error, results, fields) {
         if (error) throw error;
-        if (results.length > 0) {
+        console.log(results)
+        if (results[0].userpassword === req.body.newpass) {
 
-          res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+          sql_Connect.getConnection(function (err, connection2) {
+            connection2.query(`
+          ALTER TABLE userData
+          SET userpassword = "${req.body.newpass}"
+          WHERE userid = "${req.body.userid}"
+          `, function (error, results2, fields) {
+              if (error) throw error;
+              if (results2.length > 0) {
+
+                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
+              } else {
+                res.status(404).json({ message: 'Invalid credentials', ok: false });
+              }
+
+              res.end();
+              connection2.release();
+            })
+          })
+
+
+
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(401).json({ message: 'Invalid credentials', ok: false });
         }
 
-        res.end();
         connection.release();
       })
     })
+
+
+
+
   } else {
     res.status(403).json({ message: 'error 403', ok: false });
     res.end();
