@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
+import FaceIcon from '@mui/icons-material/Face';
 
 export function Profile({ data, user }) {
 
@@ -32,6 +33,11 @@ export function Profile({ data, user }) {
 
             <Box sx={{ p: 3 }}>
                 <h1>個人資料</h1>
+
+                <Paper sx={{ display: "flex" }}>
+                    <FaceIcon />
+
+                </Paper>
 
             </Box>
         </>
