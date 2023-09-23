@@ -157,7 +157,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                     ADD COLUMN ${theUUID} TEXT
                     `, function (error, results, fields) {
                         if (error) throw error;
-                        for (i = 0; i < req.body.score.scoreData.length; i++) {
+                        req.body.score.scoreData.forEach((score, i) => {
                             console.log("SQL DATA WRITING : ", theUUID, " ", i + 1, " STILL PROCESSING")
                             sql_Connect.getConnection(function (err, connection3) {
 
@@ -173,7 +173,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                                     connection3.release();
                                 })
                             })
-                        }
+                        })
                         connection2.release();
                         res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
                     })
