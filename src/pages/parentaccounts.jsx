@@ -94,7 +94,7 @@ export function ParentAccounts({ data, user }) {
 
     const editPass = (i, p) => {
         console.log(i, p)
-        handleClickOpen(i - 1)
+        handleClickOpen(i)
     }
 
     const handleLogin = async () => {
@@ -138,7 +138,7 @@ export function ParentAccounts({ data, user }) {
                         object.accountInput = res.data.result[i].userid
                         object.passwordInput = res.data.result[i].userpassword
 
-                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
+                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(object.id) }}>編輯密碼</Button>
 
                         list.push(object)
                     }
