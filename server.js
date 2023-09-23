@@ -271,6 +271,36 @@ app.post("/api/getscoremap", (req, res) => {
   })
 })
 
+app.post("/api/changepass", (req, res) => {
+  if (req.session.userid === req.body.userid) {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+    ALTER TABLE userData
+    SET userpassword = ${req.body.newpass}
+    WHERE userid = ${req.body.userid}
+    `, function (error, results, fields) {
+        if (error) throw error;
+        if (results.length > 0) {
+
+          res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+        } else {
+          res.status(404).json({ message: 'Invalid credentials', ok: false });
+        }
+
+        res.end();
+        connection.release();
+      })
+    })
+  } else {
+    res.status(403).json({ message: 'error 403', ok: false });
+    res.end();
+
+  }
+
+})
+
+
+
 app.post("/api/checklogin", (req, res) => {
   res.send(JSON.stringify(
     {

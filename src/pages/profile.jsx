@@ -69,7 +69,8 @@ export function Profile({ data, user }) {
 
             <h2>
               {data.data.username}<br />
-
+              {data.data.userid}
+              <br />
               {
                 data.data.role === "std" ?
                   <Chip label="學生" color="primary" />
@@ -79,11 +80,11 @@ export function Profile({ data, user }) {
                     :
                     <Chip label="老師" color="success" />
               }</h2>
-            <h3>帳號:{data.data.userid}</h3>
+
           </div>
         </Paper>
         <p></p>
-        <Paper>
+        <Paper sx={{ p: 2 }}>
           <h2>變更密碼</h2>
           <Alert severity='warning' >
             <AlertTitle>請注意</AlertTitle>
