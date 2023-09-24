@@ -14,12 +14,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ScoreTabs from '../tabs';
 
 export function SearchScoreSheet({ data, user }) {
 
 	const [scoreList, setScoreList] = React.useState(
 		[{ title: "", id: "" }]
 	)
+	const [scoreTab, setScoreTab] = React.useState("loading")
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -51,27 +53,21 @@ export function SearchScoreSheet({ data, user }) {
 	}, [])
 
 
+	React.useEffect(() => {
+		if (scoreList.length < 1) {
+			setScoreTab("沒有可查詢的資料")
+		} else {
+			setScoreTab(<ScoreTabs data={scoreList} role={"teacher"} />)
+		}
+	}, [scoreList])
+
 
 	return (
 		<>
 			<TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
 			<Box sx={{ p: 3 }}>
 				<h1>所有成績</h1>
-				<nav>
-					<List>{scoreList.map((d, i) => {
-						return (
-
-							<ListItem disablePadding key={d.id}>
-								<ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
-									<ListItemText primary={d.title} />
-								</ListItemButton>
-							</ListItem>
-
-						)
-					})}</List>
-				</nav>
-
-
+				{scoreTab}
 			</Box>
 		</>
 	)
