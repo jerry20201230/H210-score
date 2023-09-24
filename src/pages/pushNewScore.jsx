@@ -158,29 +158,8 @@ export function PushNewScore({ data, user }) {
         />
         <p></p>
 
-        <TextField
-          variant="standard"
-          value={gradeSubject}
-          onChange={(e) => {
-            handleChange("gradeSubject", e.target.value);
-          }}
-          inputProps={
-            { list: "list0" }
-          }
-          label="科目"
-        />
-        <datalist id='list-0'>
-          {
-            ["國文", "數學", "物理", "化學", "地理", "公民", "英文"].map((data, i) => {
-              return (
-                <option key={i + "opt"} value={data}>{data}</option>
-              )
-            })
-          }
-        </datalist>
-        <p>
           <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}/>
-        </p>
+       
         <p></p>
         <TextField
           label="對全班的公告"

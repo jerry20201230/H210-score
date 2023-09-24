@@ -25,7 +25,7 @@ export default function SelectSubject({onChangeFunc,params}) {
             console.log("--->", e, value, situation, option);
           }
           setReceivers((state) => value);
-          onChangeFunc.func(params,value)
+          onChangeFunc(params,value)
         }}
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
@@ -40,7 +40,7 @@ export default function SelectSubject({onChangeFunc,params}) {
           <TextField
             {...params}
             variant="standard"
-            label="freeSolo"
+            label="新增標籤"
             placeholder="新增標籤"
             helperText="輸入標籤名稱後按enter插入"
           />
