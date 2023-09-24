@@ -13,12 +13,17 @@ import { Link } from 'react-router-dom';
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1 }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
 
   const [annousment, setAnnousment] = React.useState(<></>)
+  const [annousmentWid, setAnnousmentWid] = React.useState(12)
+
+
+  const [privateTalk, setPrivateTalk] = React.useState(<></>)
+  const [privateTalkWid, setPrivateTalkWid] = React.useState(12)
 
   const [loading, setLoading] = React.useState(true)
   const [loadingState, setLoadingState] = React.useState("")
@@ -56,15 +61,21 @@ export function Score({ data, user }) {
 
           if (res.data.result[i].uid == UrlParam("q")) {
             k = true
-            setAnnousment(res.data.result[i].summery == "null" || res.data.result[i].summery == "undefined" ? <></> :
+            var isAnnousment = res.data.result[i].summery == "null" || res.data.result[i].summery == "undefined"
+
+            setAnnousment(!isAnnousment ? <></> :
               <>
-                <Grid xs={12}>
+                <Grid xs={annousmentWid}>
                   <Item>
                     <h3>老師公告</h3>
                     <p>{res.data.result[i].summery}</p>
                   </Item>
                 </Grid>
-              </>)
+              </>
+            )
+            if (!isAnnousment) {
+              setAnnousmentWid(0)
+            }
 
             setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
             fetch("/api/getscorebyid", {
@@ -91,11 +102,6 @@ export function Score({ data, user }) {
           setLoadingState("發生錯誤")
           // setLoading(false)
         }
-
-
-
-
-
       })
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
@@ -103,6 +109,35 @@ export function Score({ data, user }) {
   React.useEffect(() => {
     getScore(UrlParam("q"))
   }, [])
+
+  React.useEffect(() => {
+    if (scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined") {
+      if (annousmentWid > 0) {
+        setAnnousmentWid(6)
+        setPrivateTalkWid(6)
+        setPrivateTalk(
+          <>
+            <Grid xs={privateTalkWid}>
+              <Item>
+                <h3>私人留言</h3>
+                <p>老師:{scoreData.privateMsg}</p>
+              </Item>
+            </Grid>
+          </>)
+      } else {
+        setPrivateTalkWid(12)
+        setPrivateTalk(
+          <>
+            <Grid xs={privateTalkWid}>
+              <Item>
+                <h3>私人留言</h3>
+                <p>老師:{scoreData.privateMsg}</p>
+              </Item>
+            </Grid>
+          </>)
+      }
+    }
+  }, [scoreData])
 
   return (
     <>
@@ -129,7 +164,7 @@ export function Score({ data, user }) {
       <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
       <Box sx={{ p: 3 }}>
-        <p>以下是{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</p>
+
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             {annousment}
