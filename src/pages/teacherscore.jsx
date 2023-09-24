@@ -161,18 +161,18 @@ export function TeacherScore({ data, user }) {
               </TableRow>
             </TableHead>
             <TableBody>
-            {scoreData.map((row, i) => (
-                                <TableRow
-                                    key={row.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
+              {scoreData.map((row, i) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
 
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{students[i].username}</TableCell>
-                                    <TableCell>{row[UrlParam("q")].split("%|%")[0]}</TableCell>
-                                    <TableCell>{row[UrlParam("q")].split("%|%")[1]}</TableCell>
-                                </TableRow>
-                            ))}
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{students[i].username}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[0]?row[UrlParam("q")].split("%|%")[0]:0}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[1]?row[UrlParam("q")].split("%|%")[1]:1}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
