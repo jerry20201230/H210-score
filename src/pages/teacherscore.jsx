@@ -183,7 +183,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>動作</TableCell>
               </TableRow>
             </TableHead>
-            { }
+            {tbody}
           </Table>
         </TableContainer>
       </Box>
