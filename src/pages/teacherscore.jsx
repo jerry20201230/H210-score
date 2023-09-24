@@ -105,7 +105,7 @@ export function TeacherScore({ data, user }) {
       .then(res => res.json())
       .then(res => {
         console.log(".......0", res)
-        setScoreData(res)
+        setScoreData(res.data.result)
         fetch("/api/getallstudents", {
           method: 'POST',
           headers: {
@@ -136,11 +136,13 @@ export function TeacherScore({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    if (students && scoreData) {
+    if (students.length && scoreData.length) {
       setTbody(
         <>
           <TableBody>
             {scoreData.map((row, i) => (
+           
+              
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -151,8 +153,11 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{row[UrlParam("q")]}</TableCell>
                 <TableCell>{row[UrlParam("q")]}</TableCell>
               </TableRow>
+              
             ))}
-          </TableBody></>
+          </TableBody>
+          
+        </>
       )
     }
   }, [students, scoreData])
