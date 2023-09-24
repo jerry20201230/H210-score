@@ -137,13 +137,13 @@ export function TeacherScore({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    if (students.length>0 && scoreData.length>0 && students.length == scoreData.length) {
+    if (students.length > 0 && scoreData.length > 0 && students.length == scoreData.length) {
       setTbody(
         <>
           <TableBody>
             {scoreData.map((row, i) => (
-           
-              
+
+
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -151,13 +151,13 @@ export function TeacherScore({ data, user }) {
 
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{students[i].username}</TableCell>
-                <TableCell>{row[UrlParam("q")]}</TableCell>
-                <TableCell>{row[UrlParam("q")]}</TableCell>
+                <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
+                <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefind" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
               </TableRow>
-              
+
             ))}
           </TableBody>
-          
+
         </>
       )
     }
