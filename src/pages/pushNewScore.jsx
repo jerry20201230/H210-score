@@ -155,6 +155,7 @@ export function PushNewScore({ data, user }) {
         </p>
         <TextField label="成績標題" variant="standard"
           value={gradeTitle}
+          sx={{ width: "100%" }}
           onInput={(e) => handleChange("gradeTitle", e.target.value)}
         />
         <p></p>

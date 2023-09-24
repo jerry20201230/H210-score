@@ -126,6 +126,7 @@ export function TeacherScore({ data, user }) {
                 var object = res.data.result[i]
                 object.changeBtn = <Button variant="contained" onClick={() => handleClickOpen(res.data.result[i])}>編輯成績</Button>
                 list.push(object)
+                console.log(object)
               }
             }
             console.log(list)
