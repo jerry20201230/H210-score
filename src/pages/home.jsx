@@ -16,7 +16,7 @@ export function Homepage({ user, data }) {
 
   const [scorelist, setScoreList] = React.useState()
 
-  const [scoreTab,setScoreTab] = React.useState("loading")
+  const [scoreTab, setScoreTab] = React.useState("loading")
   React.useEffect(() => {
     getScore()
   }, [])
@@ -53,14 +53,14 @@ export function Homepage({ user, data }) {
           })
       })
   }
-  React.useEffect(()=>{
-    if(scorelist.length < 1){
+  React.useEffect(() => {
+    if (scorelist.length < 1) {
       setScoreTab("沒有可查詢的資料")
-    }else{
-      
-     setScoreTab(<ScoreTabs data={scorelist}/>)
+    } else {
+
+      setScoreTab(<ScoreTabs data={scorelist} />)
     }
-  },[scorelist])
+  }, [scorelist])
 
   return (
     <>
@@ -70,23 +70,9 @@ export function Homepage({ user, data }) {
         <Typography variant='h5'> Hi, {data.data.username}</Typography>
         <Typography variant='h6'>選擇成績，開始查詢</Typography>
 
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          <nav aria-label="main mailbox folders">
-            <List>{scorelist.map((d, i) => {
-              return (
 
-                <ListItem disablePadding key={d.id}>
-                  <ListItemButton component={Link} to={`/score/?q=${d.id}`}>
-                    <ListItemText primary={d.title} />
-                  </ListItemButton>
-                </ListItem>
 
-              )
-            })}</List>
-          </nav>
-        </Box>
-
-{scoreTab}
+        {scoreTab}
 
 
         <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
