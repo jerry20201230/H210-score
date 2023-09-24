@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box } from '@mui/material';
+import { Box ,Button} from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -60,6 +60,21 @@ export function SearchScoreSheet({ data, user }) {
                 <Box sx={{display:"flex",p:2}}>
                   <Button variant="contained" sx={{pr:1}}>開啟</Button>
                 </Box>
+                <nav aria-label="main mailbox folders">
+                    <List>{scoreList.map((d, i) => {
+                        return (
+
+                            <ListItem disablePadding key={d.id}>
+                                <ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
+                                    <ListItemText primary={d.title} />
+                                </ListItemButton>
+                            </ListItem>
+
+                        )
+                    })}</List>
+                </nav>
+                <p></p>
+                <h1>所有成績單</h1>
                 <nav aria-label="main mailbox folders">
                     <List>{scoreList.map((d, i) => {
                         return (
