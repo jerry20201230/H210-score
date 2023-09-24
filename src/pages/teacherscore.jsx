@@ -152,7 +152,7 @@ export function TeacherScore({ data, user }) {
                 </TableContainer>
             </Box>
 
-
+<Button onClick={getAllStdPass}>重新整理</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}

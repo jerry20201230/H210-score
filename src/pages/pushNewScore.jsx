@@ -23,6 +23,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import SelectSubject from '../selectSubject';
+
 
 export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
@@ -176,6 +178,9 @@ export function PushNewScore({ data, user }) {
             })
           }
         </datalist>
+        <p>
+          <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}/>
+        </p>
         <p></p>
         <TextField
           label="對全班的公告"
