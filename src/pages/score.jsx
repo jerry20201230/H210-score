@@ -137,6 +137,8 @@ export function Score({ data, user }) {
           </>)
       }
     }
+
+    console.log(annousment, privateTalk, annousmentWid, privateTalkWid)
   }, [scoreData])
 
   return (
@@ -167,7 +169,7 @@ export function Score({ data, user }) {
 
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            {annousment}
+            {annousment}{privateTalk}
             <Grid xs={6}>
               <Item>
                 <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
