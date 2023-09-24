@@ -109,7 +109,7 @@ export function TeacherScore({ data, user }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                uid: UrlParam("q")
+                uid: UrlParam("q") 
             }),
         })
             .then(res => res.json())
