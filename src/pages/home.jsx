@@ -47,7 +47,7 @@ export function Homepage({ user, data }) {
             console.log(res2)
             var list = []
             for (let i = 0; i < res2.data.result.length; i++) {
-              list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid,subject:res2.data.result[i].subject })
+              list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
             }
             setScoreList(list)
           })
@@ -57,8 +57,7 @@ export function Homepage({ user, data }) {
     if (scorelist.length < 1) {
       setScoreTab("沒有可查詢的資料")
     } else {
-
-      setScoreTab(<ScoreTabs data={scorelist} />)
+      setScoreTab(<ScoreTabs data={scorelist} role={"std"} />)
     }
   }, [scorelist])
 

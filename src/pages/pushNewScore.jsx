@@ -34,8 +34,8 @@ export function PushNewScore({ data, user }) {
     setOpen(false)
   }
 
-  const [inputValues, setInputValues] = React.useState(Array(45));
-  const [summeryValue, setSummeryValue] = React.useState(Array(45));
+  const [inputValues, setInputValues] = React.useState(Array(46));
+  const [summeryValue, setSummeryValue] = React.useState(Array(46));
 
   const [gradeTitle, setGradeTitle] = React.useState()
   const [gradeSubject, setGradeSubject] = React.useState()

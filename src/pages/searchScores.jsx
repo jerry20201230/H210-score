@@ -17,65 +17,62 @@ import ListItemText from '@mui/material/ListItemText';
 
 export function SearchScoreSheet({ data, user }) {
 
-    const [scoreList, setScoreList] = React.useState(
-        [{ title: "", id: "" }]
-    )
+	const [scoreList, setScoreList] = React.useState(
+		[{ title: "", id: "" }]
+	)
 
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    }));
-
-
-
-    React.useEffect(() => {
-        fetch("/api/getscoremap", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-            .then(res2 => res2.json())
-            .then(res2 => {
-                console.log(res2)
-                var list = []
-                for (let i = 0; i < res2.data.result.length; i++) {
-                    list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
-                }
-                setScoreList(list)
-            })
-    }, [])
+	const Item = styled(Paper)(({ theme }) => ({
+		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+		...theme.typography.body2,
+		padding: theme.spacing(1),
+		textAlign: 'center',
+		color: theme.palette.text.secondary,
+	}));
 
 
 
-    return (
-        <>
-            <TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
-            <Box sx={{ p: 3 }}>
-                <h1>所有成績</h1>
-                <Box sx={{ display: "flex", p: 2 }}>
-                    <Button variant="contained" sx={{ pr: 1 }}>開啟</Button>
-                </Box>
-                <nav>
-                    <List>{scoreList.map((d, i) => {
-                        return (
-
-                            <ListItem disablePadding key={d.id}>
-                                <ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
-                                    <ListItemText primary={d.title} />
-                                </ListItemButton>
-                            </ListItem>
-
-                        )
-                    })}</List>
-                </nav>
+	React.useEffect(() => {
+		fetch("/api/getscoremap", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({}),
+		})
+			.then(res2 => res2.json())
+			.then(res2 => {
+				console.log(res2)
+				var list = []
+				for (let i = 0; i < res2.data.result.length; i++) {
+					list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
+				}
+				setScoreList(list)
+			})
+	}, [])
 
 
-            </Box>
-        </>
-    )
+
+	return (
+		<>
+			<TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
+			<Box sx={{ p: 3 }}>
+				<h1>所有成績</h1>
+				<nav>
+					<List>{scoreList.map((d, i) => {
+						return (
+
+							<ListItem disablePadding key={d.id}>
+								<ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
+									<ListItemText primary={d.title} />
+								</ListItemButton>
+							</ListItem>
+
+						)
+					})}</List>
+				</nav>
+
+
+			</Box>
+		</>
+	)
 }

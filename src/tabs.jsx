@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
+
   return (
     <div
       role="tabpanel"
@@ -44,10 +45,10 @@ function a11yProps(index) {
   };
 }
 
-export default function ScoreTabs({ data }) {
+export default function ScoreTabs({ data, role }) {
   const [value, setValue] = React.useState(0);
   const [tabTitles, setTabTitles] = React.useState([])
-
+  const [tabType, setTabtype] = React.useState("standard")
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -68,11 +69,15 @@ export default function ScoreTabs({ data }) {
     setTabTitles(list)
   }, [data])
 
+  React.useEffect(() => {
+    setTabtype("scrollable")
+  }, [tabTitles])
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}
-          variant="scrollable"
+          variant={tabType}
           scrollButtons
           sx={{
             [`& .${tabsClasses.scrollButtons}`]: {
@@ -97,7 +102,7 @@ export default function ScoreTabs({ data }) {
             data.map((d, i) => {
               return (
                 <ListItem disablePadding key={d.id}>
-                  <ListItemButton component={Link} to={`/score/?q=${d.id}`}>
+                  <ListItemButton component={Link} to={`/score/${role === "std" ? "" : "class/"}?q=${d.id}`}>
                     <ListItemText primary={d.title} />
                   </ListItemButton>
                 </ListItem>
@@ -121,7 +126,7 @@ export default function ScoreTabs({ data }) {
                         d2.subject.split(",").includes(d) ?
 
                           <ListItem disablePadding key={d2.id}>
-                            <ListItemButton component={Link} to={`/score/?q=${d2.id}`}>
+                            <ListItemButton component={Link} to={`/score/${role === "std" ? "" : "class/"}?q=${d2.id}`}>
                               <ListItemText primary={d2.title} />
                             </ListItemButton>
                           </ListItem>
