@@ -18,7 +18,7 @@ export default function SelectSubject({onChangeFunc,params}) {
         multiple
         id="tags-filled"
         options={subject.map((option) => option.title)}
-        defaultValue={[subject[0].title]}
+        
         freeSolo
         onChange={(e, value, situation, option) => {
           if (situation === "removeOption") {
@@ -42,7 +42,7 @@ export default function SelectSubject({onChangeFunc,params}) {
             variant="standard"
             label="新增標籤"
             placeholder="新增標籤"
-            helperText="輸入標籤名稱後按enter插入"
+            helperText="從選單選擇，或輸入標籤名稱後按enter插入"
           />
         )}
       />
