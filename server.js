@@ -105,7 +105,7 @@ app.post("/api/getallstudents", (req, res) => {
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT ${req.uid} FROM scoreData`, function (error, results, fields) {
+      connection.query(`SELECT ${req.body.uid} FROM scoreData`, function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
