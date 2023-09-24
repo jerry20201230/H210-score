@@ -143,8 +143,6 @@ export function TeacherScore({ data, user }) {
         <>
           <TableBody>
             {scoreData.map((row, i) => (
-
-
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -154,6 +152,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
+                <TableCell></TableCell>
               </TableRow>
 
             ))}

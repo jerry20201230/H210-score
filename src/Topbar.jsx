@@ -12,6 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
 
 export default function TopBar({ logined, title, data }) {
   const [auth, setAuth] = React.useState(logined);
@@ -56,13 +57,14 @@ export default function TopBar({ logined, title, data }) {
       <AppBar position="fixed">
         <Toolbar>
           <IconButton
+            onClick={() => window.location.href = "/"}
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
