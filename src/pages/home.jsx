@@ -8,6 +8,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
+import Tabs from '../tabs';
+import ScoreTabs from '../tabs';
 
 
 export function Homepage({ user, data }) {
@@ -76,6 +78,9 @@ export function Homepage({ user, data }) {
             })}</List>
           </nav>
         </Box>
+
+
+        <ScoreTabs data={scorelist}/>
 
 
         <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
