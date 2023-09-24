@@ -149,7 +149,7 @@ export function PushNewScore({ data, user }) {
       <Box sx={{ p: 3 }}>
         <h1>輸入新的成績資料</h1>
         <p>
-          輸入每位同學的成績，然後儲存或發布<br />
+          輸入每位同學的成績<br />
           若該學生缺考，請將成績欄位留空即可
         </p>
         <TextField label="成績標題" variant="standard"
@@ -199,14 +199,9 @@ export function PushNewScore({ data, user }) {
             </TableBody>
           </Table>
         </TableContainer>
-        <p>
-          儲存:成績將以未公開的狀態儲存，在設為公開前，學生與家長無法查到這筆成績<br />
-          發布:成績將直接設為公開，學生與家長可立即查到這筆成績
-        </p>
 
         <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
-        &nbsp;
-        <Button variant='contained' onClick={() => handleSubmit("publish")}>直接發布</Button>
+       
       </Box>
 
       <Dialog

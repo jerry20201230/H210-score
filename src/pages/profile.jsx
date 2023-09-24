@@ -70,7 +70,6 @@ export function Profile({ data, user }) {
           <div>
 
             <h2>
-              我的帳號<br/>
               {data.data.username}<br />
               {data.data.userid}
               <br />

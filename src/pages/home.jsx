@@ -14,7 +14,7 @@ import ScoreTabs from '../tabs';
 
 export function Homepage({ user, data }) {
 
-  const [scorelist, setScoreList] = React.useState()
+  const [scorelist, setScoreList] = React.useState([])
 
   const [scoreTab, setScoreTab] = React.useState("loading")
   React.useEffect(() => {
