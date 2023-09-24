@@ -103,8 +103,8 @@ export function Score({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    var isAnnousment = annousment !== "null" && annousment !== "undefined",
-      isPrivateMsg = scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined"
+    var isAnnousment = annousment !== "null" && annousment !== "undefined" && annousment,
+      isPrivateMsg = scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined" && scoreData.privateMsg
     if (isAnnousment && isPrivateMsg) {
       setAnnousment(
         <>
@@ -138,6 +138,7 @@ export function Score({ data, user }) {
           </Grid>
         </>
       )
+      setAnnousment(<></>)
 
     } else if (isAnnousment && !isPrivateMsg) {
       setAnnousment(
@@ -150,8 +151,12 @@ export function Score({ data, user }) {
           </Grid>
         </>
       )
+      setPrivateTalk(<></>)
     }
-
+    else {
+      setAnnousment(<></>)
+      setPrivateTalk(<></>)
+    }
     console.log(annousment, privateTalk, annousmentWid, privateTalkWid)
   }, [scoreData, annousmentWid, Announcement, privateTalkWid])
 
