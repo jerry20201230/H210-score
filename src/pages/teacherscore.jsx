@@ -56,6 +56,7 @@ export function TeacherScore({ data, user }) {
   )
 
   const handleClickOpen = (n) => {
+    console.log(n)
     setOpen(true);
     setOpeningId(n)
   };

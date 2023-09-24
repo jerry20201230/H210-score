@@ -55,7 +55,7 @@ export function Homepage({ user, data }) {
   }
   React.useEffect(() => {
     if (scorelist.length < 1) {
-      setScoreTab("沒有可查詢的資料")
+      setScoreTab(<p>沒有可查詢的資料</p>)
     } else {
       setScoreTab(<ScoreTabs data={scorelist} role={"std"} />)
     }
