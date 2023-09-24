@@ -24,7 +24,7 @@ export default function SelectSubject({ onChangeFunc, params }) {
     // set value in TextField from dropdown list
   };
   return (
-    <Stack spacing={1} sx={{ width: 500 }}>
+    <Stack spacing={1} sx={{ width: "100%" }}>
       <Autocomplete
         multiple
         id="tags-filled"
@@ -49,6 +49,7 @@ export default function SelectSubject({ onChangeFunc, params }) {
         }
         renderInput={(params) => (
           <TextField
+            sx={{ width: "100%" }}
             {...params}
             variant="standard"
             label="新增標籤"

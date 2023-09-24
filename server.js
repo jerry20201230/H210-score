@@ -178,7 +178,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 
                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = "${req.body.score.scoreData[index]}%|%${req.body.score.summeryData[index]}"
+                                SET ${theUUID} = "${req.body.score.scoreData[index] !== null ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null ? req.body.score.summeryData[index] : null}"
                                 WHERE id = ${index};
                                 `, function (error, results, fields) {
                   if (error) throw error;
