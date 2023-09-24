@@ -61,7 +61,7 @@ export function Score({ data, user }) {
 
           if (res.data.result[i].uid == UrlParam("q")) {
             k = true
-            var isAnnousment = res.data.result[i].summery == "null" || res.data.result[i].summery == "undefined"
+            var isAnnousment = res.data.result[i].summery !== "null" && res.data.result[i].summery !== "undefined"
 
             setAnnousment(!isAnnousment ? <></> :
               <>
