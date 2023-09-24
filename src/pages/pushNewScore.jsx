@@ -127,6 +127,7 @@ export function PushNewScore({ data, user }) {
         var list = []
         for (let i = 0; i < res.data.result.length; i++) {
           if (res.data.result[i].userid.includes("s")) {
+            console.log("INCLUDES:", i, res.data.result[i].userid)
 
             var object = res.data.result[i]
             object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
@@ -172,7 +173,7 @@ export function PushNewScore({ data, user }) {
         />
         <p></p>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
                 <TableCell>座號</TableCell>

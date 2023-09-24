@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
+import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -73,7 +73,12 @@ export default function ScoreTabs({ data }) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}
           variant="scrollable"
-          scrollButtons="auto"
+          scrollButtons
+          sx={{
+            [`& .${tabsClasses.scrollButtons}`]: {
+              '&.Mui-disabled': { opacity: 0.3 },
+            },
+          }}
         >
           <Tab label={"全部"} {...a11yProps(0)} />
           {
@@ -92,7 +97,7 @@ export default function ScoreTabs({ data }) {
             data.map((d, i) => {
               return (
                 <ListItem disablePadding key={d.id}>
-                  <ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
+                  <ListItemButton component={Link} to={`/score/?q=${d.id}`}>
                     <ListItemText primary={d.title} />
                   </ListItemButton>
                 </ListItem>
@@ -116,7 +121,7 @@ export default function ScoreTabs({ data }) {
                         d2.subject.split(",").includes(d) ?
 
                           <ListItem disablePadding key={d2.id}>
-                            <ListItemButton component={Link} to={`/score/class/?q=${d2.id}`}>
+                            <ListItemButton component={Link} to={`/score/?q=${d2.id}`}>
                               <ListItemText primary={d2.title} />
                             </ListItemButton>
                           </ListItem>
