@@ -28,11 +28,9 @@ export function TeacherScore({ data, user }) {
         { username: "", userpassword: "" }
     ])
     var idList = [0]
-    const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(true)
     const [scoreTitle, setScoreTitle] = React.useState()
 
-    const authBtnRef = React.useRef()
     const newPasswordInputRef = React.useRef()
     const [newPass, setNewPass] = React.useState()
     const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
@@ -61,12 +59,12 @@ export function TeacherScore({ data, user }) {
 
         setDialogSubmitBtnText(<><CircularProgress size="1rem" /> 更新中</>)
         if (n === "update") {
-            fetch('/api/changepassword/student', {
+            fetch('/api/updatescore', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: (openingId.id), password: (newPass) }),
+                body: JSON.stringify({ std: (openingId.id), password: (newPass) }),
             })
                 .then(res => res.json())
                 .then(
@@ -91,16 +89,6 @@ export function TeacherScore({ data, user }) {
         }
     };
 
-    const handleSubmit = () => {
-        // 在這裡處理提交操作，您可以使用inputValues數組中的值
-        console.log('輸入框的值：', passwordValue);
-    };
-
-    const editPass = (i, p) => {
-        handleClickOpen(i)
-    }
-
-    
 
     function getAllStdPass() {
         fetch("/api/getallstudentscorebyid", {
@@ -136,7 +124,6 @@ export function TeacherScore({ data, user }) {
         <>
 
             <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
-
             <Box sx={{ p: 3 }}>
                 <h1>{ }</h1>
                 <TableContainer component={Paper}>
@@ -170,9 +157,6 @@ export function TeacherScore({ data, user }) {
             </Box>
 
 
-
-
-
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -180,11 +164,11 @@ export function TeacherScore({ data, user }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (openingId.username ? openingId.username : "") + " 的密碼"}
+                    {"更新 " + (openingId.username ? openingId.username : "") + " 的成績資料"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        目前密碼:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
+                        目前成績:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
                         <p></p>
                         <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
                     </DialogContentText>
