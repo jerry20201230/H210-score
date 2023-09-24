@@ -18,6 +18,8 @@ export function Score({ data, user }) {
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
 
+  const [annousment, setAnnousment] = React.useState(<></>)
+
   const [loading, setLoading] = React.useState(true)
   const [loadingState, setLoadingState] = React.useState("")
 
@@ -54,6 +56,16 @@ export function Score({ data, user }) {
 
           if (res.data.result[i].uid == UrlParam("q")) {
             k = true
+            setAnnousment(res.data.result[i].summery == "null" || res.data.result[i].summery == "undefined" ? <></> :
+              <>
+                <Grid xs={12}>
+                  <Item>
+                    <h3>老師公告</h3>
+                    <p>{res.data.result[i].summery}</p>
+                  </Item>
+                </Grid>
+              </>)
+
             setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
             fetch("/api/getscorebyid", {
               method: 'POST',
@@ -120,6 +132,7 @@ export function Score({ data, user }) {
         <p>以下是{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</p>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
+            {annousment}
             <Grid xs={6}>
               <Item>
                 <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>

@@ -229,7 +229,7 @@ app.post("/api/getscorebyid", (req, res) => {
                 avg = (tot / scoreList.length).toFixed(2)
 
                 console.log("SCORE COUNTING", scoreList)
-                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0] }, ok: true }));
+                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
               } else {
                 res.status(404).json({ message: 'Invalid credentials', ok: false });
               }
