@@ -182,7 +182,7 @@ export function Score({ data, user }) {
 
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            {annousment}{privateTalk}
+            {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
             <Grid xs={6}>
               <Item>
                 <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
