@@ -73,21 +73,8 @@ export function SearchScoreSheet({ data, user }) {
                         )
                     })}</List>
                 </nav>
-                <p></p>
-                <h1>所有成績單</h1>
-                <nav aria-label="main mailbox folders">
-                    <List>{scoreList.map((d, i) => {
-                        return (
-
-                            <ListItem disablePadding key={d.id}>
-                                <ListItemButton component={Link} to={`/score/class/?q=${d.id}`}>
-                                    <ListItemText primary={d.title} />
-                                </ListItemButton>
-                            </ListItem>
-
-                        )
-                    })}</List>
-                </nav>
+        
+                
             </Box>
         </>
     )
