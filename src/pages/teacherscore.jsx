@@ -135,7 +135,7 @@ export function TeacherScore({ data, user }) {
     return (
         <>
 
-            <TopBar logined={true} data={data.data} user={user} title={"家長帳密"} />
+            <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
 
             <Box sx={{ p: 3 }}>
                 <h1>{ }</h1>
