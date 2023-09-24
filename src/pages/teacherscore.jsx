@@ -29,7 +29,7 @@ export function TeacherScore({ data, user }) {
     ])
     var idList = [0]
     const [auth, setAuth] = React.useState(true)
-    const [scoreTitle, setScoreTitle] = React.useState()
+    const [scoreData, setScoreData] = React.useState()
 
     const newPasswordInputRef = React.useRef()
     const [newPass, setNewPass] = React.useState()
@@ -104,11 +104,7 @@ export function TeacherScore({ data, user }) {
             .then(res => {
                 console.log(".......0", res)
                 var list = []
-                console.log(res)
-                for (let i = 0; i < res.data.result.length; i++) {
-
-                }
-                setStudents(list)
+                setScoreData(res)
                 console.log(students, list, idList)
             })
 
@@ -139,7 +135,7 @@ export function TeacherScore({ data, user }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {students.map((row, i) => (
+                            {scoreData.score.map((row, i) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
