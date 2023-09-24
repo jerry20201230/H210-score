@@ -73,8 +73,7 @@ export default function ScoreTabs({ data }) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}
           variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
+          scrollButtons="auto"
         >
           <Tab label={"全部"} {...a11yProps(0)} />
           {
@@ -132,12 +131,6 @@ export default function ScoreTabs({ data }) {
           )
         })
       }
-
-
-
-      <CustomTabPanel value={value} index={2}>
-        Item Three
-      </CustomTabPanel>
     </Box>
   );
 }
