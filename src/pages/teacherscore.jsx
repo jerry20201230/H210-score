@@ -125,7 +125,7 @@ export function TeacherScore({ data, user }) {
                 list.push(object)
               }
             }
-            console.lod(list)
+            console.log(list)
             setStudents(list)
           })
 
