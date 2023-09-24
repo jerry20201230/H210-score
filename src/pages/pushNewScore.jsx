@@ -200,6 +200,7 @@ export function PushNewScore({ data, user }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <p></p>
 
         <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
 

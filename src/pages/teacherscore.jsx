@@ -40,6 +40,9 @@ export function TeacherScore({ data, user }) {
   const [accountValues, setaccountValues] = React.useState(Array(45));
   const [passwordValue, setPasswordValue] = React.useState(Array(45))
 
+  const [scoreSetting, setScoreSetting] = React.useState([])
+
+
   function UrlParam(name) {
     var url = new URL(window.location.href),
       result = url.searchParams.get(name);
@@ -87,7 +90,6 @@ export function TeacherScore({ data, user }) {
     } else {
       setOpen(false)
       setDialogSubmitBtnText("更新")
-
     }
   };
 
@@ -122,6 +124,7 @@ export function TeacherScore({ data, user }) {
               if (res.data.result[i].userid.includes("s")) {
 
                 var object = res.data.result[i]
+                object.changeBtn = <Button variant="contained" onClick={() => handleClickOpen(res.data.result[i])}>編輯成績</Button>
                 list.push(object)
               }
             }
@@ -129,6 +132,28 @@ export function TeacherScore({ data, user }) {
             setStudents(list)
           })
 
+      })
+
+    fetch("/api/getscoremap", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: UrlParam("q") }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        var list = [], k = false
+        for (let i = 0; i < res.data.result.length; i++) {
+          list.push(res.data.result[i].uid)
+
+          if (res.data.result[i].uid == UrlParam("q")) {
+            setScoreSetting(res.data.result[i])
+            console.log(res.data.result[i])
+          }
+        }
+        if (!k) alert("找不到成績")
       })
   }
 
