@@ -30,7 +30,7 @@ export function TeacherScore({ data, user }) {
     var idList = [0]
     const [auth, setAuth] = React.useState(true)
     const [scoreData, setScoreData] = React.useState([
-        {id:1}
+        { id: 1 }
     ])
 
     const newPasswordInputRef = React.useRef()
@@ -99,7 +99,7 @@ export function TeacherScore({ data, user }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                uid: UrlParam("q") 
+                uid: UrlParam("q")
             }),
         })
             .then(res => res.json())
@@ -112,9 +112,9 @@ export function TeacherScore({ data, user }) {
 
     }
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         getAllStdPass()
-    },[])
+    }, [])
 
 
 
@@ -137,24 +137,13 @@ export function TeacherScore({ data, user }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {scoreData.map((row, i) => (
-                                <TableRow
-                                    key={row.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
 
-                                    <TableCell>{}</TableCell>
-                                    <TableCell>{}</TableCell>
-                                    <TableCell>{}</TableCell>
-                                    <TableCell>{}</TableCell>
-                                </TableRow>
-                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
             </Box>
 
-<Button onClick={getAllStdPass}>重新整理</Button>
+            <Button onClick={getAllStdPass}>重新整理</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
