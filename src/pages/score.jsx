@@ -62,21 +62,12 @@ export function Score({ data, user }) {
 
           if (res.data.result[i].uid == UrlParam("q")) {
             k = true
-            var isAnnousment = res.data.result[i].summery !== "null" && res.data.result[i].summery !== "undefined"
 
-            setAnnousment(!isAnnousment ? <></> :
-              <>
-                <Grid xs={annousmentWid}>
-                  <Item>
-                    <h3>老師公告</h3>
-                    <p>{res.data.result[i].summery}</p>
-                  </Item>
-                </Grid>
-              </>
+
+            setAnnousment(
+
+              res.data.result[i].summery
             )
-            if (!isAnnousment) {
-              setAnnousmentWid(0)
-            }
 
             setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
             fetch("/api/getscorebyid", {
@@ -112,31 +103,53 @@ export function Score({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    if (scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined") {
-      if (annousmentWid > 0) {
-        setAnnousmentWid(6)
-        setPrivateTalkWid(6)
-        setPrivateTalk(
-          <>
-            <Grid xs={privateTalkWid}>
-              <Item>
-                <h3>私人留言</h3>
-                <p>老師:{scoreData.privateMsg}</p>
-              </Item>
-            </Grid>
-          </>)
-      } else {
-        setPrivateTalkWid(12)
-        setPrivateTalk(
-          <>
-            <Grid xs={privateTalkWid}>
-              <Item>
-                <h3>私人留言</h3>
-                <p>老師:{scoreData.privateMsg}</p>
-              </Item>
-            </Grid>
-          </>)
-      }
+    var isAnnousment = annousment !== "null" && annousment !== "undefined",
+      isPrivateMsg = scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined"
+    if (isAnnousment && isPrivateMsg) {
+      setAnnousment(
+        <>
+          <Grid xs={6}>
+            <Item>
+              <h3>公告訊息</h3>
+              <p>{annousment}</p>
+            </Item>
+          </Grid>
+        </>
+      )
+      setPrivateTalk(
+        <>
+          <Grid xs={6}>
+            <Item>
+              <h3>私人留言</h3>
+              <p>老師: {scoreData.privateMsg}</p>
+            </Item>
+          </Grid>
+        </>
+      )
+    } else if (isPrivateMsg && !isAnnousment) {
+
+      setPrivateTalk(
+        <>
+          <Grid xs={12}>
+            <Item>
+              <h3>私人留言</h3>
+              <p>老師: {scoreData.privateMsg}</p>
+            </Item>
+          </Grid>
+        </>
+      )
+
+    } else if (isAnnousment && !isPrivateMsg) {
+      setAnnousment(
+        <>
+          <Grid xs={12}>
+            <Item>
+              <h3>公告訊息</h3>
+              <p>{annousment}</p>
+            </Item>
+          </Grid>
+        </>
+      )
     }
 
     console.log(annousment, privateTalk, annousmentWid, privateTalkWid)
