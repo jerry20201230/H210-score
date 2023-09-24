@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box ,Button} from '@mui/material';
+import { Box, Button } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -57,10 +57,10 @@ export function SearchScoreSheet({ data, user }) {
             <TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
             <Box sx={{ p: 3 }}>
                 <h1>所有成績</h1>
-                <Box sx={{display:"flex",p:2}}>
-                  <Button variant="contained" sx={{pr:1}}>開啟</Button>
+                <Box sx={{ display: "flex", p: 2 }}>
+                    <Button variant="contained" sx={{ pr: 1 }}>開啟</Button>
                 </Box>
-                <nav aria-label="main mailbox folders">
+                <nav>
                     <List>{scoreList.map((d, i) => {
                         return (
 
@@ -73,8 +73,8 @@ export function SearchScoreSheet({ data, user }) {
                         )
                     })}</List>
                 </nav>
-        
-                
+
+
             </Box>
         </>
     )
