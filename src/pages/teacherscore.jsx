@@ -30,7 +30,7 @@ export function TeacherScore({ data, user }) {
   var idList = [0]
   const [auth, setAuth] = React.useState(true)
   const [scoreData, setScoreData] = React.useState([
-    { id: 1 }
+    { id: 1, [UrlParam("q")]: "null" }
   ])
   const [tbody, setTbody] = React.useState(<>Loading</>)
   const newPasswordInputRef = React.useRef()
@@ -153,7 +153,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
-                <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefind" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
+                <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
               </TableRow>
 
             ))}
