@@ -149,6 +149,7 @@ export function TeacherScore({ data, user }) {
           list.push(res.data.result[i].uid)
 
           if (res.data.result[i].uid == UrlParam("q")) {
+            k = true
             setScoreSetting(res.data.result[i])
             console.log(res.data.result[i])
           }
@@ -177,7 +178,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
-                <TableCell></TableCell>
+                <TableCell>{row.changeBtn}</TableCell>
               </TableRow>
 
             ))}
@@ -195,7 +196,7 @@ export function TeacherScore({ data, user }) {
 
       <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
       <Box sx={{ p: 3 }}>
-        <h1>{ }</h1>
+        <h1>{scoreSetting.scoreName}</h1>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
