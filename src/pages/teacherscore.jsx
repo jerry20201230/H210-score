@@ -29,7 +29,9 @@ export function TeacherScore({ data, user }) {
     ])
     var idList = [0]
     const [auth, setAuth] = React.useState(true)
-    const [scoreData, setScoreData] = React.useState()
+    const [scoreData, setScoreData] = React.useState([
+        {id:1}
+    ])
 
     const newPasswordInputRef = React.useRef()
     const [newPass, setNewPass] = React.useState()
@@ -141,10 +143,10 @@ export function TeacherScore({ data, user }) {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
 
-                                    <TableCell>{row.username}</TableCell>
-                                    <TableCell>{row.accountInput}</TableCell>
-                                    <TableCell>{row.passwordInput}</TableCell>
-                                    <TableCell>{row.changePasswordBtn}</TableCell>
+                                    <TableCell>{}</TableCell>
+                                    <TableCell>{}</TableCell>
+                                    <TableCell>{}</TableCell>
+                                    <TableCell>{}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
