@@ -137,7 +137,7 @@ export function TeacherScore({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    if (students.length && scoreData.length) {
+    if (students.length>0 && scoreData.length>0 && students.length == scoreData.length) {
       setTbody(
         <>
           <TableBody>
