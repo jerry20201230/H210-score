@@ -24,149 +24,184 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export function TeacherScore({ data, user }) {
-    const [students, setStudents] = React.useState([
-        { username: "", userpassword: "" }
-    ])
-    var idList = [0]
-    const [auth, setAuth] = React.useState(true)
-    const [scoreData, setScoreData] = React.useState([
-        { id: 1 }
-    ])
+  const [students, setStudents] = React.useState([
+    { username: "" }
+  ])
+  var idList = [0]
+  const [auth, setAuth] = React.useState(true)
+  const [scoreData, setScoreData] = React.useState([
+    { id: 1 }
+  ])
 
-    const newPasswordInputRef = React.useRef()
-    const [newPass, setNewPass] = React.useState()
-    const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
+  const newPasswordInputRef = React.useRef()
+  const [newPass, setNewPass] = React.useState()
+  const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
 
-    const [accountValues, setaccountValues] = React.useState(Array(45));
-    const [passwordValue, setPasswordValue] = React.useState(Array(45))
+  const [accountValues, setaccountValues] = React.useState(Array(45));
+  const [passwordValue, setPasswordValue] = React.useState(Array(45))
 
-    function UrlParam(name) {
-        var url = new URL(window.location.href),
-            result = url.searchParams.get(name);
-        return result
-    }
+  function UrlParam(name) {
+    var url = new URL(window.location.href),
+      result = url.searchParams.get(name);
+    return result
+  }
 
 
-    const [open, setOpen] = React.useState(false);
-    const [openingId, setOpeningId] = React.useState(
-        { username: "", userpassword: "" }
-    )
+  const [open, setOpen] = React.useState(false);
+  const [openingId, setOpeningId] = React.useState(
+    { username: "", userpassword: "" }
+  )
 
-    const handleClickOpen = (n) => {
-        setOpen(true);
-        setOpeningId(n)
-    };
+  const handleClickOpen = (n) => {
+    setOpen(true);
+    setOpeningId(n)
+  };
 
-    const handleClose = (n) => {
+  const handleClose = (n) => {
 
-        setDialogSubmitBtnText(<><CircularProgress size="1rem" /> 更新中</>)
-        if (n === "update") {
-            fetch('/api/updatescore', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ std: (openingId.id), password: (newPass) }),
-            })
-                .then(res => res.json())
-                .then(
-                    (res) => {
-                        setDialogSubmitBtnText("更新完畢")
-                        setOpen(false)
-                        getAllStdPass()
-                        setNewPass("")
-                        setDialogSubmitBtnText("更新")
-
-                    }
-                ).catch((e) => {
-                    getAllStdPass()
-                    setNewPass("")
-                    setDialogSubmitBtnText("更新失敗，請重試")
-                })
-
-        } else {
+    setDialogSubmitBtnText(<><CircularProgress size="1rem" /> 更新中</>)
+    if (n === "update") {
+      fetch('/api/updatescore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ std: (openingId.id), password: (newPass) }),
+      })
+        .then(res => res.json())
+        .then(
+          (res) => {
+            setDialogSubmitBtnText("更新完畢")
             setOpen(false)
+            getAllStdPass()
+            setNewPass("")
             setDialogSubmitBtnText("更新")
 
-        }
-    };
-
-
-    function getAllStdPass() {
-        fetch("/api/getallstudentscorebyid", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                uid: UrlParam("q")
-            }),
+          }
+        ).catch((e) => {
+          getAllStdPass()
+          setNewPass("")
+          setDialogSubmitBtnText("更新失敗，請重試")
         })
-            .then(res => res.json())
-            .then(res => {
-                console.log(".......0", res)
-                var list = []
-                setScoreData(res)
-                console.log(students, list, idList)
-            })
+
+    } else {
+      setOpen(false)
+      setDialogSubmitBtnText("更新")
 
     }
-
-    React.useEffect(() => {
-        getAllStdPass()
-    }, [])
+  };
 
 
+  function getAllStdPass() {
+    fetch("/api/getallstudentscorebyid", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uid: UrlParam("q")
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(".......0", res)
+        var list = []
+        setScoreData(res)
+        console.log(students, list, idList)
+      })
 
-    return (
-        <>
+    fetch("/api/getallstudents", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
 
-            <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
-            <Box sx={{ p: 3 }}>
-                <h1>{ }</h1>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        var list = []
+        for (let i = 0; i < res.data.result.length; i++) {
+          if (res.data.result[i].userid.includes("s")) {
 
-                                <TableCell>座號</TableCell>
-                                <TableCell>姓名</TableCell>
-                                <TableCell>成績</TableCell>
-                                <TableCell>備註</TableCell>
-                                <TableCell>動作</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
+            var object = res.data.result[i]
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
 
-            <Button onClick={getAllStdPass}>重新整理</Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"更新 " + (openingId.username ? openingId.username : "") + " 的成績資料"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        目前成績:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
-                        <p></p>
-                        <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>取消</Button>
-                    <Button onClick={() => handleClose("update")}>
-                        {dialogSubmitBtnText}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    )
+            list.push(object)
+          }
+        }
+        setStudents(list)
+      })
+
+  }
+
+  React.useEffect(() => {
+    getAllStdPass()
+  }, [])
+
+
+
+  return (
+    <>
+
+      <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
+      <Box sx={{ p: 3 }}>
+        <h1>{ }</h1>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+
+                <TableCell>座號</TableCell>
+                <TableCell>姓名</TableCell>
+                <TableCell>成績</TableCell>
+                <TableCell>備註</TableCell>
+                <TableCell>動作</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {scoreData.map((row, i) => (
+                                <TableRow
+                                    key={row.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+
+                                    <TableCell>{row.id}</TableCell>
+                                    <TableCell>{students[i].username}</TableCell>
+                                    <TableCell>{row[UrlParam("q")].split("%|%")[0]}</TableCell>
+                                    <TableCell>{row[UrlParam("q")].split("%|%")[1]}</TableCell>
+                                </TableRow>
+                            ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+
+      <Button onClick={getAllStdPass}>重新整理</Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"更新 " + (openingId.username ? openingId.username : "") + " 的成績資料"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            目前成績:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
+            <p></p>
+            <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>取消</Button>
+          <Button onClick={() => handleClose("update")}>
+            {dialogSubmitBtnText}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
 }
