@@ -105,7 +105,7 @@ app.post("/api/getallstudents", (req, res) => {
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT ${req.body.uid} FROM scoreData`, function (error, results, fields) {
+      connection.query(`SELECT id,stdId,${req.body.uid} FROM scoreData`, function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
@@ -138,6 +138,7 @@ app.post("/api/changepassword/student", (req, res) => {
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
+        req.session.destroy()
         connection.release();
 
       })

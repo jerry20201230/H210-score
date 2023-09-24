@@ -135,7 +135,7 @@ export function TeacherScore({ data, user }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {scoreData.score.map((row, i) => (
+                            {scoreData.map((row, i) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

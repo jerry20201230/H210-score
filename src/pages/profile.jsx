@@ -48,6 +48,7 @@ export function Profile({ data, user }) {
           setOldPassword("")
           setNewPassword("")
           setConfirmNewPassword("")
+          window.location.href = "/"
         })
         .catch(() => {
           alert("更新密碼失敗")
@@ -69,6 +70,8 @@ export function Profile({ data, user }) {
           <div>
 
             <h2>
+              <FaceIcon sx={{verticalAlign:"middle"}}/>
+              &nbsp;
               {data.data.username}<br />
               {data.data.userid}
               <br />
