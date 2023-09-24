@@ -110,18 +110,21 @@ export default function ScoreTabs({ data }) {
             tabTitles.length > 0 ?
               <CustomTabPanel value={value} index={i + 1}>
                 <List>
-                  {data[i].subject}
+
                   {
-                    (data[i].subject.split(",").includes(d) ?
+                    (data.map((d2, i2) => {
+                      return (
+                        d2.subject.split(",").includes(d) ?
 
-                      <ListItem disablePadding key={data[i].id}>
-                        <ListItemButton component={Link} to={`/score/class/?q=${data[i].id}`}>
-                          <ListItemText primary={data[i].title} />
-                        </ListItemButton>
-                      </ListItem>
-
-                      : <></>
-                    )
+                          <ListItem disablePadding key={d2.id}>
+                            <ListItemButton component={Link} to={`/score/class/?q=${d2.id}`}>
+                              <ListItemText primary={d2.title} />
+                            </ListItemButton>
+                          </ListItem>
+                          :
+                          <></>
+                      )
+                    }))
                   }
                 </List>
               </CustomTabPanel>

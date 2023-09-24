@@ -35,7 +35,7 @@ export function PushNewScore({ data, user }) {
   }
 
   const [inputValues, setInputValues] = React.useState(Array(45));
-  const [summeryValue, setSummeryValue] = React.useState(Array(45))
+  const [summeryValue, setSummeryValue] = React.useState(Array(45));
 
   const [gradeTitle, setGradeTitle] = React.useState()
   const [gradeSubject, setGradeSubject] = React.useState()
@@ -158,8 +158,8 @@ export function PushNewScore({ data, user }) {
         />
         <p></p>
 
-          <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}/>
-       
+        <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"} />
+
         <p></p>
         <TextField
           label="對全班的公告"
@@ -201,7 +201,7 @@ export function PushNewScore({ data, user }) {
         </TableContainer>
 
         <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
-       
+
       </Box>
 
       <Dialog
