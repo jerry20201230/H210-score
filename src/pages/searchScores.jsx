@@ -46,7 +46,7 @@ export function SearchScoreSheet({ data, user }) {
 				console.log(res2)
 				var list = []
 				for (let i = 0; i < res2.data.result.length; i++) {
-					list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
+					list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
 				}
 				setScoreList(list)
 			})
