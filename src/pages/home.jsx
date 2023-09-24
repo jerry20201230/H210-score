@@ -14,10 +14,9 @@ import ScoreTabs from '../tabs';
 
 export function Homepage({ user, data }) {
 
-  const [scorelist, setScoreList] = React.useState([
-    { title: "", id: "" }
-  ])
+  const [scorelist, setScoreList] = React.useState()
 
+  const [scoreTab,setScoreTab] = React.useState("loading")
   React.useEffect(() => {
     getScore()
   }, [])
@@ -54,6 +53,14 @@ export function Homepage({ user, data }) {
           })
       })
   }
+  React.useEffect(()=>{
+    if(scorelist.length < 1){
+      setScoreTab("沒有可查詢的資料")
+    }else{
+      
+     setScoreTab(<ScoreTabs data={scorelist}/>)
+    }
+  },[scorelist])
 
   return (
     <>
@@ -79,8 +86,7 @@ export function Homepage({ user, data }) {
           </nav>
         </Box>
 
-
-        <ScoreTabs data={scorelist}/>
+{scoreTab}
 
 
         <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
