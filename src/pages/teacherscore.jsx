@@ -135,25 +135,27 @@ export function TeacherScore({ data, user }) {
     getAllStdPass()
   }, [])
 
-  React.useEffect(()=>{
-    setTbody(
-      <>
-                  <TableBody>
-              {scoreData.map((row, i) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
+  React.useEffect(() => {
+    if (students && scoreData) {
+      setTbody(
+        <>
+          <TableBody>
+            {scoreData.map((row, i) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
 
-                  <TableCell>{row.id}</TableCell>
-                  <TableCell>{students[i].username}</TableCell>
-                  <TableCell>{row[UrlParam("q")].split("%|%")[0]?row[UrlParam("q")].split("%|%")[0]:0}</TableCell>
-                  <TableCell>{row[UrlParam("q")].split("%|%")[1]?row[UrlParam("q")].split("%|%")[1]:1}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody></>
-    )
-  },[students])
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{students[i].username}</TableCell>
+                <TableCell>{row[UrlParam("q")].split("%|%")[0] ? row[UrlParam("q")].split("%|%")[0] : 0}</TableCell>
+                <TableCell>{row[UrlParam("q")].split("%|%")[1] ? row[UrlParam("q")].split("%|%")[1] : 1}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody></>
+      )
+    }
+  }, [students, scoreData])
 
 
 
