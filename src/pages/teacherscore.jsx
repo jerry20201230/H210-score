@@ -32,7 +32,7 @@ export function TeacherScore({ data, user }) {
   const [scoreData, setScoreData] = React.useState([
     { id: 1 }
   ])
-
+  const [tbody, setTbody] = React.useState(<>Loading</>)
   const newPasswordInputRef = React.useRef()
   const [newPass, setNewPass] = React.useState()
   const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
@@ -105,40 +105,55 @@ export function TeacherScore({ data, user }) {
       .then(res => res.json())
       .then(res => {
         console.log(".......0", res)
-        var list = []
         setScoreData(res)
-        console.log(students, list, idList)
+        fetch("/api/getallstudents", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+
+          }),
+        })
+          .then(res => res.json())
+          .then(res => {
+            var list = []
+            for (let i = 0; i < res.data.result.length; i++) {
+              if (res.data.result[i].userid.includes("s")) {
+
+                var object = res.data.result[i]
+                list.push(object)
+              }
+            }
+            setStudents(list)
+          })
+
       })
-
-    fetch("/api/getallstudents", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        var list = []
-        for (let i = 0; i < res.data.result.length; i++) {
-          if (res.data.result[i].userid.includes("s")) {
-
-            var object = res.data.result[i]
-
-
-            list.push(object)
-          }
-        }
-        setStudents(list)
-      })
-
   }
 
   React.useEffect(() => {
     getAllStdPass()
   }, [])
+
+  React.useEffect(()=>{
+    setTbody(
+      <>
+                  <TableBody>
+              {scoreData.map((row, i) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{students[i].username}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[0]?row[UrlParam("q")].split("%|%")[0]:0}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[1]?row[UrlParam("q")].split("%|%")[1]:1}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody></>
+    )
+  },[students])
 
 
 
@@ -160,20 +175,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>動作</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {scoreData.map((row, i) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-
-                  <TableCell>{row.id}</TableCell>
-                  <TableCell>{students[i].username}</TableCell>
-                  <TableCell>{row[UrlParam("q")].split("%|%")[0]?row[UrlParam("q")].split("%|%")[0]:0}</TableCell>
-                  <TableCell>{row[UrlParam("q")].split("%|%")[1]?row[UrlParam("q")].split("%|%")[1]:1}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            { }
           </Table>
         </TableContainer>
       </Box>
