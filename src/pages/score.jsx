@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
+import { Announcement } from '@mui/icons-material';
 
 export function Score({ data, user }) {
 
@@ -20,7 +21,7 @@ export function Score({ data, user }) {
 
   const [annousment, setAnnousment] = React.useState(<></>)
   const [annousmentWid, setAnnousmentWid] = React.useState(12)
-
+  const [isAnnousment, setIsAnnousment] = React.useState(false)
 
   const [privateTalk, setPrivateTalk] = React.useState(<></>)
   const [privateTalkWid, setPrivateTalkWid] = React.useState(12)
@@ -139,11 +140,10 @@ export function Score({ data, user }) {
     }
 
     console.log(annousment, privateTalk, annousmentWid, privateTalkWid)
-  }, [scoreData])
+  }, [scoreData, annousmentWid, Announcement, privateTalkWid])
 
   return (
     <>
-
 
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
