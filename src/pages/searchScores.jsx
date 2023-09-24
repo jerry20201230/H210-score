@@ -19,7 +19,7 @@ import ScoreTabs from '../tabs';
 export function SearchScoreSheet({ data, user }) {
 
 	const [scoreList, setScoreList] = React.useState(
-		[{ title: "", id: "" }]
+		[{ title: "", id: "", subject: "" }]
 	)
 	const [scoreTab, setScoreTab] = React.useState("loading")
 
