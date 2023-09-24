@@ -148,8 +148,8 @@ export function TeacherScore({ data, user }) {
 
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{students[i].username}</TableCell>
-                <TableCell>{row[UrlParam("q")].split("%|%")[0] ? row[UrlParam("q")].split("%|%")[0] : 0}</TableCell>
-                <TableCell>{row[UrlParam("q")].split("%|%")[1] ? row[UrlParam("q")].split("%|%")[1] : 1}</TableCell>
+                <TableCell>{row[UrlParam("q")]}</TableCell>
+                <TableCell>{row[UrlParam("q")]}</TableCell>
               </TableRow>
             ))}
           </TableBody></>
