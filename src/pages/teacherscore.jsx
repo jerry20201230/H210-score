@@ -100,27 +100,7 @@ export function TeacherScore({ data, user }) {
         handleClickOpen(i)
     }
 
-    const handleLogin = async () => {
-        await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userid: (data.data.userid), password: password }),
-        })
-            .then(res => res.json())
-            .then(
-                (res) => {
-                    if (res.ok) {
-                        setAuth(true)
-                    } else {
-                        alert("密碼錯誤!!\n你已經被自動登出，請重新登入")
-                        window.location.reload()
-                    }
-                }
-            )
-
-    };
+    
 
     function getAllStdPass() {
         fetch("/api/getallstudentscorebyid", {
@@ -145,6 +125,10 @@ export function TeacherScore({ data, user }) {
             })
 
     }
+
+    React.useEffect(()=>{
+        getAllStdPass()
+    },[])
 
 
 
