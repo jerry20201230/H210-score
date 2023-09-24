@@ -137,8 +137,6 @@ export function PushNewScore({ data, user }) {
             list.push(object)
           }
         }
-        summeryValue[45] = "100"
-        inputValues[45] = 100
         setStudents(list)
         console.log(students, list)
       })
