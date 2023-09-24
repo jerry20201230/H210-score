@@ -63,7 +63,7 @@ export default function ScoreTabs({ data }) {
         }
       }
     }
-    list = list.reverse()
+
     console.log(list)
     setTabTitles(list)
   }, [data])
@@ -71,7 +71,11 @@ export default function ScoreTabs({ data }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs value={value} onChange={handleChange}
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
+        >
           <Tab label={"全部"} {...a11yProps(0)} />
           {
             tabTitles.map((d, i) => {
