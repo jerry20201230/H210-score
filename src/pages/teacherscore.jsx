@@ -92,11 +92,13 @@ export function TeacherScore({ data, user }) {
 
   const handleClickOpen2 = (n) => {
     console.log(n)
-    setOpen(true);
+    setOpen2(true);
     setOpeningId2(n)
     //////////////////////
-    setNewScore(n.scoreData[UrlParam("q")].split("%|%")[0])
-    setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1] !== 'null' && n.scoreData[UrlParam("q")].split("%|%")[1] !== "" ? n.scoreData[UrlParam("q")].split("%|%")[1] : "")
+
+    setNewTitle(scoreSetting.scoreName)
+    setNewAnnousment(scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "")
+    setNewTags(scoreSetting.subject)
   };
 
   const handleClose = (n) => {
@@ -250,7 +252,6 @@ export function TeacherScore({ data, user }) {
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
