@@ -150,6 +150,38 @@ app.post("/api/changepassword/student", (req, res) => {
   }
 })
 
+
+
+
+app.post("/api/updatescore", (req, res) => {
+  console.log("/api/updatescore", req.body)
+  if (req.session.role === "teacher") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+            UPDATE scoreData
+            SET userpassword = "${req.body.password}"
+            WHERE id = ${req.body.id}
+            `, function (error, results, fields) {
+        if (error) throw error;
+
+        console.log(results)
+        res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+        res.end();
+        req.session.destroy()
+        connection.release();
+
+      })
+    })
+  } else {
+    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.end();
+  }
+})
+
+
+
+
 app.post("/api/uploadnewscore", (req, res) => {
   if (req.session.role === "teacher") {
     const theUUID = uuidv4().slice(0, 7)

@@ -42,6 +42,8 @@ export function TeacherScore({ data, user }) {
 
   const [scoreSetting, setScoreSetting] = React.useState([])
 
+  const [newScore, setNewScore] = React.useState()
+  const [newPrivateMsg, setNewPrivateMsg] = React.useState()
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -59,6 +61,7 @@ export function TeacherScore({ data, user }) {
     console.log(n)
     setOpen(true);
     setOpeningId(n)
+    //////////////////////
   };
 
   const handleClose = (n) => {
@@ -179,7 +182,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
-                <TableCell><Button variant="contained" onClick={() => handleClickOpen(row)}>編輯成績</Button></TableCell>
+                <TableCell><Button variant="contained" onClick={() => handleClickOpen({ scoreData: row, userData: students[i] })}>編輯成績</Button></TableCell>
               </TableRow>
 
             ))}
@@ -223,13 +226,16 @@ export function TeacherScore({ data, user }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"更新 " + (openingId.username ? openingId.username : "") + " 的成績資料"}
+          {"更新 " + (openingId.userData.username ? openingId.username : "") + " 的成績資料"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            目前成績:{openingId.userpassword ? openingId.userpassword : "" || "???"}<br />
+            目前成績:{openingId.scoreData[UrlParam("q")] ? openingId.scoreData[UrlParam("q")] : "" || "???"}<br />
             <p></p>
-            <TextField type='text' variant="standard" label="輸入新密碼" ref={newPasswordInputRef} value={newPass} onInput={(e) => setNewPass(e.target.value)} />
+            <TextField type='text' variant="standard" label="輸入新成績" ref={newPasswordInputRef} value={newScore} onInput={(e) => setNewScore(e.target.value)} />
+            <p></p>
+            <TextField type='text' variant="standard" label="輸入新留言" ref={newPasswordInputRef} value={newPrivateMsg} onInput={(e) => setNewPrivateMsg(e.target.value)} />
+
           </DialogContentText>
         </DialogContent>
         <DialogActions>
