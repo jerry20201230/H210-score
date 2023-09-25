@@ -38,7 +38,7 @@ export function TeacherScore({ data, user }) {
   const [newPass, setNewPass] = React.useState()
   const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
 
-  const [scoreSetting, setScoreSetting] = React.useState([])
+  const [scoreSetting, setScoreSetting] = React.useState({ subject: "", scoreName: "", summery: "", })
 
   const [newScore, setNewScore] = React.useState()
   const [newPrivateMsg, setNewPrivateMsg] = React.useState()

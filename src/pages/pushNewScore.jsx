@@ -163,7 +163,7 @@ export function PushNewScore({ data, user }) {
         <p></p>
 
         <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
-          defaultValue={""}
+
         />
 
         <p></p>
