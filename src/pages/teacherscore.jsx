@@ -22,6 +22,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import SelectSubject from '../selectSubject';
 
 export function TeacherScore({ data, user }) {
   const [students, setStudents] = React.useState([
@@ -33,17 +34,19 @@ export function TeacherScore({ data, user }) {
     { id: 1, [UrlParam("q")]: "null" }
   ])
   const [tbody, setTbody] = React.useState(<>Loading</>)
-  const newPasswordInputRef = React.useRef()
+
   const [newPass, setNewPass] = React.useState()
   const [dialogSubmitBtnText, setDialogSubmitBtnText] = React.useState(<>更新</>)
-
-  const [accountValues, setaccountValues] = React.useState(Array(45));
-  const [passwordValue, setPasswordValue] = React.useState(Array(45))
 
   const [scoreSetting, setScoreSetting] = React.useState([])
 
   const [newScore, setNewScore] = React.useState()
   const [newPrivateMsg, setNewPrivateMsg] = React.useState()
+
+  const [newTitle, setNewTitle] = React.useState()
+  const [newAnnousment, setNewAnnousment] = React.useState()
+  const [newTags, setNewTags] = React.useState()
+  const [dialogSubmitBtnText2, setDialogSubmitBtnText2] = React.useState(<>更新</>)
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -68,10 +71,29 @@ export function TeacherScore({ data, user }) {
     }
   )
 
+  const [open2, setOpen2] = React.useState(false);
+  const [openingId2, setOpeningId2] = React.useState(
+    {
+      id: UrlParam("q"),
+      title: "",
+      annousment: "",
+      tag: ""
+    }
+  )
+
   const handleClickOpen = (n) => {
     console.log(n)
     setOpen(true);
     setOpeningId(n)
+    //////////////////////
+    setNewScore(n.scoreData[UrlParam("q")].split("%|%")[0])
+    setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1] !== 'null' && n.scoreData[UrlParam("q")].split("%|%")[1] !== "" ? n.scoreData[UrlParam("q")].split("%|%")[1] : "")
+  };
+
+  const handleClickOpen2 = (n) => {
+    console.log(n)
+    setOpen(true);
+    setOpeningId2(n)
     //////////////////////
     setNewScore(n.scoreData[UrlParam("q")].split("%|%")[0])
     setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1] !== 'null' && n.scoreData[UrlParam("q")].split("%|%")[1] !== "" ? n.scoreData[UrlParam("q")].split("%|%")[1] : "")
@@ -108,6 +130,43 @@ export function TeacherScore({ data, user }) {
     } else {
       setOpen(false)
       setDialogSubmitBtnText("更新")
+    }
+  };
+
+  const handleClose2 = (n) => {
+
+    setDialogSubmitBtnText2(<><CircularProgress size="1rem" /> 更新中</>)
+    if (n === "update") {
+      fetch('/api/updatescoresetting', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          {
+            scoreid: UrlParam("q"),
+            title: newTitle,
+            tags: newTags,
+            annousment: newAnnousment
+
+          }),
+      })
+        .then(res => res.json())
+        .then(
+          (res) => {
+            setDialogSubmitBtnText2("更新完畢")
+            setOpen2(false)
+            getAllStdPass()
+            setDialogSubmitBtnText2("更新")
+          }
+        ).catch((e) => {
+          getAllStdPass()
+          setDialogSubmitBtnText2("更新失敗，請重試")
+        })
+
+    } else {
+      setOpen2(false)
+      setDialogSubmitBtnText2("更新")
     }
   };
 
@@ -217,7 +276,8 @@ export function TeacherScore({ data, user }) {
         <h1>{scoreSetting.scoreName}</h1>
         <h3>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : ""}</h3>
         <p>學生與家長可透過連結查詢這筆成績:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
-
+        <Button variant='contained' onClick={handleClickOpen2}>更新標題、公告與標籤</Button>
+        <p></p>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -233,9 +293,11 @@ export function TeacherScore({ data, user }) {
             {tbody}
           </Table>
         </TableContainer>
+        <p></p>
+        <Button onClick={getAllStdPass}>重新整理</Button>
       </Box>
 
-      <Button onClick={getAllStdPass}>重新整理</Button>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -247,7 +309,7 @@ export function TeacherScore({ data, user }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            目前成績:{openingId.scoreData[UrlParam("q")].split("%|%")[0]}<br />
+            目前成績:{openingId.scoreData[UrlParam("q")].split("%|%")[0] && openingId.scoreData[UrlParam("q")].split("%|%")[0] !== 'null' ? openingId.scoreData[UrlParam("q")].split("%|%")[0] : "缺考"}<br />
             <p></p>
             <TextField type='number' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
             <p></p>
@@ -259,6 +321,43 @@ export function TeacherScore({ data, user }) {
           <Button onClick={handleClose}>取消</Button>
           <Button onClick={() => handleClose("update")}>
             {dialogSubmitBtnText}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+
+
+      <Dialog
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title2">
+          {"更新標題、公告與標籤"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description2">
+
+            <TextField type='text' variant="standard" label="輸入新標題" value={newTitle} onInput={(e) => setNewTitle(e.target.value)} />
+            <p></p>
+            <TextField
+              multiline
+              rows={2}
+              type='text' variant="standard" label="輸入新公告" value={newAnnousment} onInput={(e) => setNewAnnousment(e.target.value)} />
+            <p></p>
+            <SelectSubject defaultValue={scoreSetting.subject} onChangeFunc={setNewTags}
+              label={"輸入新標籤"}
+            />
+
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose2}>取消</Button>
+          <Button onClick={() => handleClose2("update")}>
+            {dialogSubmitBtnText2}
           </Button>
         </DialogActions>
       </Dialog>

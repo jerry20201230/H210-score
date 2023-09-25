@@ -182,6 +182,36 @@ app.post("/api/updatescore", (req, res) => {
 
 
 
+app.post("/api/updatescoresetting", (req, res) => {
+  console.log("/api/updatescoresetting", req.body)
+  if (req.session.role === "teacher") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+            UPDATE scoreUid
+            SET "scoreName" = "${req.body.scoreData}", "subject" = "${req.body.tags}", "summery" = "${req.body.annousment}"
+            WHERE uid = ${req.body.scoreid}
+            `, function (error, results, fields) {
+        if (error) throw error;
+
+        console.log(results)
+        res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+        res.end();
+
+        connection.release();
+
+      })
+    })
+  } else {
+    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.end();
+  }
+})
+
+
+
+
+
 app.post("/api/uploadnewscore", (req, res) => {
   if (req.session.role === "teacher") {
     const theUUID = uuidv4().slice(0, 7)

@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 
-export default function SelectSubject({ onChangeFunc, params }) {
+export default function SelectSubject({ onChangeFunc, params, defaultValue, label, helperText, placeholder }) {
   const [val, setVal] = React.useState({});
   const [receivers, setReceivers] = React.useState([]);
   const subject = [
@@ -29,14 +29,18 @@ export default function SelectSubject({ onChangeFunc, params }) {
         multiple
         id="tags-filled"
         options={subject.map((option) => option.title)}
-
+        defaultValue={defaultValue}
         freeSolo
         onChange={(e, value, situation, option) => {
           if (situation === "removeOption") {
             console.log("--->", e, value, situation, option);
           }
           setReceivers((state) => value);
-          onChangeFunc(params, value)
+          if (params) {
+            onChangeFunc(params, value)
+          } else {
+            onChangeFunc(value)
+          }
         }}
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
@@ -52,9 +56,9 @@ export default function SelectSubject({ onChangeFunc, params }) {
             sx={{ width: "100%" }}
             {...params}
             variant="standard"
-            label="新增標籤"
-            placeholder="新增標籤(按enter插入)"
-            helperText="從選單選擇，或輸入標籤名稱後按enter插入"
+            label={label ? label : "新增標籤"}
+            placeholder={placeholder ? placeholder : "新增標籤(按enter插入)"}
+            helperText={helperText ? helperText : "從選單選擇，或輸入標籤名稱後按enter插入"}
           />
         )}
       />
