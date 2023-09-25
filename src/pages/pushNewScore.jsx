@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button } from '@mui/material';
+import { Box, Button, Alert } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -104,6 +104,7 @@ export function PushNewScore({ data, user }) {
       .then(res => res.json())
       .then(res => {
         setOpen(false)
+        window.location.href = "/"
 
       })
       .catch(() => {
@@ -157,10 +158,13 @@ export function PushNewScore({ data, user }) {
           value={gradeTitle}
           sx={{ width: "100%" }}
           onInput={(e) => handleChange("gradeTitle", e.target.value)}
+          helperText="送出之後就無法修改"
         />
         <p></p>
 
-        <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"} />
+        <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
+
+        />
 
         <p></p>
         <TextField
@@ -171,6 +175,7 @@ export function PushNewScore({ data, user }) {
           variant="standard"
           value={annousment}
           onInput={(e) => setAnnousment(e.target.value)}
+          helperText="送出之後就無法修改"
         />
         <p></p>
         <TableContainer component={Paper}>
@@ -202,8 +207,12 @@ export function PushNewScore({ data, user }) {
           </Table>
         </TableContainer>
         <p></p>
-
-        <Button variant='contained' onClick={() => handleSubmit("save")}>儲存</Button>
+        <Alert severity="warning">
+          送出之後將無法修改<b>成績名稱、公告、標籤</b><br />
+          請再次確認!!
+        </Alert>
+        <p></p>
+        <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
 
       </Box>
 

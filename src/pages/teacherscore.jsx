@@ -214,6 +214,7 @@ export function TeacherScore({ data, user }) {
       <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
       <Box sx={{ p: 3 }}>
         <h1>{scoreSetting.scoreName}</h1>
+        <h3>{scoreSetting.summery}</h3>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
