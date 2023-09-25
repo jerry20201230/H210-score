@@ -125,7 +125,6 @@ export function TeacherScore({ data, user }) {
               if (res.data.result[i].userid.includes("s")) {
 
                 var object = res.data.result[i]
-                object.changeBtn = <Button variant="contained" onClick={() => handleClickOpen(res.data.result[i])}>編輯成績</Button>
                 list.push(object)
                 console.log(object)
               }
@@ -180,7 +179,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>{students[i].username}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
                 <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
-                <TableCell>{row.changeBtn}123</TableCell>
+                <TableCell><Button variant="contained" onClick={() => handleClickOpen(row)}>編輯成績</Button></TableCell>
               </TableRow>
 
             ))}
