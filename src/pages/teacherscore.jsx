@@ -23,6 +23,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelectSubject from '../selectSubject';
+import { AltRoute } from '@mui/icons-material';
 
 export function TeacherScore({ data, user }) {
   const [students, setStudents] = React.useState([
@@ -173,6 +174,24 @@ export function TeacherScore({ data, user }) {
     }
   };
 
+  function deleteScore() {
+    if (window.confirm("確定要刪除這筆成績嗎?\n這項操作無法復原!!")) {
+      fetch('/api/deletescore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          {
+            scoreid: UrlParam("q"),
+          }),
+      }).then(res => res.json())
+        .catch(() => {
+          window.alert("成績刪除失敗")
+        })
+    }
+  }
+
 
   function getAllStdPass() {
     fetch("/api/getallstudentscorebyid", {
@@ -298,6 +317,8 @@ export function TeacherScore({ data, user }) {
         </TableContainer>
         <p></p>
         <Button onClick={getAllStdPass}>重新整理</Button>
+        &nbsp;
+        <Button color='error' variant='contained' onClick={() => deleteScore()}>刪除成績</Button>
       </Box>
 
 

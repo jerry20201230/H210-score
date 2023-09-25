@@ -209,7 +209,6 @@ export function PushNewScore({ data, user }) {
         <p></p>
 
         <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
-
       </Box>
 
       <Dialog

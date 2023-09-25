@@ -208,7 +208,44 @@ app.post("/api/updatescoresetting", (req, res) => {
   }
 })
 
+app.post("/api/deletescore", (req, res) => {
+  console.log("/api/deletescore", req.body)
+  if (req.session.role === "teacher") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+            ALTER TABLE scoreData
+            DROP COLUMN ${req.body.scoreid}
+            `, function (error, results, fields) {
+        if (error) throw error;
 
+        console.log(results)
+
+        sql_Connect.getConnection(function (err, connection2) {
+          connection2.query(`
+            DELETE FROM scoreUid
+            WHERE uid = "${req.body.scoreid}"
+            `, function (error2, results2, fields) {
+            if (error2) throw error2;
+
+            console.log(results2)
+            res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+
+            res.end();
+
+            connection2.release();
+
+          })
+        })
+
+        connection.release();
+
+      })
+    })
+  } else {
+    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.end();
+  }
+})
 
 
 
