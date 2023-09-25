@@ -188,7 +188,7 @@ app.post("/api/updatescoresetting", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreUid
-            SET "scoreName" = "${req.body.scoreData}", "subject" = "${req.body.tags}", "summery" = "${req.body.annousment}"
+            SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
             WHERE uid = ${req.body.scoreid}
             `, function (error, results, fields) {
         if (error) throw error;
