@@ -189,7 +189,7 @@ app.post("/api/updatescoresetting", (req, res) => {
       connection.query(`
             UPDATE scoreUid
             SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
-            WHERE uid = ${req.body.scoreid}
+            WHERE uid = "${req.body.scoreid}"
             `, function (error, results, fields) {
         if (error) throw error;
 
