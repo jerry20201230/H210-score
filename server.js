@@ -159,7 +159,7 @@ app.post("/api/updatescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreData
-            SET ${req.body.scoreid} = "${req.body.password}"
+            SET ${req.body.scoreid} = "${req.body.scoreData}"
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
         if (error) throw error;
@@ -210,7 +210,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 
                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = "${req.body.score.scoreData[index] !== null ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null ? req.body.score.summeryData[index] : null}"
+                                SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
                                 WHERE id = ${index};
                                 `, function (error, results, fields) {
                   if (error) throw error;

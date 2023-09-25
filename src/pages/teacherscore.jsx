@@ -58,7 +58,7 @@ export function TeacherScore({ data, user }) {
       "scoreData": {
         "id": 1,
         "stdId": "s111253",
-        [UrlParam("q")]: "85%|%null"
+        [UrlParam("q")]: "0%|%null"
       },
       "userData": {
         "id": 1,
@@ -73,6 +73,7 @@ export function TeacherScore({ data, user }) {
     setOpen(true);
     setOpeningId(n)
     //////////////////////
+    setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1])
   };
 
   const handleClose = (n) => {
@@ -85,7 +86,7 @@ export function TeacherScore({ data, user }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-          { std: (openingId.id), scoreid: UrlParam("q") }),
+          { std: (openingId.userData.id), scoreid: UrlParam("q"), scoreData: (newScore) + "%|%" + (newPrivateMsg) }),
       })
         .then(res => res.json())
         .then(
@@ -242,7 +243,7 @@ export function TeacherScore({ data, user }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            目前成績:{openingId.scoreData[UrlParam("q")]}<br />
+            目前成績:{openingId.scoreData[UrlParam("q")].split("%|%")[0]}<br />
             <p></p>
             <TextField type='text' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
             <p></p>
