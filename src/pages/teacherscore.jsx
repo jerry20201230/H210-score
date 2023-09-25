@@ -54,7 +54,18 @@ export function TeacherScore({ data, user }) {
 
   const [open, setOpen] = React.useState(false);
   const [openingId, setOpeningId] = React.useState(
-    { username: "", userpassword: "" }
+    {
+      "scoreData": {
+        "id": 1,
+        "stdId": "s111253",
+        [UrlParam("q")]: "85%|%null"
+      },
+      "userData": {
+        "id": 1,
+        "username": "",
+        "userid": "",
+      }
+    }
   )
 
   const handleClickOpen = (n) => {
@@ -227,11 +238,11 @@ export function TeacherScore({ data, user }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"更新 " + " 的成績資料"}
+          {"更新 " + openingId.userData.username + " 的成績資料"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            目前成績:{ }<br />
+            目前成績:{openingId.scoreData[UrlParam("q")]}<br />
             <p></p>
             <TextField type='text' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
             <p></p>
