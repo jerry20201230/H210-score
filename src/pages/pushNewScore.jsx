@@ -158,7 +158,7 @@ export function PushNewScore({ data, user }) {
           value={gradeTitle}
           sx={{ width: "100%" }}
           onInput={(e) => handleChange("gradeTitle", e.target.value)}
-          helperText="送出之後就無法修改"
+
         />
         <p></p>
 
@@ -175,7 +175,7 @@ export function PushNewScore({ data, user }) {
           variant="standard"
           value={annousment}
           onInput={(e) => setAnnousment(e.target.value)}
-          helperText="送出之後就無法修改"
+
         />
         <p></p>
         <TableContainer component={Paper}>
@@ -207,11 +207,7 @@ export function PushNewScore({ data, user }) {
           </Table>
         </TableContainer>
         <p></p>
-        <Alert severity="warning">
-          送出之後將無法修改<b>成績名稱、公告、標籤</b><br />
-          請再次確認!!
-        </Alert>
-        <p></p>
+
         <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
 
       </Box>
