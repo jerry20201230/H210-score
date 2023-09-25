@@ -96,9 +96,10 @@ export function TeacherScore({ data, user }) {
     setOpeningId2(n)
     //////////////////////
 
+    console.log(scoreSetting.subject)
     setNewTitle(scoreSetting.scoreName)
     setNewAnnousment(scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "")
-    setNewTags(scoreSetting.subject)
+    //  setNewTags(scoreSetting.subject)
   };
 
   const handleClose = (n) => {
@@ -276,6 +277,7 @@ export function TeacherScore({ data, user }) {
       <Box sx={{ p: 3 }}>
         <h1>{scoreSetting.scoreName}</h1>
         <h3>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : ""}</h3>
+        <p>{scoreSetting.subject}</p>
         <p>學生與家長可透過連結查詢這筆成績:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
         <Button variant='contained' onClick={handleClickOpen2}>更新標題、公告與標籤</Button>
         <p></p>
