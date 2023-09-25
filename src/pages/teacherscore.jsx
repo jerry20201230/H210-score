@@ -73,7 +73,8 @@ export function TeacherScore({ data, user }) {
     setOpen(true);
     setOpeningId(n)
     //////////////////////
-    setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1])
+    setNewScore()
+    setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1] !== null && n.scoreData[UrlParam("q")].split("%|%")[1] ? n.scoreData[UrlParam("q")].split("%|%")[1] : "")
   };
 
   const handleClose = (n) => {
@@ -86,7 +87,7 @@ export function TeacherScore({ data, user }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-          { std: (openingId.userData.id), scoreid: UrlParam("q"), scoreData: (newScore) + "%|%" + (newPrivateMsg) }),
+          { id: (openingId.userData.id), scoreid: UrlParam("q"), scoreData: (newScore) + "%|%" + (newPrivateMsg) }),
       })
         .then(res => res.json())
         .then(
