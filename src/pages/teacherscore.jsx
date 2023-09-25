@@ -73,7 +73,8 @@ export function TeacherScore({ data, user }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ std: (openingId.id), password: (newPass) }),
+        body: JSON.stringify(
+          { std: (openingId.id), scoreid: UrlParam("q") }),
       })
         .then(res => res.json())
         .then(
@@ -226,15 +227,15 @@ export function TeacherScore({ data, user }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"更新 " + (openingId.userData.username ? openingId.username : "") + " 的成績資料"}
+          {"更新 " + " 的成績資料"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            目前成績:{openingId.scoreData[UrlParam("q")] ? openingId.scoreData[UrlParam("q")] : "" || "???"}<br />
+            目前成績:{ }<br />
             <p></p>
-            <TextField type='text' variant="standard" label="輸入新成績" ref={newPasswordInputRef} value={newScore} onInput={(e) => setNewScore(e.target.value)} />
+            <TextField type='text' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
             <p></p>
-            <TextField type='text' variant="standard" label="輸入新留言" ref={newPasswordInputRef} value={newPrivateMsg} onInput={(e) => setNewPrivateMsg(e.target.value)} />
+            <TextField type='text' variant="standard" label="輸入新留言" value={newPrivateMsg} onInput={(e) => setNewPrivateMsg(e.target.value)} />
 
           </DialogContentText>
         </DialogContent>

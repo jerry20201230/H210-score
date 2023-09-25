@@ -139,7 +139,7 @@ app.post("/api/changepassword/student", (req, res) => {
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
-        req.session.destroy()
+
         connection.release();
 
       })
@@ -159,7 +159,7 @@ app.post("/api/updatescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreData
-            SET userpassword = "${req.body.password}"
+            SET ${req.body.scoreid} = "${req.body.password}"
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
         if (error) throw error;
@@ -168,7 +168,7 @@ app.post("/api/updatescore", (req, res) => {
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
-        req.session.destroy()
+
         connection.release();
 
       })
@@ -350,6 +350,7 @@ app.post("/api/changepass", (req, res) => {
 
 
 
+    req.session.destroy()
   } else {
     res.status(403).json({ message: 'error 403', ok: false });
     res.end();
