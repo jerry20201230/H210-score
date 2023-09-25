@@ -99,7 +99,7 @@ export function TeacherScore({ data, user }) {
     console.log(scoreSetting.subject)
     setNewTitle(scoreSetting.scoreName)
     setNewAnnousment(scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "")
-    //  setNewTags(scoreSetting.subject)
+    setNewTags(scoreSetting.subject.split(","))
   };
 
   const handleClose = (n) => {
@@ -351,7 +351,7 @@ export function TeacherScore({ data, user }) {
               rows={2}
               type='text' variant="standard" label="輸入新公告" value={newAnnousment} onInput={(e) => setNewAnnousment(e.target.value)} />
             <p></p>
-            <SelectSubject defaultValue={scoreSetting.subject} onChangeFunc={setNewTags}
+            <SelectSubject defaultValue={scoreSetting.subject.split(",")} onChangeFunc={setNewTags}
               label={"輸入新標籤"}
             />
 
