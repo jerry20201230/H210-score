@@ -73,7 +73,7 @@ export function TeacherScore({ data, user }) {
     setOpen(true);
     setOpeningId(n)
     //////////////////////
-    setNewScore()
+    setNewScore(n.scoreData[UrlParam("q")].split("%|%")[0])
     setNewPrivateMsg(n.scoreData[UrlParam("q")].split("%|%")[1] !== 'null' && n.scoreData[UrlParam("q")].split("%|%")[1] !== "" ? n.scoreData[UrlParam("q")].split("%|%")[1] : "")
   };
 
@@ -215,7 +215,9 @@ export function TeacherScore({ data, user }) {
       <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
       <Box sx={{ p: 3 }}>
         <h1>{scoreSetting.scoreName}</h1>
-        <h3>{scoreSetting.summery}</h3>
+        <h3>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : ""}</h3>
+        <p>學生與家長可透過連結查詢這筆成績:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -247,7 +249,7 @@ export function TeacherScore({ data, user }) {
           <DialogContentText id="alert-dialog-description">
             目前成績:{openingId.scoreData[UrlParam("q")].split("%|%")[0]}<br />
             <p></p>
-            <TextField type='text' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
+            <TextField type='number' variant="standard" label="輸入新成績" value={newScore} onInput={(e) => setNewScore(e.target.value)} />
             <p></p>
             <TextField type='text' variant="standard" label="輸入新留言" value={newPrivateMsg} onInput={(e) => setNewPrivateMsg(e.target.value)} />
 
