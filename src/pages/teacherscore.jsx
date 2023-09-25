@@ -186,6 +186,10 @@ export function TeacherScore({ data, user }) {
             scoreid: UrlParam("q"),
           }),
       }).then(res => res.json())
+        .then(() => {
+          alert("成績已經刪除")
+          window.location.href = "/"
+        })
         .catch(() => {
           window.alert("成績刪除失敗")
         })
