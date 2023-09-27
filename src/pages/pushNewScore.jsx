@@ -24,6 +24,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelectSubject from '../selectSubject';
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 
 export function PushNewScore({ data, user }) {
@@ -163,8 +164,8 @@ export function PushNewScore({ data, user }) {
         <p></p>
 
         <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
-
         />
+        <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
 
         <p></p>
         <TextField
