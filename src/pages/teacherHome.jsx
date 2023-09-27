@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
+import { CheckLogin } from '../checklogin';
 
 export function TeacherHomePage({ data, user }) {
 
@@ -24,12 +25,13 @@ export function TeacherHomePage({ data, user }) {
 
     return (
         <>
+
             <TopBar logined={true} data={data.data} user={user} title={"教師後臺"} />
             <Box sx={{ p: 3 }}>
                 <h1>教師後臺</h1>
                 <Grid container spacing={2} >
                     <Grid xs={6} component={Link} to={"/backend/account"} sx={{ textDecoration: "none" }}>
-                        <Item><h1>帳號管理</h1>學生帳號、密碼設定</Item>
+                        <Item><h1>帳號管理</h1>學生、家長帳密設定</Item>
                     </Grid>
                     <Grid xs={6} component={Link} to={"/backend/score"} sx={{ textDecoration: "none" }}>
                         <Item><h1>成績管理</h1>全班成績、新增成績</Item>
