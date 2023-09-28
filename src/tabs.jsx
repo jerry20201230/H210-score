@@ -54,7 +54,7 @@ export default function ScoreTabs({ data, role }) {
   };
 
   React.useEffect(() => {
-    console.log(data)
+
     var list = []
     for (let i = 0; i < data.length; i++) {
       var subject = data[i].subject.split(",")
@@ -65,7 +65,7 @@ export default function ScoreTabs({ data, role }) {
       }
     }
 
-    console.log(list)
+
     setTabTitles(list)
   }, [data])
 

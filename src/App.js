@@ -22,7 +22,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem(""));
   const [userData, setUserData] = useState([])
   function handleCallBack(data) {
-    console.log(data)
     setUserData(data)
   }
 

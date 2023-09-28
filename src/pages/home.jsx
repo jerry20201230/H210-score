@@ -31,26 +31,35 @@ export function Homepage({ user, data }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
 
-
-
-        fetch("/api/getscoremap", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({}),
-        })
-          .then(res2 => res2.json())
-          .then(res2 => {
-            console.log(res2)
-            var list = []
-            for (let i = 0; i < res2.data.result.length; i++) {
-              list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
-            }
-            setScoreList(list)
+        if (res.ok) {
+          fetch("/api/getscoremap", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
           })
+            .then(res2 => res2.json())
+            .then(res2 => {
+              if (res2.ok) {
+
+                var list = []
+                for (let i = 0; i < res2.data.result.length; i++) {
+                  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
+                }
+                setScoreList(list)
+              } else {
+                alert("發生錯誤，請刷新網站!!")
+              }
+
+            })
+        } else {
+          alert("發生錯誤，請刷新網站!!")
+        }
+
+
+
       })
   }
   React.useEffect(() => {

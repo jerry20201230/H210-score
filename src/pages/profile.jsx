@@ -44,11 +44,17 @@ export function Profile({ data, user }) {
       })
         .then(res => res.json())
         .then(res => {
-          alert("更改密碼成功，下次請用新密碼登入")
-          setOldPassword("")
-          setNewPassword("")
-          setConfirmNewPassword("")
-          window.location.href = "/"
+          if (res.ok) {
+            alert("更改密碼成功，下次請用新密碼登入")
+            setOldPassword("")
+            setNewPassword("")
+            setConfirmNewPassword("")
+            window.location.href = "/"
+          }
+          else {
+            alert("更改密碼時發生錯誤!")
+          }
+
         })
         .catch(() => {
           alert("更新密碼失敗")

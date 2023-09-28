@@ -83,7 +83,7 @@ export function TeacherScore({ data, user }) {
   )
 
   const handleClickOpen = (n) => {
-    console.log(n)
+
     setOpen(true);
     setOpeningId(n)
     //////////////////////
@@ -92,12 +92,12 @@ export function TeacherScore({ data, user }) {
   };
 
   const handleClickOpen2 = (n) => {
-    console.log(n)
+
     setOpen2(true);
     setOpeningId2(n)
     //////////////////////
 
-    console.log(scoreSetting.subject)
+
     setNewTitle(scoreSetting.scoreName)
     setNewAnnousment(scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "")
     setNewTags(scoreSetting.subject.split(","))
@@ -118,11 +118,18 @@ export function TeacherScore({ data, user }) {
         .then(res => res.json())
         .then(
           (res) => {
-            setDialogSubmitBtnText("更新完畢")
-            setOpen(false)
-            getAllStdPass()
-            setNewPass("")
-            setDialogSubmitBtnText("更新")
+            if (res.ok) {
+              setDialogSubmitBtnText("更新完畢")
+              setOpen(false)
+              getAllStdPass()
+              setNewPass("")
+              setDialogSubmitBtnText("更新")
+            } else {
+              getAllStdPass()
+              setNewPass("")
+              setDialogSubmitBtnText("更新失敗，請重試")
+            }
+
 
           }
         ).catch((e) => {
@@ -158,10 +165,16 @@ export function TeacherScore({ data, user }) {
         .then(res => res.json())
         .then(
           (res) => {
-            setDialogSubmitBtnText2("更新完畢")
-            setOpen2(false)
-            getAllStdPass()
-            setDialogSubmitBtnText2("更新")
+            if (res.ok) {
+              setDialogSubmitBtnText2("更新完畢")
+              setOpen2(false)
+              getAllStdPass()
+              setDialogSubmitBtnText2("更新")
+            } else {
+              getAllStdPass()
+              setDialogSubmitBtnText2("更新失敗，請重試")
+            }
+
           }
         ).catch((e) => {
           getAllStdPass()
@@ -186,9 +199,14 @@ export function TeacherScore({ data, user }) {
             scoreid: UrlParam("q"),
           }),
       }).then(res => res.json())
-        .then(() => {
-          alert("成績已經刪除")
-          window.location.href = "/"
+        .then((res) => {
+          if (res.ok) {
+            alert("成績已經刪除")
+            window.location.href = "/"
+          } else {
+            window.alert("成績刪除失敗")
+          }
+
         })
         .catch(() => {
           window.alert("成績刪除失敗")
@@ -209,31 +227,41 @@ export function TeacherScore({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(".......0", res)
-        setScoreData(res.data.result)
-        fetch("/api/getallstudents", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        if (res.ok) {
 
-          }),
-        })
-          .then(res => res.json())
-          .then(res => {
-            var list = []
-            for (let i = 0; i < res.data.result.length; i++) {
-              if (res.data.result[i].userid.includes("s")) {
+          setScoreData(res.data.result)
+          fetch("/api/getallstudents", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
 
-                var object = res.data.result[i]
-                list.push(object)
-                console.log(object)
-              }
-            }
-            console.log(list)
-            setStudents(list)
+            }),
           })
+            .then(res => res.json())
+            .then(res => {
+              if (res.ok) {
+
+                var list = []
+                for (let i = 0; i < res.data.result.length; i++) {
+                  if (res.data.result[i].userid.includes("s")) {
+
+                    var object = res.data.result[i]
+                    list.push(object)
+
+                  }
+                }
+
+                setStudents(list)
+              } else {
+                alert("發生錯誤，請刷新網站!!")
+              }
+            })
+        } else {
+          alert("發生錯誤，請刷新網站!!")
+        }
+
 
       })
 
@@ -246,18 +274,23 @@ export function TeacherScore({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
-        var list = [], k = false
-        for (let i = 0; i < res.data.result.length; i++) {
-          list.push(res.data.result[i].uid)
+        if (res.ok) {
 
-          if (res.data.result[i].uid == UrlParam("q")) {
-            k = true
-            setScoreSetting(res.data.result[i])
-            console.log(res.data.result[i])
+          var list = [], k = false
+          for (let i = 0; i < res.data.result.length; i++) {
+            list.push(res.data.result[i].uid)
+
+            if (res.data.result[i].uid == UrlParam("q")) {
+              k = true
+              setScoreSetting(res.data.result[i])
+
+            }
           }
+          if (!k) alert("找不到成績")
+        } else {
+          alert("發生錯誤，請刷新網站!!")
         }
-        if (!k) alert("找不到成績")
+
       })
   }
 
@@ -266,7 +299,7 @@ export function TeacherScore({ data, user }) {
   }, [])
 
   React.useEffect(() => {
-    console.log(students, scoreData, ".____.")
+
     if (students.length > 1 && scoreData.length > 1 && students.length == scoreData.length) {
       setTbody(
         <>

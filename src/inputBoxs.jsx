@@ -12,7 +12,6 @@ export function InputForm({ i }) {
 
     const handleSubmit = () => {
         // 在這裡處理提交操作，您可以使用inputValues數組中的值
-        console.log('輸入框的值：', inputValues);
     };
 
     return (

@@ -43,12 +43,17 @@ export function SearchScoreSheet({ data, user }) {
 		})
 			.then(res2 => res2.json())
 			.then(res2 => {
-				console.log(res2)
-				var list = []
-				for (let i = 0; i < res2.data.result.length; i++) {
-					list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
+				if (res2.ok) {
+
+					var list = []
+					for (let i = 0; i < res2.data.result.length; i++) {
+						list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid, subject: res2.data.result[i].subject })
+					}
+					setScoreList(list)
+				} else {
+					alert("發生錯誤，請刷新網站!!")
 				}
-				setScoreList(list)
+
 			})
 	}, [])
 

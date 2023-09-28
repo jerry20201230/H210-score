@@ -46,7 +46,7 @@ app.post('/api/login', (req, res) => {
         res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
       } else {
         req.session.destroy()
-        res.status(401).json({ message: 'Invalid credentials', ok: false });
+        res.status(401).json({ message: 'Invalid credentials', ok: false, code: 401 });
       }
 
       res.end();
@@ -66,7 +66,7 @@ app.post("/api/getscore", (req, res) => {
 
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
 
         res.end();
@@ -74,7 +74,7 @@ app.post("/api/getscore", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
     res.end();
   }
 
@@ -89,7 +89,7 @@ app.post("/api/getallstudents", (req, res) => {
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
 
         res.end();
@@ -97,7 +97,7 @@ app.post("/api/getallstudents", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
     res.end();
   }
 })
@@ -111,7 +111,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
           console.log(results)
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
 
         res.end();
@@ -119,7 +119,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ message: 'Invalid credentials', code: 403, ok: false });
     res.end();
   }
 })
@@ -145,7 +145,7 @@ app.post("/api/changepassword/student", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 })
@@ -174,7 +174,7 @@ app.post("/api/updatescore", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 })
@@ -203,7 +203,7 @@ app.post("/api/updatescoresetting", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 })
@@ -242,7 +242,7 @@ app.post("/api/deletescore", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 })
@@ -295,7 +295,7 @@ app.post("/api/uploadnewscore", (req, res) => {
     })
 
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 })
@@ -311,7 +311,7 @@ app.post("/api/getscorebyid", (req, res) => {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`SELECT ${req.body.id.replace("p", "s")} FROM scoreData`, function (error2, results2, fields2) {
               if (error2) {
-                res.status(404).json({ message: 'Invalid credentials', ok: false });
+                res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
               if (results2.length > 0) {
                 var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
@@ -330,7 +330,7 @@ app.post("/api/getscorebyid", (req, res) => {
                 console.log("SCORE COUNTING", scoreList)
                 res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
               } else {
-                res.status(404).json({ message: 'Invalid credentials', ok: false });
+                res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               }
 
               res.end();
@@ -341,7 +341,7 @@ app.post("/api/getscorebyid", (req, res) => {
           //    console.log(results)
           //    res.send(JSON.stringify({ message: 'Login successful', data: { result: {yourScore:results[i][req.id],} }, ok: true }));
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
 
         ////     res.end();
@@ -349,7 +349,7 @@ app.post("/api/getscorebyid", (req, res) => {
       })
     })
   } else {
-    res.status(403).json({ message: 'Invalid credentials', ok: false });
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
   }
 
@@ -363,7 +363,7 @@ app.post("/api/getscoremap", (req, res) => {
 
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
       } else {
-        res.status(404).json({ message: 'Invalid credentials', ok: false });
+        res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
       }
 
       res.end();
@@ -398,7 +398,7 @@ app.post("/api/changepass", (req, res) => {
 
                 res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
               } else {
-                res.status(404).json({ message: 'Invalid credentials', ok: false });
+                res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               }
 
               res.end();
@@ -407,7 +407,7 @@ app.post("/api/changepass", (req, res) => {
           })
 
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false });
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
 
         connection.release();
@@ -419,7 +419,7 @@ app.post("/api/changepass", (req, res) => {
 
     req.session.destroy()
   } else {
-    res.status(403).json({ message: 'error 403', ok: false });
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
 
   }

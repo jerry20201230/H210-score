@@ -55,45 +55,55 @@ export function Score({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
-        var list = [], k = false
-        for (let i = 0; i < res.data.result.length; i++) {
-          list.push(res.data.result[i].uid)
+        if (res.ok) {
 
-          if (res.data.result[i].uid == UrlParam("q")) {
-            k = true
+          var list = [], k = false
+          for (let i = 0; i < res.data.result.length; i++) {
+            list.push(res.data.result[i].uid)
+
+            if (res.data.result[i].uid == UrlParam("q")) {
+              k = true
 
 
-            setAnnousment(
+              setAnnousment(
 
-              res.data.result[i].summery
-            )
+                res.data.result[i].summery
+              )
 
-            setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
-            fetch("/api/getscorebyid", {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ id: UrlParam("q") }),
-            })
-              .then(res2 => res2.json())
-              .then(res2 => {
-                setScoreData(res2.data)
-                setLoading(false)
-
+              setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
+              fetch("/api/getscorebyid", {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: UrlParam("q") }),
               })
-              .catch(() => {
+                .then(res2 => res2.json())
+                .then(res2 => {
+                  if (res2.ok) {
+                    setScoreData(res2.data)
+                    setLoading(false)
+                  } else {
+                    alert("發生錯誤，請刷新網站!!")
+                  }
 
-                setLoadingState("發生錯誤")
-              })
+
+                })
+                .catch(() => {
+
+                  setLoadingState("發生錯誤")
+                })
+            }
           }
+          if (!k) {
+            alert("找不到考試")
+            setLoadingState("發生錯誤")
+            // setLoading(false)
+          }
+        } else {
+          alert("發生錯誤，請刷新網站!!")
         }
-        if (!k) {
-          alert("找不到考試")
-          setLoadingState("發生錯誤")
-          // setLoading(false)
-        }
+
       })
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
@@ -157,7 +167,7 @@ export function Score({ data, user }) {
       setAnnousment(<></>)
       setPrivateTalk(<></>)
     }
-    console.log(annousment, privateTalk, annousmentWid, privateTalkWid)
+
   }, [scoreData, annousmentWid, Announcement, privateTalkWid])
 
   return (

@@ -67,17 +67,23 @@ export function StudentAccounts({ data, user }) {
                 .then(res => res.json())
                 .then(
                     (res) => {
-                        setDialogSubmitBtnText("更新完畢")
-                        setOpen(false)
-                        getAllStdPass()
-                        setNewPass("")
-                        setDialogSubmitBtnText("更新")
+                        if (res.ok) {
+                            setDialogSubmitBtnText("更新完畢")
+                            setOpen(false)
+                            getAllStdPass()
+                            setNewPass("")
+                            setDialogSubmitBtnText("更新")
+                        }
+                        else {
+                            getAllStdPass()
+                            setNewPass("")
+                            setDialogSubmitBtnText("更新失敗，請重試")
+                        }
+
 
                     }
                 ).catch((e) => {
-                    getAllStdPass()
-                    setNewPass("")
-                    setDialogSubmitBtnText("更新失敗，請重試")
+
                 })
 
         } else {
@@ -88,12 +94,11 @@ export function StudentAccounts({ data, user }) {
     };
 
     const handleSubmit = () => {
-        // 在這裡處理提交操作，您可以使用inputValues數組中的值
-        console.log('輸入框的值：', passwordValue);
+
     };
 
     const editPass = (i, p) => {
-        console.log(i, p)
+
         handleClickOpen(i - 1)
     }
 
@@ -129,22 +134,27 @@ export function StudentAccounts({ data, user }) {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(".......0", res)
-                var list = []
-                for (let i = 0; i < res.data.result.length; i++) {
-                    if (res.data.result[i].userid.includes("s")) {
+                if (res.ok) {
+                    console.log(".......0", res)
+                    var list = []
+                    for (let i = 0; i < res.data.result.length; i++) {
+                        if (res.data.result[i].userid.includes("s")) {
 
-                        var object = res.data.result[i]
-                        object.accountInput = res.data.result[i].userid
-                        object.passwordInput = res.data.result[i].userpassword
+                            var object = res.data.result[i]
+                            object.accountInput = res.data.result[i].userid
+                            object.passwordInput = res.data.result[i].userpassword
 
-                        object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
+                            object.changePasswordBtn = <Button variant='contained' onClick={() => { editPass(i) }}>編輯密碼</Button>
 
-                        list.push(object)
+                            list.push(object)
+                        }
                     }
+                    setStudents(list)
+
+                } else {
+                    alert("發生錯誤，請刷新網站!!")
                 }
-                setStudents(list)
-                console.log(students, list)
+
             })
 
     }

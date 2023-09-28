@@ -84,7 +84,7 @@ export function PushNewScore({ data, user }) {
       }
 
     })
-    console.log('輸入框的值：', inputValues, summeryValue);
+
     fetch("/api/uploadnewscore", {
       method: 'POST',
       headers: {
@@ -104,8 +104,13 @@ export function PushNewScore({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
-        setOpen(false)
-        window.location.href = "/"
+        if (res.ok) {
+          setOpen(false)
+          window.location.href = "/"
+        }
+        else {
+          alert("發生錯誤，請刷新網站!!")
+        }
 
       })
       .catch(() => {
@@ -125,22 +130,27 @@ export function PushNewScore({ data, user }) {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(".......0", res)
-        var list = []
-        for (let i = 0; i < res.data.result.length; i++) {
-          if (res.data.result[i].userid.includes("s")) {
-            console.log("INCLUDES:", i, res.data.result[i].userid)
+        if (res.ok) {
+          console.log(".......0", res)
+          var list = []
+          for (let i = 0; i < res.data.result.length; i++) {
+            if (res.data.result[i].userid.includes("s")) {
 
-            var object = res.data.result[i]
-            object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-            object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
-            console.log(object, i, "nioh", inputValues[i])
-            list.push(object)
+              var object = res.data.result[i]
+              object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
+              object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
+
+              console.log(object, i, "nioh", inputValues[i])
+              list.push(object)
+            }
           }
+          setStudents(list)
+
+        } else {
+          alert("發生錯誤，請刷新網站!!")
         }
-        setStudents(list)
-        console.log(students, list)
+
       })
   }, [])
 
