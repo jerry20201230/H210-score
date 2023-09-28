@@ -394,12 +394,10 @@ app.post("/api/changepass", (req, res) => {
           WHERE userid = "${req.body.userid}"
           `, function (error, results2, fields) {
               if (error) throw error;
-              if (results2.length > 0) {
 
-                res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
-              } else {
-                res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
-              }
+
+              res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
+
 
               res.end();
               connection2.release();
