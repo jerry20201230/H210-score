@@ -60,7 +60,7 @@ app.post("/api/getscore", (req, res) => {
 
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid], function (error, results, fields) {
+      connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
 
