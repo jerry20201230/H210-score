@@ -28,11 +28,10 @@ export function Profile({ data, user }) {
   }, [])
 
   function resetPassword() {
-    console.log(newPassword, confirmNewPassword)
     if (newPassword !== confirmNewPassword) {
       alert("確認密碼不符，請重新輸入")
     } else {
-      if (newPassword == "" || confirmNewPassword == "") {
+      if (newPassword == "" || confirmNewPassword == "" || !newPassword) {
         alert("新密碼請勿空白!!")
       } else {
         fetch("/api/changepass", {
