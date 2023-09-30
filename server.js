@@ -102,6 +102,28 @@ app.post("/api/getallstudents", (req, res) => {
   }
 })
 
+
+app.post("/api/getallstudentsforscore", (req, res) => {
+  if (req.session.role === "teacher") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`SELECT id,username,userid,role FROM userData WHERE role = 'std' `, function (error, results, fields) {
+        if (error) throw error;
+        if (results.length > 0) {
+          res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+        } else {
+          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+        }
+
+        res.end();
+        connection.release();
+      })
+    })
+  } else {
+    res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
+    res.end();
+  }
+})
+
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {

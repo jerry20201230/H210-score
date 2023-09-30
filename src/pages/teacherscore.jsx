@@ -230,7 +230,7 @@ export function TeacherScore({ data, user }) {
         if (res.ok) {
 
           setScoreData(res.data.result)
-          fetch("/api/getallstudents", {
+          fetch("/api/getallstudentsforscore", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

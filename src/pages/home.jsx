@@ -57,9 +57,6 @@ export function Homepage({ user, data }) {
         } else {
           alert("發生錯誤，請刷新網站!!")
         }
-
-
-
       })
   }
   React.useEffect(() => {

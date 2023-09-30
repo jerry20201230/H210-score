@@ -207,7 +207,7 @@ export function StudentAccounts({ data, user }) {
 
             <Box sx={{ p: 3 }}>
                 <h1>所有學生的帳號密碼</h1>
-                <p>學生帳號<b>專供學生使用，請勿提供給家長</b><br />學生帳號規則: s+學號</p>
+                <p>學生帳號<b>專供學生使用，請勿提供給家長</b><br />學生帳號規則: s+學號，預設密碼:學號</p>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

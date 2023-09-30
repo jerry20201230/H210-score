@@ -213,7 +213,7 @@ export function ParentAccounts({ data, user }) {
 
             <Box sx={{ p: 3 }}>
                 <h1>所有家長的帳號密碼</h1>
-                <p>家長帳號<b>專供家長使用，請勿提供給學生</b><br />家長帳號規則: p+孩子學號</p>
+                <p>家長帳號<b>專供家長使用，請勿提供給學生</b><br />家長帳號規則: p+孩子學號，預設密碼:孩子學號</p>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

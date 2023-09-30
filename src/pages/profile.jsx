@@ -31,34 +31,44 @@ export function Profile({ data, user }) {
     if (newPassword !== confirmNewPassword) {
       alert("確認密碼不符，請重新輸入")
     } else {
-      fetch("/api/changepass", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userid: data.data.userid,
-          oldpass: oldPassword,
-          newpass: newPassword,
+      if (newPassword == "") {
+        alert("新密碼請勿空白!!")
+      } else {
+        fetch("/api/changepass", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userid: data.data.userid,
+            oldpass: oldPassword,
+            newpass: newPassword,
+          })
         })
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (res.ok) {
-            alert("更改密碼成功，下次請用新密碼登入")
-            setOldPassword("")
-            setNewPassword("")
-            setConfirmNewPassword("")
-            window.location.href = "/"
-          }
-          else {
-            alert("更改密碼時發生錯誤!")
-          }
+          .then(res => res.json())
+          .then(res => {
+            if (res.ok) {
+              alert("更改密碼成功，請用新密碼重新登入")
+              setOldPassword("")
+              setNewPassword("")
+              setConfirmNewPassword("")
+              window.location.href = "/"
+            }
+            else {
+              if (res.code == 403) {
+                alert("發生錯誤，請刷新網站!!")
+              } else if (res.code == 404) {
+                alert("原本密碼錯誤")
+              }
 
-        })
-        .catch(() => {
-          alert("更新密碼失敗")
-        })
+            }
+
+          })
+          .catch(() => {
+            alert("更新密碼失敗")
+          })
+      }
+
     }
   }
 
