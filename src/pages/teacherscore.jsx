@@ -379,7 +379,7 @@ export function TeacherScore({ data, user }) {
                 <TableCell>座號</TableCell>
                 <TableCell>姓名</TableCell>
                 <TableCell>成績</TableCell>
-                <TableCell>備註</TableCell>
+                <TableCell>私人留言</TableCell>
                 <TableCell>動作</TableCell>
               </TableRow>
             </TableHead>
