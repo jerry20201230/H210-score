@@ -8,15 +8,15 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
   const [val, setVal] = React.useState({});
   const [receivers, setReceivers] = React.useState([]);
   const subject = [
-    { title: "國文" },
-    { title: "數學" },
-    { title: "英文" },
-    { title: "物理" },
-    { title: "化學" },
-    { title: "地理" },
-    { title: "公民" },
-    { title: "小考" },
-    { title: "週考" },
+    { title: "國文", type: 0 },
+    { title: "數學", type: 0 },
+    { title: "英文", type: 0 },
+    { title: "物理", type: 0 },
+    { title: "化學", type: 0 },
+    { title: "地理", type: 0 },
+    { title: "公民", type: 0 },
+    { title: "小考", type: 1 },
+    { title: "週考", type: 1 },
   ];
 
   const handleClick = () => {
@@ -31,6 +31,10 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
         options={subject.map((option) => option.title)}
         defaultValue={defaultValue}
         freeSolo
+
+        groupBy={(option) => option.type}
+        getOptionLabel={(option) => option.title}
+
         onChange={(e, value, situation, option) => {
           if (situation === "removeOption") {
             // console.log("--->", e, value, situation, option);
