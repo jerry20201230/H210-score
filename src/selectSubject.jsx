@@ -8,42 +8,30 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
   const [val, setVal] = React.useState({});
   const [receivers, setReceivers] = React.useState([]);
   const subject = [
-    { title: "國文", type: 0 },
-    { title: "數學", type: 0 },
-    { title: "英文", type: 0 },
-    { title: "物理", type: 0 },
-    { title: "化學", type: 0 },
-    { title: "地理", type: 0 },
-    { title: "公民", type: 0 },
-    { title: "小考", type: 1 },
-    { title: "週考", type: 1 },
+    { title: "國文" },
+    { title: "數學" },
+    { title: "英文" },
+    { title: "物理" },
+    { title: "化學" },
+    { title: "地理" },
+    { title: "公民" },
+    { title: "小考" },
+    { title: "週考" },
+    { title: "二上第一次段考" },
+    { title: "二上第二次段考" },
+    { title: "二上第三次段考" },
   ];
 
-
-  const options = [
-    { title: '科目', data: ['國文', '數學', '英文', '物理', '化學', '地理', '公民'] },
-    { title: '類別', data: ['小考', '週考', '二上第一次段考', '二上第二次段考', '二上第三次段考'] },
-  ];
-
-  const groupedOptions = options.map((option) => ({
-    title: option.title,
-    options: option.data,
-  }));
-
-  // const handleClick = () => {
-  //   setVal(subject[0]); //you pass any value from the array of subject
-  //   // set value in TextField from dropdown list
-  // };
-
+  const handleClick = () => {
+    setVal(subject[0]); //you pass any value from the array of subject
+    // set value in TextField from dropdown list
+  };
   return (
     <Stack spacing={1} sx={{ width: "100%" }}>
       <Autocomplete
         multiple
         id="tags-filled"
-        options={groupedOptions}
-        groupBy={groupedOptions.data}
-        getOptionLabel={(option) => option.title}
-
+        options={subject.map((option) => option.title)}
         defaultValue={defaultValue}
         freeSolo
         onChange={(e, value, situation, option) => {
