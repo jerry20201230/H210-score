@@ -386,7 +386,7 @@ export function TeacherScore({ data, user }) {
           </Table>
         </TableContainer>
         <p></p>
-        <Button onClick={window.location.reload()}>重新整理</Button>
+        <Button onClick={() => window.location.reload()}>重新整理</Button>
         &nbsp;
         <Button color='error' variant='contained' onClick={() => deleteScore()}>刪除成績</Button>
       </Box>
