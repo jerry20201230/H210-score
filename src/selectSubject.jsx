@@ -41,8 +41,8 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
         multiple
         id="tags-filled"
         options={groupedOptions}
-        groupBy={(option) => option.title}
-        getOptionLabel={(option) => option}
+        groupBy={groupedOptions.data}
+        getOptionLabel={(option) => option.title}
 
         defaultValue={defaultValue}
         freeSolo
