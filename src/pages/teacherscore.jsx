@@ -352,7 +352,7 @@ export function TeacherScore({ data, user }) {
               <Stack direction="row" spacing={1}>
                 {scoreSetting.subject.split(",").map((d, i) => {
                   return (
-                    <Chip label={d} key={"subject" + i} color="primary" />
+                    <Chip label={d} key={"subject" + i} size="small" color={Math.random > 0.5 ? "primary" : "info"} />
                   )
                 })}
               </Stack>
@@ -360,7 +360,7 @@ export function TeacherScore({ data, user }) {
             <Typography variant="body2">
               <p>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "(沒有對全班的公告)"}</p>
               <p>學生與家長的查詢連結:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
-              <p>成績id:{UrlParam("q")}</p>
+              <span>成績id: {UrlParam("q")}</span>
             </Typography>
           </CardContent>
           <CardActions>
