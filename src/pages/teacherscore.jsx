@@ -352,7 +352,8 @@ export function TeacherScore({ data, user }) {
               <Stack direction="row" spacing={1}>
                 {scoreSetting.subject.split(",").map((d, i) => {
                   return (
-                    <Chip label={d} key={"subject" + i} size="small" color={Math.random > 0.5 ? "primary" : "info"} />
+                    d == "" ? <></> :
+                      <Chip label={d} key={"subject" + i} size="small" color={Math.random > 0.5 ? "primary" : "info"} />
                   )
                 })}
               </Stack>
