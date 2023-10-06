@@ -34,6 +34,7 @@ export function Score({ data, user }) {
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
+    overflow: "auto",
     color: theme.palette.text.secondary,
   }));
 

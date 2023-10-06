@@ -353,7 +353,10 @@ export function TeacherScore({ data, user }) {
           </Table>
         </TableContainer>
         <p></p>
-        <Button onClick={getAllStdPass}>重新整理</Button>
+        <Button onClick={getAllStdPass}>{
+          dialogSubmitBtnText == "更新" ? "重新整理" :
+            dialogSubmitBtnText
+        }</Button>
         &nbsp;
         <Button color='error' variant='contained' onClick={() => deleteScore()}>刪除成績</Button>
       </Box>
