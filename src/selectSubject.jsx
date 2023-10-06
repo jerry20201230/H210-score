@@ -59,8 +59,8 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
             sx={{ width: "100%" }}
             {...params}
             variant="standard"
-            label={label ? label : "新增標籤"}
-            placeholder={placeholder ? placeholder : "新增標籤(按enter插入)"}
+            label={label ? label : "成績標籤"}
+            placeholder={placeholder ? placeholder : "新增標籤"}
             helperText={helperText ? helperText : "從選單選擇，或輸入標籤名稱後按enter插入"}
           />
         )}
