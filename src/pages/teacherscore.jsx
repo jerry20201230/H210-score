@@ -25,6 +25,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SelectSubject from '../selectSubject';
 import { AltRoute } from '@mui/icons-material';
 
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 export function TeacherScore({ data, user }) {
   const [students, setStudents] = React.useState([
     { username: "" }
@@ -331,12 +338,38 @@ export function TeacherScore({ data, user }) {
 
       <TopBar logined={true} data={data.data} user={user} title={"成績資料"} />
       <Box sx={{ p: 3 }}>
-        <h1>{scoreSetting.scoreName}</h1>
-        <h3>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : ""}</h3>
-        <p>{scoreSetting.subject}</p>
-        <p>學生與家長可透過連結查詢這筆成績:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
-        <Button variant='contained' onClick={handleClickOpen2}>更新標題、公告與標籤</Button>
+
+
+        <Card sx={{ minWidth: 275 }}>
+          <CardContent>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+              成績基本資料
+            </Typography>
+            <Typography variant="h5" component="div">
+              {scoreSetting.scoreName}
+            </Typography>
+            <Typography sx={{ mb: 1.5 }} color="text.secondary" component='div'>
+              <Stack direction="row" spacing={1}>
+                {scoreSetting.subject.split(",").map((d, i) => {
+                  return (
+                    <Chip label={d} key={"subject" + i} color="primary" />
+                  )
+                })}
+              </Stack>
+            </Typography>
+            <Typography variant="body2">
+              <p>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "(沒有對全班的公告)"}</p>
+              <p>學生與家長的查詢連結:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
+              <p>成績id:{UrlParam("q")}</p>
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={handleClickOpen2}>更新基本資料</Button>
+          </CardActions>
+        </Card>
+
         <p></p>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -353,10 +386,7 @@ export function TeacherScore({ data, user }) {
           </Table>
         </TableContainer>
         <p></p>
-        <Button onClick={getAllStdPass}>{
-          dialogSubmitBtnText == "更新" ? "重新整理" :
-            dialogSubmitBtnText
-        }</Button>
+        <Button onClick={window.location.reload()}>重新整理</Button>
         &nbsp;
         <Button color='error' variant='contained' onClick={() => deleteScore()}>刪除成績</Button>
       </Box>
