@@ -19,22 +19,33 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
     { title: "週考", type: 1 },
   ];
 
-  const handleClick = () => {
-    setVal(subject[0]); //you pass any value from the array of subject
-    // set value in TextField from dropdown list
-  };
+
+  const options = [
+    { title: '科目', data: ['國文', '數學', '英文', '物理', '化學', '地理', '公民'] },
+    { title: '類別', data: ['小考', '週考', '二上第一次段考', '二上第二次段考', '二上第三次段考'] },
+  ];
+
+  const groupedOptions = options.map((option) => ({
+    title: option.title,
+    options: option.data,
+  }));
+
+  // const handleClick = () => {
+  //   setVal(subject[0]); //you pass any value from the array of subject
+  //   // set value in TextField from dropdown list
+  // };
+
   return (
     <Stack spacing={1} sx={{ width: "100%" }}>
       <Autocomplete
         multiple
         id="tags-filled"
-        options={subject.map((option) => option.title)}
+        options={groupedOptions}
+        groupBy={(option) => option.title}
+        getOptionLabel={(option) => option}
+
         defaultValue={defaultValue}
         freeSolo
-
-        groupBy={(option) => option.type}
-        getOptionLabel={(option) => option.title}
-
         onChange={(e, value, situation, option) => {
           if (situation === "removeOption") {
             // console.log("--->", e, value, situation, option);
