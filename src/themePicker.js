@@ -9,6 +9,7 @@ export default function ThemePicker() {
     const handleChange = (event, newTheme) => {
         setTheme(newTheme);
         localStorage.setItem("theme", newTheme)
+        window.location.reload()
     };
 
     return (

@@ -21,7 +21,8 @@ export function Setting({ data, user }) {
 
             <Box sx={{ p: 3 }}>
                 <Paper sx={{ p: 2 }}>
-                    <div>色彩模式</div>
+                    <h2>色彩模式</h2>
+                    <p>選擇顯示色彩的樣式</p>
                     <ThemePicker />
                 </Paper>
             </Box>
