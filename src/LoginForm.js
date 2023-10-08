@@ -13,7 +13,7 @@ import "../src/app.css"
 
 
 function LoginForm({ set, callback }) {
-  const [userid, setuserid] = useState('');
+  const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
   const submitButttonRef = useRef()
@@ -32,6 +32,7 @@ function LoginForm({ set, callback }) {
           if (res.ok) {
             //alert("登入成功")
             set(true)
+            localStorage.setItem("loginedUserid", userid)
             callback(res)
           } else {
             alert("帳號或密碼不正確!!")
