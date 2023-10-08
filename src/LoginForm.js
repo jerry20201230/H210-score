@@ -8,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useRef } from 'react';
+import "../src/app.css"
 
 
 function LoginForm({ set, callback }) {
@@ -70,8 +71,11 @@ function LoginForm({ set, callback }) {
         alignItems: "center",
         flexDirection: "column",
         flexWrap: "wrap",
-        alignContent: "space-around"
-      }}>
+        alignContent: "space-around",
+
+      }}
+        className='backdrop-slash'
+      >
         <center>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ margin: 0 }}>成績查詢系統</h2>
