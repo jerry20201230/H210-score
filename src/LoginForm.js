@@ -68,14 +68,20 @@ function LoginForm({ set, callback }) {
 
       <Paper sx={{
         p: 2,
-        height: "100%",
         display: "flex",
         justifyContent: "space-evenly",
         alignItems: "center",
         flexDirection: "column",
         flexWrap: "wrap",
         alignContent: "space-around",
-        backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        backdropFilter: " blur(5px)",
+        width: "fit-content",
+        height: "fit-content",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translateX(-50 %) translateY(- 50 %)",
       }}>
         <center>
           <h1 style={{ margin: 0 }}>H210</h1>
