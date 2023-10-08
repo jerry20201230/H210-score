@@ -59,7 +59,7 @@ export default function TopBar({ logined, title, data }) {
     <>
       <CheckLogin />
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="fixed" enableColorOnDark>
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton
               onClick={() => window.location.href = "/"}

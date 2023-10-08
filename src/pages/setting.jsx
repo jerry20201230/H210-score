@@ -25,6 +25,15 @@ export function Setting({ data, user }) {
                     <p>選擇顯示色彩的樣式</p>
                     <ThemePicker />
                 </Paper>
+                <p></p>
+                <Paper sx={{ p: 2 }}>
+                    <h2>關於</h2>
+                    <code>
+                        BY Jerry <br />
+                        v1.0 , 2023.10<br />
+                        SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a>
+                    </code>
+                </Paper>
             </Box>
         </>
     )

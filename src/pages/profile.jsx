@@ -84,7 +84,6 @@ export function Profile({ data, user }) {
         <Paper sx={{ p: 2 }}>
           <div>
             <h2>
-              個人資料<br />
               {data.data.username}<br />
               {data.data.userid}
               <br />
