@@ -88,20 +88,12 @@ export default function TopBar({ logined, title, data }) {
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={() => { handleClose("profile") }}>{data.username}，歡迎使用!</MenuItem>
+
                   <MenuItem onClick={() => { handleClose("profile") }}>個人資料</MenuItem>
+                  <MenuItem onClick={() => { handleClose("setting") }}>系統設定</MenuItem>
                   <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
                 </Menu>
               </div>
