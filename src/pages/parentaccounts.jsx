@@ -194,7 +194,7 @@ export function ParentAccounts({ data, user }) {
         <>
 
             <Box sx={{
-                width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: (!auth ? "flex" : "none"), alignItems: "center", textAlign: "center", color: "#000", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
+                width: "100%", height: "100%", position: "fixed", left: 0, top: 0, zIndex: 99999, display: (!auth ? "flex" : "none"), alignItems: "center", textAlign: "center", backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
                 flexDirection: "column", justifyContent: "center"
             }}>
                 <h1>身分驗證</h1>
