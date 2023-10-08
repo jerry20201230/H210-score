@@ -58,7 +58,8 @@ export function Profile({ data, user }) {
               if (res.code == 403) {
                 alert("發生錯誤，請刷新網站!!")
               } else if (res.code == 404) {
-                alert("原本密碼錯誤")
+                alert("原本密碼錯誤\n請重新登入")
+                window.location.reload()
               }
 
             }
@@ -80,12 +81,10 @@ export function Profile({ data, user }) {
       <TopBar logined={true} data={data.data} user={user} title={"個人資料"} />
 
       <Box sx={{ p: 3 }}>
-        <h1>個人資料</h1>
-
         <Paper sx={{ p: 2 }}>
           <div>
-
             <h2>
+              個人資料<br />
               {data.data.username}<br />
               {data.data.userid}
               <br />
@@ -108,7 +107,7 @@ export function Profile({ data, user }) {
             <AlertTitle>請注意</AlertTitle>
             請妥善保管新密碼，如果忘記密碼，{data.data.role !== "teacher" ? "需要請老師協助重設密碼" : "就無法再使用此系統"}
           </Alert>
-          <TextField type='password' label="輸入原本密碼" variant="standard" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+          <TextField type='password' label="輸入原本密碼" helperText="輸入錯誤將被強制登出" variant="standard" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
           <p></p>
           <TextField type='password' label="輸入新密碼" variant="standard" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
           <br />

@@ -17,6 +17,8 @@ import { TeacherScore } from './pages/teacherscore';
 import { Profile } from './pages/profile';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Setting } from './pages/setting';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -34,6 +36,24 @@ function App() {
       mode: 'light',
     },
   });
+
+
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const systemTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],
+  );
+
+  const currentTheme = (
+    localStorage.getItem("theme") == "light" ? lightTheme :
+      localStorage.getItem("theme") == "dark" ? darkTheme :
+        systemTheme
+  )
 
   function handleCallBack(data) {
     setUserData(data)
@@ -59,47 +79,48 @@ function App() {
   }, [])
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={currentTheme}>
       <CssBaseline />
       {!loading ?
         isLoggedIn ?
           <Routes>
-            <Route path='/profile' element=<Profile data={userData} /> ></Route>
+            <Route path='/profile' element={<Profile data={userData} />} ></Route>
+            <Route path='/setting' element={<Setting data={userData} />} ></Route>
 
             {userData.data.role === "teacher" ?
-              <Route path='/' element=<TeacherHomePage data={userData} /> ></Route>
-              : <Route path='/' element=<Homepage data={userData} /> ></Route>
+              <Route path='/' element={<TeacherHomePage data={userData} />} ></Route>
+              : <Route path='/' element={<Homepage data={userData} />} ></Route>
             }
 
             {
               userData.data.role !== "teacher" ?
-                <Route path='/score' element=<Score data={userData} /> ></Route>
+                <Route path='/score' element={<Score data={userData} />} ></Route>
                 :
-                <Route path='/score' element=<SearchScoreSheet data={userData} /> ></Route>
+                <Route path='/score' element={<SearchScoreSheet data={userData} />} ></Route>
 
             }
 
 
             {userData.data.role === "teacher" ?
               <>
-                <Route path='/backend' element=<TeacherHomePage data={userData} />></Route>
-                <Route path='/backend/score' element=<AllScoreSheet data={userData} />></Route>
-                <Route path='/backend/score/push' element=<PushNewScore data={userData} />></Route>
-                <Route path='/backend/score/search' element=<SearchScoreSheet data={userData} /> ></Route>
+                <Route path='/backend' element={<TeacherHomePage data={userData} />}></Route>
+                <Route path='/backend/score' element={<AllScoreSheet data={userData} />}></Route>
+                <Route path='/backend/score/push' element={<PushNewScore data={userData} />}></Route>
+                <Route path='/backend/score/search' element={<SearchScoreSheet data={userData} />} ></Route>
 
-                <Route path='/backend/account' element=<AllAccountSheet data={userData} />></Route>
-                <Route path='/backend/account/student' element=<StudentAccounts data={userData} />></Route>
-                <Route path='/backend/account/parent' element=<ParentAccounts data={userData} />></Route>
-                <Route path='/score/class' element=<TeacherScore data={userData} />></Route>
+                <Route path='/backend/account' element={<AllAccountSheet data={userData} />}></Route>
+                <Route path='/backend/account/student' element={<StudentAccounts data={userData} />}></Route>
+                <Route path='/backend/account/parent' element={<ParentAccounts data={userData} />}></Route>
+                <Route path='/score/class' element={<TeacherScore data={userData} />}></Route>
 
               </>
               : <></>}
-            <Route path='*' element=<Homepage data={userData} />></Route>
+            <Route path='*' element={<Homepage data={userData} />}></Route>
 
           </Routes>
           :
           <Routes>
-            <Route path='*' element=<LoginForm set={setIsLoggedIn} callback={handleCallBack} /> ></Route>
+            <Route path='*' element={<LoginForm set={setIsLoggedIn} callback={handleCallBack} />} ></Route>
           </Routes>
         :
         <Backdrop

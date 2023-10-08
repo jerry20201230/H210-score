@@ -358,7 +358,7 @@ export function TeacherScore({ data, user }) {
             </Typography>
             <Typography variant="body2">
               <p>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "(沒有對全班的公告)"}</p>
-              <p>學生與家長的查詢連結:<br /><a href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
+              <p>學生與家長的查詢連結:<br /><a style={{ color: "blue" }} href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</a></p>
               <span>成績id: {UrlParam("q")}</span>
             </Typography>
           </CardContent>

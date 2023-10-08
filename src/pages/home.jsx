@@ -10,11 +10,13 @@ import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
 import Tabs from '../tabs';
 import ScoreTabs from '../tabs';
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export function Homepage({ user, data }) {
 
   const [scorelist, setScoreList] = React.useState([])
+  const [loading, setLoading] = React.useState(true)
 
   const [scoreTab, setScoreTab] = React.useState("loading")
   React.useEffect(() => {
@@ -22,6 +24,7 @@ export function Homepage({ user, data }) {
   }, [])
 
   function getScore() {
+    setLoading(true)
     fetch("/api/getscore", {
       method: 'POST',
       headers: {
@@ -42,6 +45,7 @@ export function Homepage({ user, data }) {
           })
             .then(res2 => res2.json())
             .then(res2 => {
+              setLoading(false)
               if (res2.ok) {
 
                 var list = []
@@ -55,6 +59,7 @@ export function Homepage({ user, data }) {
 
             })
         } else {
+          setLoading(false)
           alert("發生錯誤，請刷新網站!!")
         }
       })
@@ -74,14 +79,16 @@ export function Homepage({ user, data }) {
 
         <Typography variant='h5'> Hi, {data.data.username}</Typography>
         <Typography variant='h6'>選擇成績，開始查詢</Typography>
-
-
-
         {scoreTab}
-
-
         <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
       </Box>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   )
 }
