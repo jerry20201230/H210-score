@@ -81,7 +81,7 @@ function LoginForm({ set, callback }) {
         position: "absolute",
         top: "50%",
         left: "50%",
-        transform: "translateX(-50 %) translateY(- 50 %)",
+        transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
           <h1 style={{ margin: 0 }}>H210</h1>
