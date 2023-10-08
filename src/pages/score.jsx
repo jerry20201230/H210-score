@@ -190,43 +190,48 @@ export function Score({ data, user }) {
 
       </Backdrop>
 
+      <div style={{
+        display: "flex",
+        flexFlow: "column",
+        height: "100%"
+      }}>
 
+        <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
-      <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
-
-      <Box sx={{ p: 3 }}>
-
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
-            <Grid xs={6}>
-              <Item>
-                <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
-                <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
-              </Item>
-            </Grid>
-            <Grid xs={6}>
-              <Item>
-                <h3>全班平均</h3>
-                <p>{scoreData.avg}</p>
-              </Item>
-            </Grid>
-            <Grid xs={6}>
-              <Item>
-                <h3>班級最高分</h3>
-                <p>{scoreData.hi}</p>
-              </Item>
-            </Grid>
-            <Grid xs={6}>
-              <Item>
-                <h3>班級最低分</h3>
-                <p>{scoreData.lo}</p>
-              </Item>
-            </Grid>
-          </Grid>
-        </Box>
-
-      </Box>
+        <div className='backdrop-slash'>
+          <Box sx={{ p: 3 }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2}>
+                {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
+                <Grid xs={6}>
+                  <Item>
+                    <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
+                    <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
+                  </Item>
+                </Grid>
+                <Grid xs={6}>
+                  <Item>
+                    <h3>全班平均</h3>
+                    <p>{scoreData.avg}</p>
+                  </Item>
+                </Grid>
+                <Grid xs={6}>
+                  <Item>
+                    <h3>班級最高分</h3>
+                    <p>{scoreData.hi}</p>
+                  </Item>
+                </Grid>
+                <Grid xs={6}>
+                  <Item>
+                    <h3>班級最低分</h3>
+                    <p>{scoreData.lo}</p>
+                  </Item>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </div>
+      </div>
     </>
   )
 }
