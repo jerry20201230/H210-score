@@ -10,12 +10,22 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import FaceIcon from '@mui/icons-material/Face';
 import Chip from '@mui/material/Chip';
+import ThemePicker from '../themePicker';
 
 export function Setting({ data, user }) {
 
 
     return (
-        <TopBar logined={true} data={data.data} user={user} title={"系統設定"} />
+        <>
+            <TopBar logined={true} data={data.data} user={user} title={"系統設定"} />
+
+            <Box sx={{ p: 3 }}>
+                <Paper sx={{ p: 2 }}>
+                    <div>色彩模式</div>
+                    <ThemePicker />
+                </Paper>
+            </Box>
+        </>
     )
 
 }

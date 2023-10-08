@@ -46,6 +46,8 @@ export default function TopBar({ logined, title, data }) {
         })
     } else if (e === "profile") {
       window.location.href = "/profile"
+    } else if (e === "setting") {
+      window.location.href = "/setting"
     }
   };
 
