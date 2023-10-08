@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
+import { Paper } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -64,7 +65,9 @@ function LoginForm({ set, callback }) {
 
   return (
     <>
-      <div style={{
+
+      <Paper sx={{
+        p: 2,
         height: "100%",
         display: "flex",
         justifyContent: "space-evenly",
@@ -72,10 +75,8 @@ function LoginForm({ set, callback }) {
         flexDirection: "column",
         flexWrap: "wrap",
         alignContent: "space-around",
-
-      }}
-        className='backdrop-slash'
-      >
+        backgroundColor: "rgba(255, 255, 255, 0.2)", backdropFilter: " blur(5px)",
+      }}>
         <center>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ margin: 0 }}>成績查詢系統</h2>
@@ -87,8 +88,7 @@ function LoginForm({ set, callback }) {
           &nbsp;
           <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>
-      </div>
-
+      </Paper >
 
       <Dialog
         open={showDialog}
