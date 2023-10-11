@@ -10,7 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useRef } from 'react';
 import "../src/app.css"
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
@@ -85,10 +85,15 @@ function LoginForm({ set, callback }) {
       }}>
         <center>
           <h1 style={{ margin: 0 }}>H210</h1>
-          <h2 style={{ margin: 0 }}>成績查詢系統</h2>
+          <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
           <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
           <p></p>
           <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
+          <p></p>
+          <ReCAPTCHA
+            sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
+            onChange={e => { console.log(e) }}
+          />
           <p></p>
           <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}>開始查詢</Button>
           &nbsp;
