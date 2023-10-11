@@ -93,6 +93,7 @@ function LoginForm({ set, callback }) {
           <ReCAPTCHA
             sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
             onChange={e => { console.log(e) }}
+            size="compact"
           />
           <p></p>
           <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}>開始查詢</Button>
