@@ -50,7 +50,6 @@ function LoginForm({ set, callback }) {
   }, [])
 
   React.useEffect(() => {
-
     const handleKeyDown = (event) => {
       if (event.keyCode === 13 && submitButttonRef.current) {
         submitButttonRef.current.click()
