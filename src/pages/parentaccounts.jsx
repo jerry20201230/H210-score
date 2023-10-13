@@ -24,7 +24,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ReCAPTCHA from "react-google-recaptcha";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AlertDialog } from './alertDialog';
+
 
 export function ParentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([
@@ -33,7 +33,7 @@ export function ParentAccounts({ data, user }) {
     var idList = [0]
     const [password, setPassword] = React.useState('');
     const [auth, setAuth] = React.useState(false)
-
+    const [recaptcha, setRecaptcha] = React.useState("")
     const authBtnRef = React.useRef()
     const newPasswordInputRef = React.useRef()
     const [newPass, setNewPass] = React.useState()
@@ -125,7 +125,7 @@ export function ParentAccounts({ data, user }) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userid: (data.data.userid), password: password }),
+            body: JSON.stringify({ userid: (data.data.userid), password: password, recaptcha: recaptcha }),
         })
             .then(res => res.json())
             .then(
