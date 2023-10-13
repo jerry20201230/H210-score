@@ -45,7 +45,9 @@ function LoginForm({ set, callback }) {
             localStorage.setItem("loginedUserid", userid)
             callback(res)
           } else {
-            AlertDialog({ title: "登入失敗", message: res.message })
+            alert(res.message)
+            window.location.reload()
+            // AlertDialog({ title: "登入失敗", message: res.message })
           }
         }
       )
