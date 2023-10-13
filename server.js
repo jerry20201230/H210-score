@@ -37,9 +37,9 @@ app.post('/api/login', async (req, res) => {
   const secretKey = "6LfrDZMoAAAAAD9bGgSg8sow3w777mvC9p-6BiTv"
   await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptcha}`
-  ).then(res => res.json())
-    .then(res => {
-      if (res.success) {
+  ).then(gres => gres.json())
+    .then(googleRes => {
+      if (googleRes.success) {
         sql_Connect.getConnection(function (err, connection) {
           connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
             if (error) throw error;

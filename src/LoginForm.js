@@ -25,7 +25,7 @@ function LoginForm({ set, callback }) {
   const theme = (
     localStorage.getItem("theme") == "light" ? "light" :
       localStorage.getItem("theme") == "dark" ? "dark" :
-        prefersDarkMode
+        prefersDarkMode ? "dark" : "light"
   )
 
   const handleLogin = async () => {

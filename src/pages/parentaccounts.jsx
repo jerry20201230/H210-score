@@ -22,6 +22,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import ReCAPTCHA from "react-google-recaptcha";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { AlertDialog } from './alertDialog';
 
 export function ParentAccounts({ data, user }) {
     const [students, setStudents] = React.useState([
@@ -38,6 +41,16 @@ export function ParentAccounts({ data, user }) {
 
     const [accountValues, setaccountValues] = React.useState(Array(45));
     const [passwordValue, setPasswordValue] = React.useState(Array(45))
+
+
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    const theme = (
+        localStorage.getItem("theme") == "light" ? "light" :
+            localStorage.getItem("theme") == "dark" ? "dark" :
+                prefersDarkMode ? "dark" : "light"
+    )
+
     /*const handleInputChange = (index, value) => {
       console.log(index, value, "000151656464")
       var updatedValues = [...];
@@ -201,6 +214,12 @@ export function ParentAccounts({ data, user }) {
                 <p>即將顯示所有家長的帳號密碼，因此，我們需要先驗證你的身分，確保你是 {data.data.username} 本人</p>
                 <p>請輸入你的密碼，一旦輸入錯誤，將被強制登出</p>
                 <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
+                <p></p>
+                <ReCAPTCHA
+                    sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
+                    onChange={e => { console.log(e); setRecaptcha(e) }}
+                    theme={theme}
+                />
                 <p>
                     <Button variant='outlined' onClick={() => { window.location.href = "/" }}>取消</Button>
                     &nbsp;
