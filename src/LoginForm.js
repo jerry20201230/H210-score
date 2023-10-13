@@ -11,12 +11,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useRef } from 'react';
 import "../src/app.css"
 import ReCAPTCHA from "react-google-recaptcha";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
   const submitButttonRef = useRef()
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = (
+    localStorage.getItem("theme") == "light" ? "light" :
+      localStorage.getItem("theme") == "dark" ? "dark" :
+        prefersDarkMode
+  )
 
   const handleLogin = async () => {
     await fetch('/api/login', {
@@ -93,7 +101,7 @@ function LoginForm({ set, callback }) {
           <ReCAPTCHA
             sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
             onChange={e => { console.log(e) }}
-
+            theme={theme}
           />
           <p></p>
           <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}>開始查詢</Button>
