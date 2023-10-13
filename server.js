@@ -32,28 +32,35 @@ app.get('*', (req, res) => {
 })
 
 
-app.post('/api/login', (req, res) => {
-  const { userid, password } = req.body;
-
-  sql_Connect.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
-      if (error) throw error;
-      if (results.length > 0) {
-        req.session.loggedin = true;
-        req.session.username = results[0].username;
-        req.session.userid = results[0].userid
-        req.session.role = results[0].role
-        res.send(JSON.stringify({ message: 'Login successful', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+app.post('/api/login', async (req, res) => {
+  const { userid, password, recaptcha } = req.body;
+  const secretKey = "6LfrDZMoAAAAAD9bGgSg8sow3w777mvC9p-6BiTv"
+  await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptcha}`
+  ).then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        sql_Connect.getConnection(function (err, connection) {
+          connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
+            if (error) throw error;
+            if (results.length > 0) {
+              req.session.loggedin = true;
+              req.session.username = results[0].username;
+              req.session.userid = results[0].userid
+              req.session.role = results[0].role
+              res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+            } else {
+              req.session.destroy()
+              res.status(401).json({ message: '帳號或密碼錯誤', ok: false, code: 401 });
+            }
+            res.end();
+            connection.release();
+          })
+        })
       } else {
-        req.session.destroy()
-        res.status(401).json({ message: 'Invalid credentials', ok: false, code: 401 });
+        res.status(403).json({ message: 'recaptcha驗證失敗，請重新驗證', ok: false, code: 401 });
       }
-
-      res.end();
-      connection.release();
     })
-  })
-
 });
 
 app.post("/api/getscore", (req, res) => {

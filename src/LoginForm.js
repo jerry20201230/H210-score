@@ -12,11 +12,13 @@ import { useRef } from 'react';
 import "../src/app.css"
 import ReCAPTCHA from "react-google-recaptcha";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { AlertDialog } from './alertDialog';
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
+  const [recaptcha, setRecaptcha] = useState("")
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -32,7 +34,7 @@ function LoginForm({ set, callback }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userid, password }),
+      body: JSON.stringify({ userid, password, recaptcha }),
     })
       .then(res => res.json())
       .then(
@@ -43,7 +45,7 @@ function LoginForm({ set, callback }) {
             localStorage.setItem("loginedUserid", userid)
             callback(res)
           } else {
-            alert("帳號或密碼不正確!!")
+            AlertDialog({ title: "登入失敗", message: res.message })
           }
         }
       )
@@ -100,7 +102,7 @@ function LoginForm({ set, callback }) {
           <p></p>
           <ReCAPTCHA
             sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
-            onChange={e => { console.log(e) }}
+            onChange={e => { console.log(e); setRecaptcha(e) }}
             theme={theme}
           />
           <p></p>
