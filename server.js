@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   const { userid, password, recaptcha } = req.body;
-  const secretKey = "6LfrDZMoAAAAAD9bGgSg8sow3w777mvC9p-6BiTv"
+  const secretKey = process.env.recaptcha
   await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptcha}`
   ).then(gres => gres.json())
