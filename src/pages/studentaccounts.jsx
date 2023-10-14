@@ -210,7 +210,7 @@ export function StudentAccounts({ data, user }) {
                 <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
                 <p></p>
                 <ReCAPTCHA
-                    sitekey="6LfrDZMoAAAAANM9lIY9q65IalhbRqOgbmHCYdYj"
+                    sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
                     onChange={e => { console.log(e); setRecaptcha(e) }}
                     theme={theme}
                 />
