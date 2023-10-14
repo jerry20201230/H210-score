@@ -31,7 +31,7 @@ export function Setting({ data, user }) {
                     <code>
                         BY Jerry <br />
                         v1.0 , 2023.10<br />
-                        SVG Background by <a target="_blank" href="https://bgjar.com">BGJar</a>
+                        SVG Background by <Button component="a" target="_blank" href="https://bgjar.com" variant="text">BGJar</Button>
                     </code>
                 </Paper>
             </Box>
