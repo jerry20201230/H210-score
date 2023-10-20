@@ -295,10 +295,13 @@ app.post("/api/deletescore", (req, res) => {
 
 app.post("/api/uploadnewscore", (req, res) => {
   if (req.session.role === "teacher") {
-    const theUUID = uuidv4().slice(0, 7)
+    var theUUID = uuidv4().slice(0, 7)
     //create uuid
     //add new column
     //put all data
+    while (Number(theUUID) === NaN) {
+      theUUID = uuidv4().slice(0, 7)
+    }
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
