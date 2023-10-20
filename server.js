@@ -423,7 +423,7 @@ app.post("/api/getscoremap", (req, res) => {
 })
 
 app.post("/api/changepass", (req, res) => {
-  console.log("[CHANGE PASSWORD] \n-FROM: ", req.session.username, "\n -SESSION: ", req.session, "\n")
+  //  console.log("[CHANGE PASSWORD] \n-FROM: ", req.session.username, "\n -SESSION: ", req.session, "\n")
   if (req.session.userid === req.body.userid) {
     //要再檢查一遍舊密碼
 
@@ -433,7 +433,7 @@ app.post("/api/changepass", (req, res) => {
     WHERE userid = "${req.body.userid}"
     `, function (error, results, fields) {
         if (error) throw error;
-        console.log(`[SQL RESULT] /api/changepass\nUser:${req.session.username}`)
+        //   console.log(`[SQL RESULT] /api/changepass\nUser:${req.session.username}`)
         console.log(results)
         if (results[0].userpassword === req.body.oldpass) {
 
