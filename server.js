@@ -345,7 +345,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
           //繼續查最高/最低/平均
           sql_Connect.getConnection(function (err, connection2) {
-            connection2.query(`SELECT ${req.body.id.replace("p", "s")} FROM scoreData`, function (error2, results2, fields2) {
+            connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
@@ -363,7 +363,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
                 avg = (tot / scoreList.length).toFixed(2)
 
-                console.log(`[SCORE COUNTING] ${scoreList}\nUser:${req.session.username}`)
+                console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
                 res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
               } else {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
