@@ -161,7 +161,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
 })
 
 app.post("/api/changepassword/student", (req, res) => {
-  console.log(`[HTTP POST] /api/changepassword/student User:${req.session.username}`)
+  // console.log(`[HTTP POST] /api/changepassword/student User:${req.session.username}`)
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
@@ -171,7 +171,7 @@ app.post("/api/changepassword/student", (req, res) => {
             `, function (error, results, fields) {
         if (error) throw error;
 
-        console.log(`[SQL RESULT] /api/changepassword/student\nUser:${req.session.username}\n`)
+        // console.log(`[SQL RESULT] /api/changepassword/student\nUser:${req.session.username}\n`)
         console.log(results)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
@@ -299,7 +299,7 @@ app.post("/api/uploadnewscore", (req, res) => {
     //create uuid
     //add new column
     //put all data
-    while (Number(theUUID) === NaN) {
+    if (Number(theUUID) === NaN) {
       theUUID = uuidv4().slice(0, 7)
     }
 
