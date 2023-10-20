@@ -29,6 +29,8 @@ export function Score({ data, user }) {
   const [loading, setLoading] = React.useState(true)
   const [loadingState, setLoadingState] = React.useState("")
 
+  const [isrank, setIsRank] = React.useState(false)
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -71,13 +73,15 @@ export function Score({ data, user }) {
                 res.data.result[i].summery
               )
 
+              setIsRank(res.data.result[i].isrank > 0)
               setScoreTitle({ title: res.data.result[i].scoreName, id: res.data.result[i].uid })
               fetch("/api/getscorebyid", {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: UrlParam("q") }),
+
+                body: JSON.stringify({ id: UrlParam("q"), isrank: res.data.result[i].isrank > 0 }),
               })
                 .then(res2 => res2.json())
                 .then(res2 => {
@@ -201,25 +205,27 @@ export function Score({ data, user }) {
               {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
               <Grid xs={6}>
                 <Item>
-                  <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的成績</h3>
+                  <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的{isrank ? "名次" : "成績"}</h3>
                   <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
                 </Item>
               </Grid>
+              {
+                isrank ? <></> : <Grid xs={6}>
+                  <Item>
+                    <h3>全班平均</h3>
+                    <p>{scoreData.avg}</p>
+                  </Item>
+                </Grid>
+              }
               <Grid xs={6}>
                 <Item>
-                  <h3>全班平均</h3>
-                  <p>{scoreData.avg}</p>
-                </Item>
-              </Grid>
-              <Grid xs={6}>
-                <Item>
-                  <h3>班級最高分</h3>
+                  <h3>{isrank ? "班級最低名次" : "班級最高分"}</h3>
                   <p>{scoreData.hi}</p>
                 </Item>
               </Grid>
               <Grid xs={6}>
                 <Item>
-                  <h3>班級最低分</h3>
+                  <h3>{isrank ? "班級最高名次" : "班級最低分"}</h3>
                   <p>{scoreData.lo}</p>
                 </Item>
               </Grid>
