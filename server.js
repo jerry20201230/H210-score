@@ -137,7 +137,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
       connection.query(`SELECT id,stdId,${req.body.uid} FROM scoreData`, function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
-          console.log(`[SQL RESULT]\n/api/getallstudentscorebyid\nRESULT:\n${results}\nUser:${req.session.username}`)
+          console.log(`[SQL RESULT] /api/getallstudentscorebyid\nRESULT:\n${results}\nUser:${req.session.username}`)
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
@@ -154,7 +154,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
 })
 
 app.post("/api/changepassword/student", (req, res) => {
-  console.log(`[HTTP POST]\n/api/changepassword/student\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/changepassword/student User:${req.session.username}`)
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
@@ -164,7 +164,7 @@ app.post("/api/changepassword/student", (req, res) => {
             `, function (error, results, fields) {
         if (error) throw error;
 
-        console.log(`[SQL RESULT]\n/api/changepassword/student\nRESULT:\n${results}\nUser:${req.session.username}`)
+        console.log(`[SQL RESULT] /api/changepassword/student\nRESULT:\n${results}\nUser:${req.session.username}\n`)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
@@ -183,7 +183,7 @@ app.post("/api/changepassword/student", (req, res) => {
 
 
 app.post("/api/updatescore", (req, res) => {
-  console.log(`[HTTP POST]\n/api/updatescore\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/updatescore\nUser:${req.session.username}`)
 
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
@@ -194,7 +194,7 @@ app.post("/api/updatescore", (req, res) => {
             `, function (error, results, fields) {
         if (error) throw error;
 
-        console.log(`[SQL RESULT]\n/api/updatescore\nRESULT:\n${results}\nUser:${req.session.username}`)
+        console.log(`[SQL RESULT] /api/updatescore\nRESULT:\n${results}\nUser:${req.session.username}\n`)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
@@ -213,7 +213,7 @@ app.post("/api/updatescore", (req, res) => {
 
 
 app.post("/api/updatescoresetting", (req, res) => {
-  console.log(`[HTTP POST]\n/api/updatescoresetting\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/updatescoresetting User:${req.session.username}`)
 
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
@@ -224,7 +224,7 @@ app.post("/api/updatescoresetting", (req, res) => {
             `, function (error, results, fields) {
         if (error) throw error;
 
-        console.log(`[SQL RESULT]\n/api/updatescoresetting\nRESULT:\n${results}\nUser:${req.session.username}`)
+        console.log(`[SQL RESULT] /api/updatescoresetting\nRESULT:\n${results}\nUser:${req.session.username}\n`)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
@@ -240,7 +240,7 @@ app.post("/api/updatescoresetting", (req, res) => {
 })
 
 app.post("/api/deletescore", (req, res) => {
-  console.log(`[HTTP POST]\n/api/deletescore\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/deletescore\n${req.body}\nUser:${req.session.username}`)
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
@@ -250,7 +250,7 @@ app.post("/api/deletescore", (req, res) => {
         if (error) throw error;
 
 
-        console.log(`[SQL RESULT]\n/api/deletescore\nRESULT:\n${results}\nUser:${req.session.username}`)
+        console.log(`[SQL RESULT] /api/deletescore\nRESULT:\n${results}\nUser:${req.session.username}\n`)
 
 
         sql_Connect.getConnection(function (err, connection2) {
@@ -260,7 +260,7 @@ app.post("/api/deletescore", (req, res) => {
             `, function (error2, results2, fields) {
             if (error2) throw error2;
 
-            console.log(`[SQL RESULT]\n/api/deletescore\nRESULT:\n${results2}\nUser:${req.session.username}`)
+            console.log(`[SQL RESULT] /api/deletescore\nRESULT:\n${results2}\nUser:${req.session.username}\n`)
 
             res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
@@ -363,7 +363,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
                 avg = (tot / scoreList.length).toFixed(2)
 
-                console.log(`[SCORE COUNTING] ${scoreList}\nUser:${req.session.userid}`)
+                console.log(`[SCORE COUNTING] ${scoreList}\nUser:${req.session.username}`)
                 res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
               } else {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
@@ -409,7 +409,7 @@ app.post("/api/getscoremap", (req, res) => {
 })
 
 app.post("/api/changepass", (req, res) => {
-  console.log("[CHANGE PASSWORD] \n-FROM: ", req.body, "\n -SESSION: ", req.session)
+  console.log("[CHANGE PASSWORD] \n-FROM: ", req.session.username, "\n -SESSION: ", req.session, "\n")
   if (req.session.userid === req.body.userid) {
     //要再檢查一遍舊密碼
 
@@ -419,7 +419,7 @@ app.post("/api/changepass", (req, res) => {
     WHERE userid = "${req.body.userid}"
     `, function (error, results, fields) {
         if (error) throw error;
-        console.log(`[SQL RESULT]\n/api/changepass\nRESULT:\n${results}\nUser:${req.session.username}`)
+        console.log(`[SQL RESULT] /api/changepass\nRESULT:\n${results}\nUser:${req.session.username}`)
 
         if (results[0].userpassword === req.body.oldpass) {
 
@@ -464,7 +464,7 @@ app.post("/api/changepass", (req, res) => {
 
 
 app.post("/api/checklogin", (req, res) => {
-  console.log(`[HTTP POST]\n/api/checklogin\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/checklogin User:${req.session.username}`)
 
   res.send(JSON.stringify(
     {
@@ -480,7 +480,7 @@ app.post("/api/checklogin", (req, res) => {
 })
 
 app.post("/api/logout", (req, res) => {
-  console.log(`[USER LOGOUT]\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[USER LOGOUT] User:${req.session.username}`)
 
   req.session.destroy()
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
