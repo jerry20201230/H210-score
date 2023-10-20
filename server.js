@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 app.use(bodyParser.json());
 app.use(express.static('./build'));
+app.set('trust proxy', true)
 //const serverless = require('serverless-http');
 const session = require('express-session');
 app.use(session({
@@ -35,7 +36,7 @@ app.get('*', (req, res) => {
 app.post('/api/login', async (req, res) => {
   const { userid, password, recaptcha } = req.body;
   const secretKey = process.env.recaptcha
-  console.log(`[USER TRYING LOGIN] /api/login User:${req.session.username} IP:${req.ip}`)
+  console.log(`[USER TRYING LOGIN] /api/login User:${userid} IP:${req.ip}`)
 
   await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptcha}`
@@ -54,7 +55,7 @@ app.post('/api/login', async (req, res) => {
               res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
               req.session.destroy()
-              console.log(`[USER LOGIN - ERROR] /api/login User:${req.session.username} IP:${req.ip} reason:incorrect password or id`)
+              console.log(`[USER LOGIN - ERROR] /api/login IP:${req.ip} reason:incorrect password or id`)
               res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
             }
             res.end();
@@ -62,7 +63,7 @@ app.post('/api/login', async (req, res) => {
           })
         })
       } else {
-        console.log(`[USER LOGIN - ERROR] /api/login User:${req.session.username} IP:${req.ip} reason:recaptcha`)
+        console.log(`[USER LOGIN - ERROR] /api/login IP:${req.ip} reason:recaptcha`)
         res.status(403).json({ message: 'recaptcha驗證失敗，請重新驗證', ok: false, code: 401 });
       }
     })
