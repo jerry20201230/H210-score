@@ -108,7 +108,8 @@ function LoginForm({ set, callback }) {
             theme={theme}
           />
           <p></p>
-          <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}>開始查詢</Button>
+          <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}
+            disabled={recaptcha == ""}>開始查詢</Button>
           &nbsp;
           <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>
