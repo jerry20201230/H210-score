@@ -256,6 +256,8 @@ app.post("/api/deletescore", (req, res) => {
       connection.query(`
             ALTER TABLE scoreData
             DROP COLUMN ${req.body.scoreid}
+            ALTER TABLE parentAccountCtrl 
+            DROP COLUMN ${req.body.scoreid}
             `, function (error, results, fields) {
         if (error) throw error;
 
@@ -314,6 +316,8 @@ app.post("/api/uploadnewscore", (req, res) => {
           connection2.query(`
                     ALTER TABLE scoreData
                     ADD COLUMN ${theUUID} TEXT
+                    ALTER TABLE parentAccountCtrl
+                    ADD COLUMN ${theUUID} TEXT
                     `, function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
@@ -363,6 +367,27 @@ app.post("/api/getscorebyid", (req, res) => {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
+
+
+
+
+              if (req.session.userid.charAt(0).toLowerCase() == "p") {
+                //write
+              }
+              else if (req.session.userid.charAt(0).toLowerCase() == "s") {
+                //read
+              }
+              sql_Connect.getConnection(function (err, connection3) {
+                connection3.query(`SELECT ${req.body.id} FROM parentAccountCtrl`, function (error3, results3, fields3) {
+                })
+              })
+
+
+
+
+
+
+
               if (results2.length > 0) {
                 var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
@@ -379,6 +404,23 @@ app.post("/api/getscorebyid", (req, res) => {
 
                 console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
                 res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               } else {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               }
