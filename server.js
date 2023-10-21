@@ -165,9 +165,9 @@ app.post("/api/changepassword/student", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE userData
-            SET userpassword = ?
-            WHERE id = ?
+            UPDATE userData;
+            SET userpassword = ?;
+            WHERE id = ?;
             `, [req.body.password, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
@@ -196,9 +196,9 @@ app.post("/api/updatescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreData
-            SET ? = ?
-            WHERE id = ?
+            UPDATE scoreData;
+            SET ? = ?;
+            WHERE id = ?;
             `, [req.body.scoreid, req.body.scoreData, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
@@ -227,9 +227,9 @@ app.post("/api/updatescoresetting", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreUid
-            SET scoreName = ?, subject = ?, summery = ?
-            WHERE uid = ?
+            UPDATE scoreUid;
+            SET scoreName = ?, subject = ?, summery = ?;
+            WHERE uid = ?;
             `, [req.body.title, req.body.tags, req.body.annousment, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
@@ -254,10 +254,10 @@ app.post("/api/deletescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            ALTER TABLE scoreData
-            DROP COLUMN ?
-            ALTER TABLE parentAccountCtrl 
-            DROP COLUMN ?
+            ALTER TABLE scoreData;
+            DROP COLUMN ?;
+            ALTER TABLE parentAccountCtrl ;
+            DROP COLUMN ?;
             `, [req.body.scoreid, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
@@ -267,8 +267,8 @@ app.post("/api/deletescore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-            DELETE FROM scoreUid
-            WHERE uid = ?
+            DELETE FROM scoreUid;
+            WHERE uid = ?;
             `, [req.body.scoreid], function (error2, results2, fields) {
             if (error2) throw error2;
 
@@ -314,10 +314,10 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData
-                    ADD COLUMN ? TEXT
-                    ALTER TABLE parentAccountCtrl
-                    ADD COLUMN ? TEXT
+                    ALTER TABLE scoreData;
+                    ADD COLUMN ? TEXT;
+                    ALTER TABLE parentAccountCtrl;
+                    ADD COLUMN ? TEXT;
                     `, [theUUID, theUUID], function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
@@ -330,9 +330,8 @@ app.post("/api/uploadnewscore", (req, res) => {
                   text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
-                                UPDATE scoreData
-                                SET ? = ?
-                                WHERE id = ?;
+                                UPDATE scoreData;
+                                SET ? = ? WHERE id = ?;
                                 `, [theUUID, text, index], function (error, results, fields) {
                   if (error) throw error;
                   console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
