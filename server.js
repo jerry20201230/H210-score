@@ -314,9 +314,9 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData;
+                    ALTER TABLE scoreData
                     ADD COLUMN ? TEXT;
-                    ALTER TABLE parentAccountCtrl;
+                    ALTER TABLE parentAccountCtrl
                     ADD COLUMN ? TEXT;
                     `, [theUUID, theUUID], function (error, results, fields) {
             if (error) throw error;
@@ -330,8 +330,8 @@ app.post("/api/uploadnewscore", (req, res) => {
                   text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
-                                UPDATE scoreData;
-                                SET ? = ? WHERE id = ?;
+                                UPDATE scoreData
+                                SET ? = ? WHERE id = ?
                                 `, [theUUID, text, index], function (error, results, fields) {
                   if (error) throw error;
                   console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
