@@ -267,7 +267,7 @@ app.post("/api/deletescore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-            DELETE FROM scoreUid;
+            DELETE FROM scoreUid
             WHERE uid = ?;
             `, [req.body.scoreid], function (error2, results2, fields) {
             if (error2) throw error2;
@@ -314,8 +314,11 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData ADD COLUMN ? TEXT
-                    `, [theUUID], function (error, results, fields) {
+                    ALTER TABLE scoreData
+                    ADD COLUMN ${theUUID} TEXT;
+                    ALTER TABLE parentAccountCtrl
+                    ADD COLUMN ${theUUID} TEXT;
+                    `, function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
 
@@ -338,14 +341,6 @@ app.post("/api/uploadnewscore", (req, res) => {
             })
             connection2.release();
             res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
-          })
-        })
-
-        sql_Connect.getConnection(function (err, connection2) {
-          connection2.query(`
-                    ALTER TABLE parentAccountCtrl ADD COLUMN ? TEXT;
-                    `, [theUUID], function (error, results, fields) {
-            connection2.release()
           })
         })
         connection.release();
