@@ -423,7 +423,7 @@ app.post("/api/getscoremap", (req, res) => {
 })
 
 app.post("/api/changepass", (req, res) => {
-  //  console.log("[CHANGE PASSWORD] \n-FROM: ", req.session.username, "\n -SESSION: ", req.session, "\n")
+  console.log("[CHANGE PASSWORD] \nUser: ", req.session.username, "\n")
   if (req.session.userid === req.body.userid) {
     //要再檢查一遍舊密碼
 
