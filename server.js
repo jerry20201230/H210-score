@@ -140,7 +140,7 @@ app.post("/api/getallstudentsforscore", (req, res) => {
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT id,stdId,${req.body.uid} FROM scoreData`, function (error, results, fields) {
+      connection.query(`SELECT id,stdId, ? FROM scoreData`, [req.body.uid], function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
           console.log(`[SQL RESULT] /api/getallstudentscorebyid\nUser:${req.session.username}`)
@@ -166,9 +166,9 @@ app.post("/api/changepassword/student", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE userData
-            SET userpassword = "${req.body.password}"
-            WHERE id = ${req.body.id}
-            `, function (error, results, fields) {
+            SET userpassword = ?
+            WHERE id = ?
+            `, [req.body.password, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
         // console.log(`[SQL RESULT] /api/changepassword/student\nUser:${req.session.username}\n`)
@@ -197,9 +197,9 @@ app.post("/api/updatescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreData
-            SET ${req.body.scoreid} = "${req.body.scoreData}"
-            WHERE id = ${req.body.id}
-            `, function (error, results, fields) {
+            SET ? = ?
+            WHERE id = ?
+            `, [req.body.scoreid, req.body.scoreData, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
         console.log(`[SQL RESULT] /api/updatescore\nRESULT:\nUser:${req.session.username}\n`)
@@ -228,9 +228,9 @@ app.post("/api/updatescoresetting", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreUid
-            SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
-            WHERE uid = "${req.body.scoreid}"
-            `, function (error, results, fields) {
+            SET scoreName = ?, subject = ?, summery = ?
+            WHERE uid = ?
+            `, [req.body.title, req.body.tags, req.body.annousment, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
         console.log(`[SQL RESULT] /api/updatescoresetting\nUser:${req.session.username}\n`)
@@ -255,10 +255,10 @@ app.post("/api/deletescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             ALTER TABLE scoreData
-            DROP COLUMN ${req.body.scoreid}
+            DROP COLUMN ?
             ALTER TABLE parentAccountCtrl 
-            DROP COLUMN ${req.body.scoreid}
-            `, function (error, results, fields) {
+            DROP COLUMN ?
+            `, [req.body.scoreid, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
 
@@ -268,8 +268,8 @@ app.post("/api/deletescore", (req, res) => {
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
             DELETE FROM scoreUid
-            WHERE uid = "${req.body.scoreid}"
-            `, function (error2, results2, fields) {
+            WHERE uid = ?
+            `, [req.body.scoreid], function (error2, results2, fields) {
             if (error2) throw error2;
 
             console.log(`[SQL RESULT] /api/deletescore\nUser:${req.session.username}\n`)
@@ -308,17 +308,17 @@ app.post("/api/uploadnewscore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
-            VALUES("${theUUID}","${req.body.score.title}","${theUUID}","${req.body.score.subject}","${req.body.score.annousment}",${req.body.method === "publish"})
-            `, function (error, results, fields) {
+            VALUES(?,?,?,?,?,?)
+            `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
         if (error) throw error;
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
                     ALTER TABLE scoreData
-                    ADD COLUMN ${theUUID} TEXT
+                    ADD COLUMN ? TEXT
                     ALTER TABLE parentAccountCtrl
-                    ADD COLUMN ${theUUID} TEXT
-                    `, function (error, results, fields) {
+                    ADD COLUMN ? TEXT
+                    `, [theUUID, theUUID], function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
 
@@ -326,13 +326,14 @@ app.post("/api/uploadnewscore", (req, res) => {
               console.log("[SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
               sql_Connect.getConnection(function (err, connection3) {
 
-                var index = i
+                var index = i,
+                  text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
                                 UPDATE scoreData
-                                SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
-                                WHERE id = ${index};
-                                `, function (error, results, fields) {
+                                SET ? = ?
+                                WHERE id = ?;
+                                `, [theUUID, text, index], function (error, results, fields) {
                   if (error) throw error;
                   console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
                   connection3.release();
@@ -363,27 +364,10 @@ app.post("/api/getscorebyid", (req, res) => {
           //繼續查最高/最低/平均
 
           sql_Connect.getConnection(function (err, connection2) {
-            connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
+            connection2.query(`SELECT ? FROM scoreData`, [req.body.id], function (error2, results2, fields2) {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
-
-
-
-
-              if (req.session.userid.charAt(0).toLowerCase() == "p") {
-                //write
-              }
-              else if (req.session.userid.charAt(0).toLowerCase() == "s") {
-                //read
-              }
-              sql_Connect.getConnection(function (err, connection3) {
-                connection3.query(`SELECT ${req.body.id} FROM parentAccountCtrl`, function (error3, results3, fields3) {
-                })
-              })
-
-
-
 
 
 
@@ -404,23 +388,6 @@ app.post("/api/getscorebyid", (req, res) => {
 
                 console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
                 res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               } else {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               }
@@ -472,8 +439,8 @@ app.post("/api/changepass", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
     SELECT * FROM userData
-    WHERE userid = "${req.body.userid}"
-    `, function (error, results, fields) {
+    WHERE userid = ?
+    `, [req.body.userid], function (error, results, fields) {
         if (error) throw error;
         //   console.log(`[SQL RESULT] /api/changepass\nUser:${req.session.username}`)
         console.log(results)
@@ -483,9 +450,9 @@ app.post("/api/changepass", (req, res) => {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
           UPDATE userData
-          SET userpassword = "${req.body.newpass}"
-          WHERE userid = "${req.body.userid}"
-          `, function (error, results2, fields) {
+          SET userpassword = ?
+          WHERE userid = ?
+          `, [req.body.newpass, req.body.userid], function (error, results2, fields) {
               if (error) throw error;
 
 
