@@ -314,9 +314,8 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData ADD COLUMN ? TEXT;
-                    ALTER TABLE parentAccountCtrl ADD COLUMN ? TEXT;
-                    `, [theUUID, theUUID], function (error, results, fields) {
+                    ALTER TABLE scoreData ADD COLUMN ? TEXT
+                    `, [theUUID], function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
 
@@ -339,6 +338,14 @@ app.post("/api/uploadnewscore", (req, res) => {
             })
             connection2.release();
             res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
+          })
+        })
+
+        sql_Connect.getConnection(function (err, connection2) {
+          connection2.query(`
+                    ALTER TABLE parentAccountCtrl ADD COLUMN ? TEXT;
+                    `, [theUUID], function (error, results, fields) {
+            connection2.release()
           })
         })
         connection.release();
