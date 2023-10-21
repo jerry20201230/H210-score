@@ -328,9 +328,9 @@ app.post("/api/uploadnewscore", (req, res) => {
                   text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
-                                UPDATE scoreData
-                                SET ? = ? WHERE id = ?
-                                `, [theUUID, text, index], function (error, results, fields) {
+                  UPDATE scoreData
+                  SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
+                  WHERE id = ${index};`, function (error, results, fields) {
                   if (error) throw error;
                   console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
                   connection3.release();
