@@ -165,9 +165,9 @@ app.post("/api/changepassword/student", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE userData;
-            SET userpassword = ?;
-            WHERE id = ?;
+            UPDATE userData
+            SET userpassword = ?
+            WHERE id = ?
             `, [req.body.password, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
@@ -196,9 +196,9 @@ app.post("/api/updatescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreData;
-            SET ? = ?;
-            WHERE id = ?;
+            UPDATE scoreData
+            SET ? = ?
+            WHERE id = ?
             `, [req.body.scoreid, req.body.scoreData, req.body.id], function (error, results, fields) {
         if (error) throw error;
 
@@ -227,9 +227,9 @@ app.post("/api/updatescoresetting", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreUid;
-            SET scoreName = ?, subject = ?, summery = ?;
-            WHERE uid = ?;
+            UPDATE scoreUid
+            SET scoreName = ?, subject = ?, summery = ?
+            WHERE uid = ?
             `, [req.body.title, req.body.tags, req.body.annousment, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
@@ -254,9 +254,9 @@ app.post("/api/deletescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            ALTER TABLE scoreData;
+            ALTER TABLE scoreData
             DROP COLUMN ?;
-            ALTER TABLE parentAccountCtrl ;
+            ALTER TABLE parentAccountCtrl 
             DROP COLUMN ?;
             `, [req.body.scoreid, req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
