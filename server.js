@@ -254,8 +254,8 @@ app.post("/api/deletescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             ALTER TABLE scoreData
-            DROP COLUMN ?;
-            `, [req.body.scoreid], function (error, results, fields) {
+            DROP COLUMN ${req.body.scoreid};
+            `, function (error, results, fields) {
         if (error) throw error;
 
 
@@ -281,9 +281,9 @@ app.post("/api/deletescore", (req, res) => {
 
             sql_Connect.getConnection(function (err, connection3) {
               connection3.query(`
-                       ALTER TABLE parentAccountCtrl 
-            DROP COLUMN ?;
-            `, [req.body.scoreid], function (error3, results3, fields) {
+              ALTER TABLE parentAccountCtrl 
+              DROP COLUMN ${req.body.scoreid};
+            `, function (error3, results3, fields) {
                 console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
                 connection3.release()
               })
