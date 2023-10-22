@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import { Paper } from '@mui/material';
+import { Alert, Paper } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -96,6 +96,9 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
+          <Alert severity="warning">
+            系統功能更新中，可能發生不穩定的情形，請見諒
+          </Alert>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
           <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />

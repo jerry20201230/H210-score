@@ -256,9 +256,7 @@ app.post("/api/deletescore", (req, res) => {
       connection.query(`
             ALTER TABLE scoreData
             DROP COLUMN ?;
-            ALTER TABLE parentAccountCtrl 
-            DROP COLUMN ?;
-            `, [req.body.scoreid, req.body.scoreid], function (error, results, fields) {
+            `, [req.body.scoreid], function (error, results, fields) {
         if (error) throw error;
 
 
@@ -277,6 +275,24 @@ app.post("/api/deletescore", (req, res) => {
             res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
             res.end();
+
+
+
+
+
+            sql_Connect.getConnection(function (err, connection3) {
+              connection3.query(`
+                       ALTER TABLE parentAccountCtrl 
+            DROP COLUMN ?;
+            `, [req.body.scoreid], function (error3, results3, fields) {
+                console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
+                connection3.release()
+              })
+            })
+
+
+
+
 
             connection2.release();
 
@@ -350,7 +366,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                   ALTER TABLE parentAccountCtrl
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error, results, fields) {
-
+            connection2.release()
           })
         })
         connection.release();
