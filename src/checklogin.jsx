@@ -9,7 +9,7 @@ export function CheckLogin() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                page: window.location.href + window.location.search
+                page: window.location.pathname + window.location.search
             }),
         })
             .then(res => res.json())

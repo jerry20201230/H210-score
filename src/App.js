@@ -65,7 +65,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ page: window.location.href + window.location.search }),
+      body: JSON.stringify({ page: window.location.pathname + window.location.search }),
     })
       .then(res => res.json())
       .then(res => {
