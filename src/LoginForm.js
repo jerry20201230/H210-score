@@ -96,9 +96,10 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
-          <Alert severity="warning">
-            系統功能更新中，可能發生不穩定的情形，請見諒
-          </Alert>
+          <div hidden>
+            <Alert severity="warning">
+              系統功能更新中，可能發生不穩定的情形，請見諒
+            </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
           <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
