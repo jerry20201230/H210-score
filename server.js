@@ -59,7 +59,7 @@ app.post('/api/login', async (req, res) => {
               res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
               req.session.destroy()
-              console.log(`[USER LOGIN (FAILED)] IP:${req.ip} reason:incorrect password or id`)
+              console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
               res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
             }
             res.end();
@@ -67,7 +67,7 @@ app.post('/api/login', async (req, res) => {
           })
         })
       } else {
-        console.log(`[USER LOGIN (FAILED)] IP:${req.ip} reason:recaptcha verify error`)
+        console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:recaptcha verify error`)
         res.status(403).json({ message: 'recaptcha驗證失敗，請重新驗證', ok: false, code: 401 });
       }
     })
@@ -409,30 +409,42 @@ app.post("/api/getscorebyid", (req, res) => {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
 
+              sql_Connect.getConnection(function (err, connection3) {
+                connection3.query(`SELECT * FROM parentAccountCtrl WHERE stdId = "${req.session.userid.replace("s", "p")}"`, function (error3, results3, fields3) {
+                  if (error3) {
+                    res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+                  };
 
 
+                  if (results2.length > 0) {
+                    var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
-              if (results2.length > 0) {
-                var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+                    for (i = 0; i < results2.length; i++) {
+                      if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
+                        tot += Number(results2[i][req.body.id].split("%|%")[0])
+                        scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+                      }
+                    }
+                    hi = Math.max(...scoreList)
+                    lo = Math.min(...scoreList)
 
-                for (i = 0; i < results2.length; i++) {
-                  if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
-                    tot += Number(results2[i][req.body.id].split("%|%")[0])
-                    scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+                    avg = (tot / scoreList.length).toFixed(2)
+
+                    console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
+                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
+                  } else {
+                    res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                   }
-                }
-                hi = Math.max(...scoreList)
-                lo = Math.min(...scoreList)
 
-                avg = (tot / scoreList.length).toFixed(2)
+                  res.end();
 
-                console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
-              } else {
-                res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
-              }
 
-              res.end();
+
+                  connection3.release()
+                })
+              })
+
+
               connection2.release();
             })
           })
