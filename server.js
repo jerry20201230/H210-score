@@ -197,9 +197,9 @@ app.post("/api/updatescore", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreData
-            SET ? = ?
-            WHERE id = ?
-            `, [req.body.scoreid, req.body.scoreData, req.body.id], function (error, results, fields) {
+            SET ${req.body.scoreid} = "${req.body.scoreData}"
+            WHERE id = ${req.body.id}
+            `, function (error, results, fields) {
         if (error) throw error;
 
         console.log(`[SQL RESULT] /api/updatescore\nRESULT:\nUser:${req.session.username}\n`)
@@ -228,9 +228,9 @@ app.post("/api/updatescoresetting", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreUid
-            SET scoreName = ?, subject = ?, summery = ?
-            WHERE uid = ?
-            `, [req.body.title, req.body.tags, req.body.annousment, req.body.scoreid], function (error, results, fields) {
+            SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
+            WHERE uid = "${req.body.scoreid}"
+            `, function (error, results, fields) {
         if (error) throw error;
 
         console.log(`[SQL RESULT] /api/updatescoresetting\nUser:${req.session.username}\n`)
