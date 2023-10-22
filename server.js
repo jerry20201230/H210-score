@@ -393,14 +393,14 @@ app.post("/api/uploadnewscore", (req, res) => {
 app.post("/api/getscorebyid", (req, res) => {
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
+      connection.query(`SELECT * FROM scoreData WHERE stdId = ${req.session.userid.replace("p", "s")} `, function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
 
           //繼續查最高/最低/平均
 
           sql_Connect.getConnection(function (err, connection2) {
-            connection2.query(`SELECT ? FROM scoreData`, [req.body.id], function (error2, results2, fields2) {
+            connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
               };
