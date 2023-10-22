@@ -140,16 +140,15 @@ app.post("/api/getallstudentsforscore", (req, res) => {
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT id,stdId, ? FROM scoreData`, [req.body.uid], function (error, results, fields) {
+      connection.query(`SELECT id,stdId, ${req.body.uid} FROM scoreData`, function (error, results, fields) {
         if (error) throw error;
         if (results.length > 0) {
-          console.log(`[SQL RESULT] /api/getallstudentscorebyid\nUser:${req.session.username}`)
+          console.log(`[SQL RESULT] /api/getallstudentscorebyid\nUser:${req.session.username} \nResult:`)
           console.log(results)
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
-
         res.end();
         connection.release();
       })
@@ -524,7 +523,7 @@ app.post("/api/changepass", (req, res) => {
 
 
 app.post("/api/checklogin", (req, res) => {
-  console.log(`[HTTP POST] /api/checklogin User:${req.session.username} IP:${req.ip}`)
+  console.log(`[CHECK LOGIN] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
 
   res.send(JSON.stringify(
     {
