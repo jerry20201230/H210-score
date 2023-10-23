@@ -414,7 +414,26 @@ app.post("/api/getscorebyid", (req, res) => {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                   };
-                  console.log(results3)
+
+                  var queryTimes
+
+                  if (results3[req.body.id] = null) {
+                    sql_Connect.getConnection(function (err, connection4) {
+                      connection4.query(`
+                      UPDATE parentAccountCtrl
+                      SET ${req.body.id} = "0%|%null"
+                      WHERE stdId = ${req.session.userid};
+                    `, function (error4, results4, fields4) {
+                        connection4.release()
+                      })
+                    })
+                  } else {
+                    if (req.session.role == "std") {
+                      queryTimes = results3
+                    } else {
+                      queryTimes = null
+                    }
+                  }
 
 
                   if (results2.length > 0) {
@@ -432,7 +451,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     avg = (tot / scoreList.length).toFixed(2)
 
                     console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, ok: true }));
+                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1] }, queryTimes: queryTimes, ok: true }));
                   } else {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                   }
