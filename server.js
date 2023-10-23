@@ -418,9 +418,9 @@ app.post("/api/getscorebyid", (req, res) => {
 
                   var queryTimes
                   console.log(results3[req.body.id], "reqbodyid")
-                  console.log(results3, "reqbodyid")
+                  console.log(results3[0], "reqbodyid")
 
-                  if (results3[req.body.id] == null || results3[req.body.id] == undefined) {
+                  if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
                     sql_Connect.getConnection(function (err, connection4) {
                       connection4.query(`
                       UPDATE parentAccountCtrl
@@ -439,7 +439,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = ${Number(results3[req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}"
+                      SET ${req.body.id} = ${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}"
                       WHERE stdId = ${req.session.userid};
                     `, function (error4, results4, fields4) {
                           console.log("parent data uploaded")
