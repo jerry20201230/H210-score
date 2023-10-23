@@ -425,7 +425,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "0%|%null"
-                      WHERE stdId = ${req.session.userid};
+                      WHERE stdId = ${req.session.userid.replace("s", "p")};
                     `, function (error4, results4, fields4) {
                         console.log("parent data writed")
                         connection4.release()
