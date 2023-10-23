@@ -417,7 +417,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   };
 
                   var queryTimes
-
+                  console.log(results3[req.body.id], "reqbodyid")
                   if (results3[req.body.id] = null) {
                     sql_Connect.getConnection(function (err, connection4) {
                       connection4.query(`
