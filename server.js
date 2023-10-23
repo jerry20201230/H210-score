@@ -414,6 +414,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                   };
+                  console.log(results3)
 
 
                   if (results2.length > 0) {
