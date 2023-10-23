@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
+const dayjs = require('dayjs')
 
 app.use(bodyParser.json());
 app.use(express.static('./build'));
@@ -424,6 +425,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       SET ${req.body.id} = "0%|%null"
                       WHERE stdId = ${req.session.userid};
                     `, function (error4, results4, fields4) {
+                        console.log("parent data writed")
                         connection4.release()
                       })
                     })
@@ -432,6 +434,16 @@ app.post("/api/getscorebyid", (req, res) => {
                       queryTimes = results3
                     } else {
                       queryTimes = null
+                      sql_Connect.getConnection(function (err, connection4) {
+                        connection4.query(`
+                      UPDATE parentAccountCtrl
+                      SET ${req.body.id} = ${Number(results3[req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}"
+                      WHERE stdId = ${req.session.userid};
+                    `, function (error4, results4, fields4) {
+                          console.log("parent data uploaded")
+                          connection4.release()
+                        })
+                      })
                     }
                   }
 
