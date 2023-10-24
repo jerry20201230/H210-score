@@ -228,18 +228,20 @@ export function Score({ data, user }) {
                   <p>{scoreData.lo}</p>
                 </Item>
               </Grid>
-            </Grid>
-            {
-              data.data.role == "std" ?
 
-                <Grid xs={6}>
-                  <Item sx={{ background: blue[500], color: "#fff", width: "fit-content" }}>
-                    <h3>學生專屬功能</h3>
-                    <p>{Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>}</p>
-                  </Item>
-                </Grid>
-                : <></>
-            }
+              {
+                data.data.role == "std" ?
+
+                  <Grid xs={6}>
+                    <Item sx={{ background: Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600], color: "#fff" }}>
+                      <h3>學生專屬功能</h3>
+                      <p>{Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>}</p>
+                    </Item>
+                  </Grid>
+                  : <></>
+              }
+            </Grid>
+
           </Box>
         </Box>
       </div>
