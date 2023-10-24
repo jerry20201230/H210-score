@@ -233,7 +233,7 @@ export function Score({ data, user }) {
                 data.data.role == "std" ?
 
                   <Grid xs={6}>
-                    <Item sx={{ background: Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600], color: "#fff" }}>
+                    <Item sx={{ background: scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600]) : blue[500], color: "#fff" }}>
                       <h3>學生專屬功能</h3>
                       <p>
                         {
