@@ -14,7 +14,7 @@ import { Announcement } from '@mui/icons-material';
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: null }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
@@ -69,7 +69,6 @@ export function Score({ data, user }) {
 
 
               setAnnousment(
-
                 res.data.result[i].summery
               )
 
@@ -230,6 +229,16 @@ export function Score({ data, user }) {
                 </Item>
               </Grid>
             </Grid>
+            {
+              data.data.role == "std" ?
+
+                <Grid xs={6}>
+
+                  <h3>學生專屬功能</h3>
+                  <p>{Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>}</p>
+                </Grid>
+                : <></>
+            }
           </Box>
         </Box>
       </div>
