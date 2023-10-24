@@ -14,7 +14,7 @@ import { Announcement } from '@mui/icons-material';
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: null }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%0" }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
