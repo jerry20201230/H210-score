@@ -240,7 +240,7 @@ export function Score({ data, user }) {
                           scoreData.queryTimes == null ? <>暫時無資料</> :
                             Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績</> : <>家長還沒看過這筆成績</>
                         }</p>
-                      <Button variant="contained" color={
+                      <Button variant="contained" component={Link} to={`/score/more?q=${UrlParam("q")}`} color={
                         scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? "primary" : "success") : "primary"
                       }>{scoreData.queryTimes == null ? "重新讀取" : "更多"}</Button>
                     </Item>
@@ -248,7 +248,6 @@ export function Score({ data, user }) {
                   : <></>
               }
             </Grid>
-
           </Box>
         </Box>
       </div>
