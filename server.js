@@ -435,7 +435,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     if (req.session.role == "std") {
                       queryTimes = results3
                     } else {
-                      queryTimes = null
+                      queryTimes = false
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
                       UPDATE parentAccountCtrl
@@ -466,7 +466,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     avg = (tot / scoreList.length).toFixed(2)
 
                     console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes[0][req.body.id] }, ok: true }));
+                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
                   } else {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                   }
