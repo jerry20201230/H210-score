@@ -440,7 +440,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}"
-                      WHERE stdId = ${req.session.userid};
+                      WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
                           console.log("parent data uploaded")
                           console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
