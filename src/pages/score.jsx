@@ -2,7 +2,7 @@ import * as React from 'react'
 import TopBar from '../Topbar'
 import { Box, Button } from '@mui/material';
 import "../App.css"
-import { red, yellow, green } from '@mui/material/colors';
+import { red, yellow, green, grey, blue } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
@@ -233,10 +233,10 @@ export function Score({ data, user }) {
               data.data.role == "std" ?
 
                 <Grid xs={6}>
-
-                  <h3>學生專屬功能</h3>
-                  <p>{Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>}</p>
-                </Grid>
+                  <Item sx={{ background: blue[500], color: "#fff" }}>
+                    <h3>學生專屬功能</h3>
+                    <p>{Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>}</p>
+                  </Item>   </Grid>
                 : <></>
             }
           </Box>
