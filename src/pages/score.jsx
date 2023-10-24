@@ -237,9 +237,10 @@ export function Score({ data, user }) {
                       <h3>學生專屬功能</h3>
                       <p>
                         {
-                          scoreData.queryTimes == null ? <>暫時無資料，請再試一次</> :
-                            Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績{Number(scoreData.queryTimes.split("%|%")[0])}次</> : <>家長還沒看過這筆成績</>
+                          scoreData.queryTimes == null ? <>暫時無資料</> :
+                            Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績</> : <>家長還沒看過這筆成績</>
                         }</p>
+                      <Button variant="outlined">更多</Button>
                     </Item>
                   </Grid>
                   : <></>
