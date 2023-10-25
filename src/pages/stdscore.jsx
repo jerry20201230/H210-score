@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 var relativeTime = require('dayjs/plugin/relativeTime')
 var utc = require('dayjs/plugin/utc')
+require('dayjs/locale/zh-tw')
+dayjs.locale('zh-tw')
 var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
@@ -119,7 +121,7 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     console.log(scoreData.queryTimes.split("%|%")[1])
 
-    console.log(dayjs.utc(dayjs(scoreData.queryTimes.split("%|%")[1])).tz('Asia/Taipei'))
+    console.log(dayjs().tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei'))
     console.log(dayjs(new Date()).from(dayjs.utc(dayjs(scoreData.queryTimes.split("%|%")[1])).tz('Asia/Taipei')))
   }, [scoreData])
 
@@ -147,9 +149,9 @@ export function StdScore({ data, user }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
-          <Paper sx={{ p: 2 }}>
-            <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
-          </Paper>
+
+          <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
+
           <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態</h2>
             <p>
