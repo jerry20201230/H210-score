@@ -100,7 +100,7 @@ export function Score({ data, user }) {
             }
           }
           if (!k) {
-            alert("找不到考試")
+            alert("找不到成績")
             setLoadingState("發生錯誤")
             // setLoading(false)
           }
@@ -181,13 +181,12 @@ export function Score({ data, user }) {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
         open={loading}
       >
-        <p>{loadingState}</p>
+        <h3 style={{margin:0,padding:0}}>{loadingState}</h3>
         {loadingState.includes("發生錯誤") ?
-          <>
+          <p>
             <Button component={Link} to="/" variant="contained">回首頁</Button>
-          </> :
+          </p> :
           <CircularProgress color="inherit" />
-
         }
         <br />
 
