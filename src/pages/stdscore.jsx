@@ -116,6 +116,8 @@ export function StdScore({ data, user }) {
     getScore(UrlParam("q"))
   }, [])
   React.useEffect(() => {
+    console.log(scoreData.queryTimes.split("%|%")[1])
+
     console.log(dayjs.tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei'))
     console.log(dayjs(new Date()).from(dayjs(dayjs.tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei'))))
   }, [scoreData])
