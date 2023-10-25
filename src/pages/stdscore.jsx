@@ -19,7 +19,7 @@ export function StdScore({ data, user }) {
 
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%0" }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00" }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
