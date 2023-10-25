@@ -90,8 +90,6 @@ export function StdScore({ data, user }) {
                   } else {
                     alert("發生錯誤，請刷新網站!!")
                   }
-
-
                 })
                 .catch(() => {
 
@@ -199,58 +197,12 @@ export function StdScore({ data, user }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
-              <Grid xs={6}>
-                <Item>
-                  <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的{isrank ? "名次" : "成績"}</h3>
-                  <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
-                </Item>
-              </Grid>
-              {
-                isrank ? <></> : <Grid xs={6}>
-                  <Item>
-                    <h3>全班平均</h3>
-                    <p>{scoreData.avg}</p>
-                  </Item>
-                </Grid>
-              }
-              <Grid xs={6}>
-                <Item>
-                  <h3>{isrank ? "班級最低名次" : "班級最高分"}</h3>
-                  <p>{scoreData.hi}</p>
-                </Item>
-              </Grid>
-              <Grid xs={6}>
-                <Item>
-                  <h3>{isrank ? "班級最高名次" : "班級最低分"}</h3>
-                  <p>{scoreData.lo}</p>
-                </Item>
-              </Grid>
-
-              {
-                data.data.role == "std" ?
-
-                  <Grid xs={6}>
-                    <Item sx={{ background: scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600]) : blue[500], color: "#fff" }}>
-                      <h3>學生專屬功能</h3>
-                      <p>
-                        {
-                          scoreData.queryTimes == null ? <>暫時無資料</> :
-                            Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績</> : <>家長還沒看過這筆成績</>
-                        }</p>
-                      <Button variant="contained" color={
-                        scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? "primary" : "success") : "primary"
-                      }>{scoreData.queryTimes == null ? "重新讀取" : "更多"}</Button>
-                    </Item>
-                  </Grid>
-                  : <></>
-              }
-            </Grid>
-
-          </Box>
-        </Box>
+<Paper>
+  <h2>
+    學生專屬功能
+  </h2>
+</Paper>
+       </Box>
       </div>
 
     </>

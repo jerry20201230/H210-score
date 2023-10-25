@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import { CheckLogin } from './checklogin';
+import {Link} from "react-router-dom"
 
 export default function TopBar({ logined, title, data }) {
   const [auth, setAuth] = React.useState(logined);
@@ -45,9 +46,9 @@ export default function TopBar({ logined, title, data }) {
           }
         })
     } else if (e === "profile") {
-      window.location.href = "/profile"
+      //window.location.href = "/profile"
     } else if (e === "setting") {
-      window.location.href = "/setting"
+      //window.location.href = "/setting"
     }
   };
 
@@ -94,8 +95,8 @@ export default function TopBar({ logined, title, data }) {
                   onClose={handleClose}
                 >
 
-                  <MenuItem onClick={() => { handleClose("profile") }}>個人資料</MenuItem>
-                  <MenuItem onClick={() => { handleClose("setting") }}>系統設定</MenuItem>
+                  <MenuItem onClick={() => { handleClose("profile") }} component={Link} to="/profile">個人資料</MenuItem>
+                  <MenuItem onClick={() => { handleClose("setting") }} component={Link} to="/setting">系統設定</MenuItem>
                   <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
                 </Menu>
               </div>
