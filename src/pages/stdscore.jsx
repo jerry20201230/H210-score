@@ -197,8 +197,12 @@ export function StdScore({ data, user }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
-          <h2>目前成績：{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
-          <Paper>
+          <Paper sx={{ p: 2 }}>
+            <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
+            {annousment ? <p>{annousment}</p> : <></>}
+            {privateTalk ? <p>{privateTalk}</p> : <></>}
+          </Paper>
+          <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態</h2>
             <p>
               {
@@ -211,13 +215,13 @@ export function StdScore({ data, user }) {
             </p>
           </Paper>
           <p></p>
-          <Paper>
+          <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
             <Alert severity="warning">
               <b>警告</b><br />
               請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
             </Alert>
-            <Button color="error">下一步</Button>
+            <Button color="error" variant="contained">下一步</Button>
           </Paper>
         </Box>
       </div>
