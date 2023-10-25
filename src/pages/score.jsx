@@ -171,7 +171,7 @@ export function Score({ data, user }) {
       setPrivateTalk(<></>)
     }
 
-  }, [scoreData, annousmentWid, annousment, privateTalkWid])
+  }, [scoreData, annousmentWid, privateTalkWid])
 
   return (
     <>
