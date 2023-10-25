@@ -14,7 +14,8 @@ var relativeTime = require('dayjs/plugin/relativeTime')
 var utc = require('dayjs/plugin/utc')
 var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 dayjs.extend(relativeTime)
-
+dayjs.extend(utc)
+dayjs.extend(timezone)
 export function StdScore({ data, user }) {
 
 
