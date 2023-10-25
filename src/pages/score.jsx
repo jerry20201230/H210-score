@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
-import { Announcement } from '@mui/icons-material';
 
 export function Score({ data, user }) {
 
@@ -172,7 +171,7 @@ export function Score({ data, user }) {
       setPrivateTalk(<></>)
     }
 
-  }, [scoreData, annousmentWid, Announcement, privateTalkWid])
+  }, [scoreData, annousmentWid, annousment, privateTalkWid])
 
   return (
     <>
@@ -181,7 +180,7 @@ export function Score({ data, user }) {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
         open={loading}
       >
-        <h3 style={{margin:0,padding:0}}>{loadingState}</h3>
+        <h3 style={{ margin: 0, padding: 0 }}>{loadingState}</h3>
         {loadingState.includes("發生錯誤") ?
           <p>
             <Button component={Link} to="/" variant="contained">回首頁</Button>

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button ,Alert} from '@mui/material';
+import { Box, Button, Alert } from '@mui/material';
 import "../App.css"
 import { red, yellow, green, grey, blue } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -9,11 +9,6 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
-import Switch from '@mui/material/Switch';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
 
 export function StdScore({ data, user }) {
@@ -175,7 +170,7 @@ export function StdScore({ data, user }) {
       setPrivateTalk(<></>)
     }
 
-  }, [scoreData, annousmentWid, Announcement, privateTalkWid])
+  }, [scoreData, annousmentWid, annousment, privateTalkWid])
 
   return (
     <>
@@ -208,10 +203,10 @@ export function StdScore({ data, user }) {
             <p>
               {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
-                  Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? 
-                  <>家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次</>
-                  : 
-                  <>家長還沒看過這筆成績</>
+                  Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
+                    <>家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次</>
+                    :
+                    <>家長還沒看過這筆成績</>
               }
             </p>
           </Paper>
@@ -219,8 +214,8 @@ export function StdScore({ data, user }) {
           <Paper>
             <h2>進階設定</h2>
             <Alert severity="warning">
-          <b>警告</b><br/>
-          請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
+              <b>警告</b><br />
+              請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
             </Alert>
             <Button color="error">下一步</Button>
           </Paper>
