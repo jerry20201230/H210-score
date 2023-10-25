@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 var relativeTime = require('dayjs/plugin/relativeTime')
 var utc = require('dayjs/plugin/utc')
 var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+dayjs.extend(relativeTime)
 
 export function StdScore({ data, user }) {
 
@@ -111,9 +112,12 @@ export function StdScore({ data, user }) {
   }
 
   React.useEffect(() => {
-    dayjs.extend(relativeTime)
+
     getScore(UrlParam("q"))
   }, [])
+  React.useEffect(() => {
+    console.log(dayjs(new Date()).from(dayjs.tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei')))
+  }, [scoreData])
 
   return (
     <>
