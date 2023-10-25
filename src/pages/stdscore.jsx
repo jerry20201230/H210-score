@@ -9,9 +9,13 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
-
+import dayjs from 'dayjs';
+var relativeTime = require('dayjs/plugin/relativeTime')
+var utc = require('dayjs/plugin/utc')
+var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 
 export function StdScore({ data, user }) {
+
 
   const [scoreData, setScoreData] = React.useState(
     { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%0" }
@@ -20,11 +24,7 @@ export function StdScore({ data, user }) {
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
 
   const [annousment, setAnnousment] = React.useState(<></>)
-  const [annousmentWid, setAnnousmentWid] = React.useState(12)
-  const [isAnnousment, setIsAnnousment] = React.useState(false)
 
-  const [privateTalk, setPrivateTalk] = React.useState(<></>)
-  const [privateTalkWid, setPrivateTalkWid] = React.useState(12)
 
   const [loading, setLoading] = React.useState(true)
   const [loadingState, setLoadingState] = React.useState("")
@@ -111,66 +111,9 @@ export function StdScore({ data, user }) {
   }
 
   React.useEffect(() => {
+    dayjs.extend(relativeTime)
     getScore(UrlParam("q"))
   }, [])
-
-  React.useEffect(() => {
-    var isAnnousment = annousment !== "null" && annousment !== "undefined" && annousment,
-      isPrivateMsg = scoreData.privateMsg !== "null" && scoreData.privateMsg !== "undefined" && scoreData.privateMsg
-    if (isAnnousment && isPrivateMsg) {
-      setAnnousment(
-        <>
-          <Grid xs={6}>
-            <Item>
-              <h3>公告訊息</h3>
-              <p>{annousment}</p>
-            </Item>
-          </Grid>
-        </>
-      )
-      setPrivateTalk(
-        <>
-          <Grid xs={6}>
-            <Item>
-              <h3>私人留言</h3>
-              <p>老師: {scoreData.privateMsg}</p>
-            </Item>
-          </Grid>
-        </>
-      )
-    } else if (isPrivateMsg && !isAnnousment) {
-
-      setPrivateTalk(
-        <>
-          <Grid xs={12}>
-            <Item>
-              <h3>私人留言</h3>
-              <p>老師: {scoreData.privateMsg}</p>
-            </Item>
-          </Grid>
-        </>
-      )
-      setAnnousment(<></>)
-
-    } else if (isAnnousment && !isPrivateMsg) {
-      setAnnousment(
-        <>
-          <Grid xs={12}>
-            <Item>
-              <h3>公告訊息</h3>
-              <p>{annousment}</p>
-            </Item>
-          </Grid>
-        </>
-      )
-      setPrivateTalk(<></>)
-    }
-    else {
-      setAnnousment(<></>)
-      setPrivateTalk(<></>)
-    }
-
-  }, [scoreData, annousmentWid, privateTalkWid])
 
   return (
     <>
@@ -199,8 +142,6 @@ export function StdScore({ data, user }) {
         <Box sx={{ p: 3 }}>
           <Paper sx={{ p: 2 }}>
             <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
-            {annousment ? <p>{annousment}</p> : <></>}
-            {privateTalk ? <p>{privateTalk}</p> : <></>}
           </Paper>
           <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態</h2>
@@ -208,7 +149,10 @@ export function StdScore({ data, user }) {
               {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
                   Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
-                    <>家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次</>
+                    <>
+                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
+                      最近一次在 {dayjs().to(dayjs.tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei'))}
+                    </>
                     :
                     <>家長還沒看過這筆成績</>
               }
