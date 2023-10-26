@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, Alert } from '@mui/material';
+import { Box, Button, Alert, IconButton } from '@mui/material';
 import "../App.css"
 import { red, yellow, green, grey, blue } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { List, ListItem, ListItemText, Switch } from "@mui/material"
+import { List, ListItem, ListItemText, Switch, } from "@mui/material"
 import { relativeTime } from 'dayjs/locale/zh-tw';
 import { utc } from 'dayjs/plugin/utc'
 import { timezone } from 'dayjs/plugin/timezone' // dependent on utc plugin
@@ -19,7 +19,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export function StdScore({ data, user }) {
 
@@ -210,7 +210,7 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會<br /><Button variant="text" onClick={() => setOpen(true)}>說明</Button></>} primary={<>短暫維持家庭和睦</>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會&nbsp;<IconButton variant="text" onClick={() => setOpen(true)}><HelpOutlineIcon /></IconButton></>} primary={<>短暫維持家庭和睦</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
