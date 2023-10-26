@@ -12,13 +12,14 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { List, ListItem, ListItemText, Switch } from "@mui/material"
 
-import 'dayjs/plugin/relativeTime'
-import 'dayjs/plugin/utc'
-import 'dayjs/locale/zh-tw'
+import { relativeTime } from 'dayjs/locale/zh-tw';
+import { utc } from 'dayjs/plugin/utc'
 
-import 'dayjs/plugin/timezone' // dependent on utc plugin
+import { timezone } from 'dayjs/plugin/timezone' // dependent on utc plugin
 
-
+dayjs.extend(relativeTime)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export function StdScore({ data, user }) {
 
