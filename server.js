@@ -454,7 +454,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   }
 
 
-                  if (results2.length > 0) {
+                  if (results2.length > 0 && !dayjs().isBefore(dayjs(results3[0][req.body.id]))) {
                     var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
                     for (i = 0; i < results2.length; i++) {
