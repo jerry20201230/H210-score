@@ -210,7 +210,7 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>r今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>} primary={<>短暫維持家庭和睦<br /><Button variant="text" onClick={() => setOpen(true)}>說明</Button></>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會<br /><Button variant="text" onClick={() => setOpen(true)}>說明</Button></>} primary={<>短暫維持家庭和睦</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
