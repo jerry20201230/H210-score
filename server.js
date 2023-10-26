@@ -655,20 +655,45 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
       SELECT * FROM parentAccountCtrl 
     `, function (error, results, field) {
 
-      results.forEach((r, i) => {
-        console.log("[SQL DATA WRITING]", " ", i + 1, " STILL PROCESSING")
-        sql_Connect.getConnection(function (err, connection3) {
+      sql_Connect.getConnection(function (err, connection2) {
+        connection2.query(`
+      SELECT * FROM scoreUid 
+    `, function (error, results2, field) {
 
-          connection3.query(`
+
+          results.forEach((r, i) => {
+            var index = i
+            console.log("[SQL DATA WRITING]", " ", i + 1, " STILL PROCESSING")
+            sql_Connect.getConnection(function (err, connection3) {
+
+              results2.forEach((r, k) => {
+
+                var data = results2[index][req.body.id].split("%|%")
+
+                connection3.query(`
                   UPDATE parentAccountCtrl 
-                  SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
+                
+                  SET ${k.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
                   WHERE id = ${index};`, function (error, results, fields) {
-            if (error) throw error;
-            console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
-            connection3.release();
+                  if (error) throw error;
+                  console.log("SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                  connection3.release();
+                })
+
+              })
+
+            })
           })
+
+
+
+
+
         })
       })
+
+
+
 
     })
   })
