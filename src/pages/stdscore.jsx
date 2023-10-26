@@ -10,6 +10,8 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { List, ListItem, ListItemText, Switch } from "@mui/material"
+
 var relativeTime = require('dayjs/plugin/relativeTime')
 var utc = require('dayjs/plugin/utc')
 require('dayjs/locale/zh-tw')
@@ -18,16 +20,6 @@ var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
 dayjs.extend(timezone)
-import Switch from '@mui/material/Switch';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 
 
 export function StdScore({ data, user }) {
@@ -156,8 +148,6 @@ export function StdScore({ data, user }) {
 
       </Backdrop>
 
-
-
       <TopBar logined={true} data={data.data} user={user} title={"學生專屬功能"} />
 
       <div className='backdrop-slash'>
@@ -193,7 +183,7 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-  
+
                 <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" secondary={"暫停家長的查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。每筆成績每天限用3次，你今天用了"} />
                 <Switch
                   edge="end"
