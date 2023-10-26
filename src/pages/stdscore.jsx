@@ -36,6 +36,8 @@ export function StdScore({ data, user }) {
 
   const [isrank, setIsRank] = React.useState(false)
 
+  const [disableSetting1, setDisableSetting1] = React.useState(false)
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -197,19 +199,24 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-
                 <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦"
                 ></ListItemText>
                 <Switch
                   edge="end"
                   onChange={() => {
-                    if (!setting_1 && window.confirm("確定開啟此功能?")) {
+                    if (!setting_1 == true && window.confirm("確定開啟此功能?")) {
                       blockScore()
+                      setting_1(true)
+                      setDisableSetting1(true)
                     }
                   }}
                   checked={setting_1}
+                  disabled={disableSetting1}
                 />
+              </ListItem>
+              <ListItem>
                 <ListItemText secondary={<>暫停家長查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>} />
+
               </ListItem>
             </List>
           </Paper>
