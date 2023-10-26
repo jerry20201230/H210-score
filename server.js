@@ -443,7 +443,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
                           console.log("parent data uploaded")
-                      //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
+                          //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
                           connection4.release()
                         })
                       })
@@ -568,25 +568,26 @@ app.post("/api/changepass", (req, res) => {
 
 })
 
-app.post("/api/blocksearch",(req,res)=>{
-  if(req.session.role === "std"){
+app.post("/api/blocksearch", (req, res) => {
+  if (req.session.role === "std") {
 
-    
+
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
 
-      
+        console.log(results3)
+        res.send(JSON.stringify({ message: 'Login successful', data: { result: results3 }, ok: true }));
 
 
         connection3.release()
       })
     })
 
-  }else{
-    
+  } else {
+
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
 

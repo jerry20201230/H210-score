@@ -17,9 +17,7 @@ import { utc } from 'dayjs/plugin/utc'
 
 import { timezone } from 'dayjs/plugin/timezone' // dependent on utc plugin
 
-dayjs.extend(relativeTime)
-dayjs.extend(utc)
-dayjs.extend(timezone)
+
 
 export function StdScore({ data, user }) {
 
@@ -119,9 +117,12 @@ export function StdScore({ data, user }) {
   }
 
   React.useEffect(() => {
-
+    console.log("???")
     getScore(UrlParam("q"))
     dayjs.locale('zh-tw')
+    dayjs.extend(relativeTime)
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
   }, [])
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
