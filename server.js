@@ -582,7 +582,24 @@ app.post("/api/blocksearch", (req, res) => {
     `, function (error3, results3, fields) {
 
         console.log(results3)
-        res.send(JSON.stringify({ message: 'Login successful', data: { result: results3 }, ok: true }));
+        var data = results3[0][req.body.id].split("%|%")
+
+        if (Number(data[2]) <= 0) {
+          res.status(404).json({ message: '今天機會已經用完', ok: false, code: 404 });
+        } else {
+          sql_Connect.getConnection(function (err, connection2) {
+            connection2.query(`
+      UPDATE parentAccountCtrl
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(10, "minutes").format("YYYY/MM/DD HH:mm:ss")}"
+      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+    `, function (error2, results2, fields) {
+              res.status(200).json({ message: '開啟成功', ok: true, code: 200 });
+
+              console.log("opened")
+              connection2.release()
+            })
+          })
+        }
 
 
         connection3.release()
