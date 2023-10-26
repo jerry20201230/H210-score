@@ -116,6 +116,18 @@ export function StdScore({ data, user }) {
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
 
+  function blockScore() {
+    fetch("/api/blocksearch", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: UrlParam("q") }),
+    }).then(res => res.json())
+      .then(res => console.log(res))
+
+  }
+
   React.useEffect(() => {
     console.log("???")
     getScore(UrlParam("q"))
@@ -154,21 +166,11 @@ export function StdScore({ data, user }) {
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
 
-          <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
 
           <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態</h2>
             <p>
-              {
-                scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
-                  Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
-                    <>
-                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
-                      最近一次在 {dayjs(new Date()).from(dayjs.tz(dayjs(scoreData.queryTimes.split("%|%")[1]), 'Asia/Taipei'))}
-                    </>
-                    :
-                    <>家長還沒看過這筆成績</>
-              }
+
             </p>
           </Paper>
           <p></p>
@@ -188,7 +190,11 @@ export function StdScore({ data, user }) {
                 <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" secondary={"暫停家長的查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。每筆成績每天限用3次，你今天用了"} />
                 <Switch
                   edge="end"
-                  onChange={setSetting_1(!setting_1)}
+                  onChange={() => {
+                    if (!setting_1 && window.confirm("確定開啟此功能?")) {
+                      blockScore()
+                    }
+                  }}
                   checked={setting_1}
                 />
               </ListItem>
