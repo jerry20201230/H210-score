@@ -149,7 +149,7 @@ export function StdScore({ data, user }) {
   }
 
   React.useEffect(() => {
-    console.log("???")
+
     getScore(UrlParam("q"))
     // dayjs.locale('zh-tw')
     // dayjs.extend(relativeTime)
@@ -159,6 +159,7 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     if (dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))) {
       setSetting1Subtitle(`短暫維持家庭和睦 到 ${dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`)
+      setSetting_1(true)
     }
   }, [scoreData])
 
@@ -194,7 +195,7 @@ export function StdScore({ data, user }) {
           <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
 
           <Paper sx={{ p: 2 }}>
-            <h2>家長查詢狀態</h2>
+            <h2>家長查詢狀態(非即時)</h2>
             <p>
               {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
@@ -210,6 +211,7 @@ export function StdScore({ data, user }) {
                     <>家長還沒看過這筆成績</>
               }
             </p>
+            <Button variant="contained" onClick={() => { window.location.reload() }}>更新</Button>
           </Paper>
           <p></p>
           <Paper sx={{ p: 2 }}>
@@ -231,14 +233,14 @@ export function StdScore({ data, user }) {
                 <Switch
                   edge="end"
                   onChange={() => {
-                    if (!setting_1 == true && window.confirm("確定開啟此功能?")) {
+                    if (!setting_1 == true && window.confirm("開啟之後無法取消\n確定開啟此功能?")) {
                       blockScore()
                       setSetting_1(true)
                       setDisableSetting1(true)
                     }
                   }}
                   checked={setting_1}
-                  disabled={disableSetting1}
+                  disabled={disableSetting1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
                 />
               </ListItem>
             </List>
