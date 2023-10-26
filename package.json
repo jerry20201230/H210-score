@@ -21,6 +21,7 @@
     "http": "^0.0.1-security",
     "mysql2": "^3.6.0",
     "nanoid": "^4.0.2",
+    "node-cron": "^3.0.2",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",

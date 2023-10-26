@@ -12,14 +12,6 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { List, ListItem, ListItemText, Switch } from "@mui/material"
 
-var relativeTime = require('dayjs/plugin/relativeTime')
-var utc = require('dayjs/plugin/utc')
-require('dayjs/locale/zh-tw')
-dayjs.locale('zh-tw')
-var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
-dayjs.extend(relativeTime)
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 
 export function StdScore({ data, user }) {
@@ -122,6 +114,15 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
 
     getScore(UrlParam("q"))
+    var relativeTime = require('dayjs/plugin/relativeTime')
+    var utc = require('dayjs/plugin/utc')
+    require('dayjs/locale/zh-tw')
+    dayjs.locale('zh-tw')
+    var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+    dayjs.extend(relativeTime)
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
+
   }, [])
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
@@ -192,8 +193,6 @@ export function StdScore({ data, user }) {
                 />
               </ListItem>
             </List>
-
-
           </Paper>
         </Box>
       </div>
