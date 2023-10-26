@@ -175,7 +175,8 @@ export function StdScore({ data, user }) {
                   Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
                     <>
                       家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
-                      最近一次在 {dayjs(new Date()).from(dayjs.tz(dayjs(scoreData.queryTimes.split("%|%")[1]), 'Asia/Taipei'))}
+                      最近一次在 {
+                        dayjs(new Date()).from(dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour"))}
                     </>
                     :
                     <>家長還沒看過這筆成績</>
