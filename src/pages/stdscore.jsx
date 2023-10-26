@@ -18,6 +18,18 @@ var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 dayjs.extend(relativeTime)
 dayjs.extend(utc)
 dayjs.extend(timezone)
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+
+
 export function StdScore({ data, user }) {
 
 
@@ -45,6 +57,7 @@ export function StdScore({ data, user }) {
   }));
 
 
+  const [setting_1,setSetting_1] = React.useState(false)
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -170,11 +183,29 @@ export function StdScore({ data, user }) {
           <p></p>
           <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
+            <div hidden>
             <Alert severity="warning">
               <b>警告</b><br />
               請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
             </Alert>
-            <Button color="error" variant="contained">下一步</Button>
+            <Button color="error" variant="contained" >下一步</Button>
+          </div>
+
+          <List  sx={{ width: '100%', bgcolor: 'background.paper' }} >
+      <ListItem>
+        <ListItemIcon>
+        
+        </ListItemIcon>
+        <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" />
+        <Switch
+          edge="end"
+          onChange={serSetting_1(!setting_1)}
+          checked={setting_1}
+        />
+      </ListItem>
+    </List>
+  
+
           </Paper>
         </Box>
       </div>

@@ -572,6 +572,16 @@ app.post("/api/blocksearch",(req,res)=>{
   if(req.session.role === "std"){
 
     
+    sql_Connect.getConnection(function (err, connection3) {
+      connection3.query(`
+      SELECT * FROM parentAccountCtrl 
+      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+    `, function (error3, results3, fields) {
+        console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
+        connection3.release()
+      })
+    })
+
   }else{
     
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
