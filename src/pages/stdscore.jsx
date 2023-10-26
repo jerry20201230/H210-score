@@ -39,6 +39,7 @@ export function StdScore({ data, user }) {
   const [isrank, setIsRank] = React.useState(false)
 
   const [disableSetting1, setDisableSetting1] = React.useState(false)
+  const [setting1Subtitle, setSetting1Subtitle] = React.useState(false)
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -137,7 +138,13 @@ export function StdScore({ data, user }) {
       },
       body: JSON.stringify({ id: UrlParam("q") }),
     }).then(res => res.json())
-      .then(res => console.log(res))
+      .then(res => {
+        if (res.ok) {
+          setSetting1Subtitle(res.message)
+        } else {
+          alert(res.message)
+        }
+      })
 
   }
 
@@ -190,7 +197,8 @@ export function StdScore({ data, user }) {
                       家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
-                      }
+                      }<br />
+                      {setting1Subtitle}
                     </>
                     :
                     <>家長還沒看過這筆成績</>
@@ -207,6 +215,8 @@ export function StdScore({ data, user }) {
               </Alert>
               <Button color="error" variant="contained" >下一步</Button>
             </div>
+
+
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>

@@ -596,7 +596,7 @@ app.post("/api/blocksearch", (req, res) => {
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(10, "minute").format("YYYY/MM/DD HH:mm:ss")}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
-              res.status(200).json({ message: '開啟成功', ok: true, code: 200 });
+              res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(10, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
               console.log("opened")
               connection2.release()
             })
