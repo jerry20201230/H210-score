@@ -131,10 +131,10 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     console.log("???")
     getScore(UrlParam("q"))
-    dayjs.locale('zh-tw')
-    dayjs.extend(relativeTime)
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
+    // dayjs.locale('zh-tw')
+    // dayjs.extend(relativeTime)
+    // dayjs.extend(utc)
+    // dayjs.extend(timezone)
   }, [])
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
@@ -176,7 +176,8 @@ export function StdScore({ data, user }) {
                     <>
                       家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
                       最近一次在 {
-                        dayjs(new Date()).from(dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour"))}
+                        (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
+                      }
                     </>
                     :
                     <>家長還沒看過這筆成績</>
