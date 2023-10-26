@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import { CheckLogin } from './checklogin';
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 export default function TopBar({ logined, title, data }) {
   const [auth, setAuth] = React.useState(logined);
@@ -63,8 +63,7 @@ export default function TopBar({ logined, title, data }) {
         <AppBar position="fixed">
           <Toolbar>
             <IconButton
-             component={Link} to="/"
-              onClick={() => window.location.href = "/"}
+              component={Link} to="/"
               size="large"
               edge="start"
               color="inherit"
