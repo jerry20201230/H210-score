@@ -424,7 +424,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     sql_Connect.getConnection(function (err, connection4) {
                       connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = "0%|%null"
+                      SET ${req.body.id} = "0%|%null%|%3%|%null"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
                         console.log("parent data writed")
@@ -439,11 +439,11 @@ app.post("/api/getscorebyid", (req, res) => {
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}"
+                      SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%results3[0][req.body.id].split("%|%")[3]"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
                           console.log("parent data uploaded")
-                          console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
+                      //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
                           connection4.release()
                         })
                       })
@@ -580,7 +580,7 @@ app.post("/api/blocksearch",(req,res)=>{
 
       
 
-      
+
         connection3.release()
       })
     })
