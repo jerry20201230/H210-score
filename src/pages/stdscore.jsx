@@ -131,10 +131,10 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     console.log("???")
     getScore(UrlParam("q"))
-    // dayjs.locale('zh-tw')
-    // dayjs.extend(relativeTime)
-    // dayjs.extend(utc)
-    // dayjs.extend(timezone)
+    dayjs.locale('zh-tw')
+    dayjs.extend(relativeTime)
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
   }, [])
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
@@ -197,7 +197,8 @@ export function StdScore({ data, user }) {
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
 
-                <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" secondary={"暫停家長的查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。每筆成績每天限用3次，你今天用了"} />
+                <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦"
+                  secondary={<>暫停家長查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。<br />每筆成績每天限用3次，你今天用了</>} />
                 <Switch
                   edge="end"
                   onChange={() => {
