@@ -578,7 +578,6 @@ app.post("/api/changepass", (req, res) => {
 app.post("/api/blocksearch", (req, res) => {
   if (req.session.role === "std") {
 
-
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl 
@@ -594,11 +593,10 @@ app.post("/api/blocksearch", (req, res) => {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
       UPDATE parentAccountCtrl
-      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(10, "minutes").format("YYYY/MM/DD HH:mm:ss")}"
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(10, "minute").format("YYYY/MM/DD HH:mm:ss")}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: '開啟成功', ok: true, code: 200 });
-
               console.log("opened")
               connection2.release()
             })
@@ -641,6 +639,14 @@ app.post("/api/logout", (req, res) => {
 
   req.session.destroy()
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
+
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query(`
+      SELECT * FROM parentAccountCtrl 
+    `, function (error, results, field) {
+      console.log(results)
+    })
+  })
 })
 
 var refreshData = cron.schedule('00 00 00 * * * ', () => {
@@ -649,15 +655,12 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
       SELECT * FROM parentAccountCtrl 
     `, function (error, results, field) {
 
-      results.forEach((score, i) => {
-        console.log("[SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
+      results.forEach((r, i) => {
+        console.log("[SQL DATA WRITING]", " ", i + 1, " STILL PROCESSING")
         sql_Connect.getConnection(function (err, connection3) {
 
-          var index = i,
-            text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
-
           connection3.query(`
-                  UPDATE scoreData
+                  UPDATE parentAccountCtrl 
                   SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
                   WHERE id = ${index};`, function (error, results, fields) {
             if (error) throw error;
@@ -666,11 +669,6 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
           })
         })
       })
-
-
-
-
-
 
     })
   })
