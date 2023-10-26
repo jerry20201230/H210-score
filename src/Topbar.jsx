@@ -63,6 +63,7 @@ export default function TopBar({ logined, title, data }) {
         <AppBar position="fixed">
           <Toolbar>
             <IconButton
+             component={Link} to="/"
               onClick={() => window.location.href = "/"}
               size="large"
               edge="start"
