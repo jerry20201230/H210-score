@@ -354,8 +354,6 @@ app.post("/api/uploadnewscore", (req, res) => {
                     `, function (error, results, fields) {
             if (error) throw error;
             req.body.score.scoreData.forEach((score, i) => {
-
-
               console.log("[SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
               sql_Connect.getConnection(function (err, connection3) {
 
@@ -454,22 +452,28 @@ app.post("/api/getscorebyid", (req, res) => {
                   }
 
 
-                  if (results2.length > 0 && !dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
-                    var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+                  if (results2.length > 0) {
 
-                    for (i = 0; i < results2.length; i++) {
-                      if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
-                        tot += Number(results2[i][req.body.id].split("%|%")[0])
-                        scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+                    if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
+                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+
+                    } else {
+                      var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+
+                      for (i = 0; i < results2.length; i++) {
+                        if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
+                          tot += Number(results2[i][req.body.id].split("%|%")[0])
+                          scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+                        }
                       }
+                      hi = Math.max(...scoreList)
+                      lo = Math.min(...scoreList)
+
+                      avg = (tot / scoreList.length).toFixed(2)
+
+                      console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
+                      res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
                     }
-                    hi = Math.max(...scoreList)
-                    lo = Math.min(...scoreList)
-
-                    avg = (tot / scoreList.length).toFixed(2)
-
-                    console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                    res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
                   } else {
                     res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
                   }
@@ -640,7 +644,36 @@ app.post("/api/logout", (req, res) => {
 })
 
 var refreshData = cron.schedule('00 00 00 * * * ', () => {
-  console.log('running on Sundays of January and September');
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query(`
+      SELECT * FROM parentAccountCtrl 
+    `, function (error, results, field) {
+
+      results.forEach((score, i) => {
+        console.log("[SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
+        sql_Connect.getConnection(function (err, connection3) {
+
+          var index = i,
+            text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
+
+          connection3.query(`
+                  UPDATE scoreData
+                  SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
+                  WHERE id = ${index};`, function (error, results, fields) {
+            if (error) throw error;
+            console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
+            connection3.release();
+          })
+        })
+      })
+
+
+
+
+
+
+    })
+  })
 });
 
 
