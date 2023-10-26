@@ -577,7 +577,10 @@ app.post("/api/blocksearch",(req,res)=>{
       SELECT * FROM parentAccountCtrl 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
-        console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
+
+      
+
+      
         connection3.release()
       })
     })

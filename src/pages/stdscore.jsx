@@ -34,7 +34,7 @@ export function StdScore({ data, user }) {
 
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00" }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00%|%0%|%2023/1/1 00:00:00" }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
@@ -57,7 +57,7 @@ export function StdScore({ data, user }) {
   }));
 
 
-  const [setting_1,setSetting_1] = React.useState(false)
+  const [setting_1, setSetting_1] = React.useState(false)
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -184,27 +184,25 @@ export function StdScore({ data, user }) {
           <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
             <div hidden>
-            <Alert severity="warning">
-              <b>警告</b><br />
-              請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
-            </Alert>
-            <Button color="error" variant="contained" >下一步</Button>
-          </div>
+              <Alert severity="warning">
+                <b>警告</b><br />
+                請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
+              </Alert>
+              <Button color="error" variant="contained" >下一步</Button>
+            </div>
 
-          <List  sx={{ width: '100%', bgcolor: 'background.paper' }} >
-      <ListItem>
-        <ListItemIcon>
-        
-        </ListItemIcon>
-        <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" />
-        <Switch
-          edge="end"
-          onChange={serSetting_1(!setting_1)}
-          checked={setting_1}
-        />
-      </ListItem>
-    </List>
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
+              <ListItem>
   
+                <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦" secondary={"暫停家長的查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。每筆成績每天限用3次，你今天用了"} />
+                <Switch
+                  edge="end"
+                  onChange={setSetting_1(!setting_1)}
+                  checked={setting_1}
+                />
+              </ListItem>
+            </List>
+
 
           </Paper>
         </Box>
