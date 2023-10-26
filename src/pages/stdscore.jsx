@@ -131,10 +131,10 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     console.log("???")
     getScore(UrlParam("q"))
-    dayjs.locale('zh-tw')
-    dayjs.extend(relativeTime)
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
+    // dayjs.locale('zh-tw')
+    // dayjs.extend(relativeTime)
+    // dayjs.extend(utc)
+    // dayjs.extend(timezone)
   }, [])
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
