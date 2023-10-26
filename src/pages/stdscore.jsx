@@ -156,6 +156,12 @@ export function StdScore({ data, user }) {
     // dayjs.extend(utc)
     // dayjs.extend(timezone)
   }, [])
+  React.useEffect(() => {
+    if (dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))) {
+      setSetting1Subtitle(`短暫維持家庭和睦 到 ${dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`)
+    }
+  }, [scoreData])
+
   // React.useEffect(() => {
   //   console.log(scoreData.queryTimes.split("%|%")[1])
 
@@ -194,7 +200,7 @@ export function StdScore({ data, user }) {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
                   Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
                     <>
-                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
+                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次 (包含)<br />
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
                       }<br />
