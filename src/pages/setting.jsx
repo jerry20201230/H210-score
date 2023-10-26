@@ -29,6 +29,7 @@ export function Setting({ data, user }) {
                 <Paper sx={{ p: 2 }}>
                     <h2>關於</h2>
                     <code>
+                        成績查詢系統
                         BY Jerry <br />
                         v1.0 , 2023.10<br />
                         SVG Background by <Button component="a" target="_blank" href="https://bgjar.com" variant="text">BGJar</Button>

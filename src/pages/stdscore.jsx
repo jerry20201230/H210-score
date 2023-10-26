@@ -121,7 +121,7 @@ export function StdScore({ data, user }) {
   React.useEffect(() => {
     console.log(scoreData.queryTimes.split("%|%")[1])
 
-    console.log(dayjs().tz(scoreData.queryTimes.split("%|%")[1], 'Asia/Taipei'))
+    console.log(dayjs().tz(dayjs(scoreData.queryTimes.split("%|%")[1]), 'Asia/Taipei'))
     console.log(dayjs(new Date()).from(dayjs.utc(dayjs(scoreData.queryTimes.split("%|%")[1])).tz('Asia/Taipei')))
   }, [scoreData])
 
