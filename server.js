@@ -3,17 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const dayjs = require('dayjs')
-var CronJob = require('cron').CronJob;
-var cronJob1 = new CronJob({
 
-  cronTime: '00 00 00 * * * ',
-  onTick: function () {
-    //Your code that is to be executed on every midnight
-    console.log("cron job")
-  },
-  start: true,
-  runOnInit: false
-});
+var cron = require('node-cron');
+
 
 app.use(bodyParser.json());
 app.use(express.static('./build'));
@@ -630,8 +622,14 @@ app.post("/api/logout", (req, res) => {
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
+var refreshData = cron.schedule('00 00 00 * * * ', () => {
+  console.log('running on Sundays of January and September');
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+  refreshData.start()
   console.log(`Server is running on port ${PORT}`);
 });
 
