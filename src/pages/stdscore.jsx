@@ -165,12 +165,21 @@ export function StdScore({ data, user }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
-
+          <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
 
           <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態</h2>
             <p>
-
+              {
+                scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
+                  Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
+                    <>
+                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
+                      最近一次在 {dayjs(new Date()).from(dayjs.tz(dayjs(scoreData.queryTimes.split("%|%")[1]), 'Asia/Taipei'))}
+                    </>
+                    :
+                    <>家長還沒看過這筆成績</>
+              }
             </p>
           </Paper>
           <p></p>
