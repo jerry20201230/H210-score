@@ -454,7 +454,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   }
 
 
-                  if (results2.length > 0 && !dayjs().isBefore(dayjs(results3[0][req.body.id]))) {
+                  if (results2.length > 0 && !dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
                     var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
 
                     for (i = 0; i < results2.length; i++) {
@@ -471,7 +471,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
                     res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
                   } else {
-                    res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+                    res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
                   }
 
                   res.end();
@@ -490,7 +490,7 @@ app.post("/api/getscorebyid", (req, res) => {
           //    console.log(results)
           //    res.send(JSON.stringify({ message: 'Login successful', data: { result: {yourScore:results[i][req.id],} }, ok: true }));
         } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+          res.status(404).json({ message: '請刷新網站', ok: false, code: 404 });
         }
 
         ////     res.end();

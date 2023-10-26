@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 export function Score({ data, user }) {
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null,queryTimes: "0%|%2023/1/1 00:00:00%|%0%|%2023/1/1 00:00:00" }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00%|%0%|%2023/1/1 00:00:00" }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
@@ -27,6 +27,7 @@ export function Score({ data, user }) {
 
   const [loading, setLoading] = React.useState(true)
   const [loadingState, setLoadingState] = React.useState("")
+  const [loadingState2, setLoadingState2] = React.useState("")
 
   const [isrank, setIsRank] = React.useState(false)
 
@@ -87,20 +88,20 @@ export function Score({ data, user }) {
                     setScoreData(res2.data)
                     setLoading(false)
                   } else {
-                    alert("發生錯誤，請刷新網站!!")
+                    setLoadingState("發生錯誤")
+                    setLoadingState2(res2.message)
                   }
-
-
                 })
                 .catch(() => {
-
                   setLoadingState("發生錯誤")
+                  setLoadingState2("暫時無法查詢這筆成績，請過幾分鐘再試一次")
                 })
             }
           }
           if (!k) {
-            alert("找不到成績")
             setLoadingState("發生錯誤")
+            setLoadingState2("成績不存在")
+
             // setLoading(false)
           }
         } else {
@@ -180,7 +181,9 @@ export function Score({ data, user }) {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
         open={loading}
       >
-        <h3 style={{ margin: 0, padding: 0 }}>{loadingState}</h3>
+        <h2>{loadingState}</h2>
+        <h3 style={{ margin: 0, padding: 0 }}>{loadingState2}</h3>
+
         {loadingState.includes("發生錯誤") ?
           <p>
             <Button component={Link} to="/" variant="contained">回首頁</Button>
