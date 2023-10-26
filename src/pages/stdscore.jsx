@@ -11,12 +11,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { List, ListItem, ListItemText, Switch } from "@mui/material"
-
 import { relativeTime } from 'dayjs/locale/zh-tw';
 import { utc } from 'dayjs/plugin/utc'
-
 import { timezone } from 'dayjs/plugin/timezone' // dependent on utc plugin
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 export function StdScore({ data, user }) {
@@ -47,6 +49,15 @@ export function StdScore({ data, user }) {
     color: theme.palette.text.secondary,
   }));
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const [setting_1, setSetting_1] = React.useState(false)
 
@@ -199,14 +210,14 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" primary="短暫維持家庭和睦"
+                <ListItemText id="switch-list-label-wifi" secondary={<>r今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>} primary={<>短暫維持家庭和睦<br /><Button variant="text" onClick={() => setOpen(true)}>說明</Button></>}
                 ></ListItemText>
                 <Switch
                   edge="end"
                   onChange={() => {
                     if (!setting_1 == true && window.confirm("確定開啟此功能?")) {
                       blockScore()
-                      setting_1(true)
+                      setSetting_1(true)
                       setDisableSetting1(true)
                     }
                   }}
@@ -214,15 +225,34 @@ export function StdScore({ data, user }) {
                   disabled={disableSetting1}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemText secondary={<>暫停家長查詢這筆成績的權限10分鐘，期間將在家長的裝置上顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>} />
-
-              </ListItem>
             </List>
           </Paper>
         </Box>
       </div>
 
+
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"短暫維持家庭和睦 - 說明"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }
