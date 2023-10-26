@@ -559,9 +559,6 @@ app.post("/api/changepass", (req, res) => {
       })
     })
 
-
-
-
     req.session.destroy()
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
@@ -569,6 +566,18 @@ app.post("/api/changepass", (req, res) => {
 
   }
 
+})
+
+app.post("/api/blocksearch",(req,res)=>{
+  if(req.session.role === "std"){
+
+    
+  }else{
+    
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
+    res.end();
+
+  }
 })
 
 
