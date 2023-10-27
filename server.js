@@ -447,7 +447,6 @@ app.post("/api/getscorebyid", (req, res) => {
                     }
                   }
 
-
                   if (results2.length > 0) {
 
                     if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
@@ -653,18 +652,33 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
               results2.forEach((r, k) => {
 
-                var data = results2[index][k.uid].split("%|%")
+                var data = String(results2[index][k.uid]).split("%|%")
 
-                connection3.query(`
+                if (data.length > 1) {
+                  connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${k.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
-                  WHERE id = ${index};`, function (error, results, fields) {
-                  if (error) throw error;
+                  SET ${index + 1} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
+                  WHERE id = ${k.uid};`, function (error, results, fields) {
+                    if (error) throw error;
 
-                  console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
-                  connection3.release();
-                })
+                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                    connection3.release();
+                  })
+                } else {
+                  connection3.query(`
+                  UPDATE parentAccountCtrl 
+                
+                  SET ${index + 1} = "0%|%null%|%3%|%null"
+                  WHERE id = ${k.uid};`, function (error, results, fields) {
+                    if (error) throw error;
+
+                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                    connection3.release();
+                  })
+                }
+
+
 
               })
 
