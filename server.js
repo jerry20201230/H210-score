@@ -179,7 +179,7 @@ app.post("/api/changepassword/student", (req, res) => {
         if (error) throw error;
 
         // console.log(`[SQL RESULT] /api/changepassword/student\nUser:${req.session.username}\n`)
-        console.log(results)
+        // console.log(results)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
@@ -282,9 +282,6 @@ app.post("/api/deletescore", (req, res) => {
             res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
             res.end();
-
-
-
 
 
             sql_Connect.getConnection(function (err, connection3) {
@@ -418,8 +415,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   };
 
                   var queryTimes
-                  console.log(results3[req.body.id], "reqbodyid")
-                  console.log(results3[0], "reqbodyid")
+                  console.log(`[CHECKING PERMISSIONS] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                   if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
                     sql_Connect.getConnection(function (err, connection4) {
@@ -443,7 +439,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
-                          console.log("parent data uploaded")
+                          console.log("parent data updateed")
                           //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
                           connection4.release()
                         })
@@ -456,6 +452,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
                     if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
                       res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                      console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                     } else {
                       var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
@@ -476,17 +473,14 @@ app.post("/api/getscorebyid", (req, res) => {
                     }
                   } else {
                     res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                    console.warn(`[SEVER ERROR] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+
                   }
 
                   res.end();
-
-
-
                   connection3.release()
                 })
               })
-
-
               connection2.release();
             })
           })
@@ -537,7 +531,7 @@ app.post("/api/changepass", (req, res) => {
     `, [req.body.userid], function (error, results, fields) {
         if (error) throw error;
         //   console.log(`[SQL RESULT] /api/changepass\nUser:${req.session.username}`)
-        console.log(results)
+
         if (results[0].userpassword === req.body.oldpass) {
 
 
@@ -583,12 +577,11 @@ app.post("/api/blocksearch", (req, res) => {
       SELECT * FROM parentAccountCtrl 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
-
-        console.log(results3)
         var data = results3[0][req.body.id].split("%|%")
-
         if (Number(data[2]) <= 0) {
           res.status(404).json({ message: '今天機會已經用完', ok: false, code: 404 });
+          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 短暫維持家庭和睦 (Failed : 今日機會已用完)`)
+
         } else {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
@@ -597,7 +590,7 @@ app.post("/api/blocksearch", (req, res) => {
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(10, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
-              console.log("opened")
+              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 短暫維持家庭和睦 (until ${dayjs().add(10, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")})`)
               connection2.release()
             })
           })
@@ -639,17 +632,9 @@ app.post("/api/logout", (req, res) => {
 
   req.session.destroy()
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
-
-  sql_Connect.getConnection(function (err, connection) {
-    connection.query(`
-      SELECT * FROM parentAccountCtrl 
-    `, function (error, results, field) {
-      console.log(results)
-    })
-  })
 })
 
-var refreshData = cron.schedule('00 00 00 * * * ', () => {
+var refreshData = cron.schedule('0 8 * * * ', () => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       SELECT * FROM parentAccountCtrl 
@@ -663,7 +648,7 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
 
           results.forEach((r, i) => {
             var index = i
-            console.log("[SQL DATA WRITING]", " ", i + 1, " STILL PROCESSING")
+            console.log("[CRON]SQL DATA WRITING", " ", i + 1, " STILL PROCESSING")
             sql_Connect.getConnection(function (err, connection3) {
 
               results2.forEach((r, k) => {
@@ -677,7 +662,7 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
                   WHERE id = ${index};`, function (error, results, fields) {
                   if (error) throw error;
 
-                  console.log("SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                  console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
                   connection3.release();
                 })
 
@@ -685,17 +670,8 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
 
             })
           })
-
-
-
-
-
         })
       })
-
-
-
-
     })
   })
 });

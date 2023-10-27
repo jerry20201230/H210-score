@@ -233,7 +233,7 @@ export function StdScore({ data, user }) {
                 <Switch
                   edge="end"
                   onChange={() => {
-                    if (!setting_1 == true && window.confirm("開啟之後無法取消\n確定開啟此功能?")) {
+                    if (!setting_1 == true && window.confirm("請不要連續使用這項功能\n開啟之後無法中途取消\n確定開啟此功能?")) {
                       blockScore()
                       setSetting_1(true)
                       setDisableSetting1(true)
@@ -262,7 +262,9 @@ export function StdScore({ data, user }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會</>
+              <Alert severity="info"><b>建議</b><br />請不要連續使用這項功能</Alert>
+              暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
+            </>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

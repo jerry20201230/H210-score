@@ -135,8 +135,6 @@ export function PushNewScore({ data, user }) {
           var list = []
           for (let i = 0; i < res.data.result.length; i++) {
             if (res.data.result[i].userid.includes("s")) {
-
-
               var object = res.data.result[i]
               object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
               object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
