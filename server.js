@@ -668,7 +668,7 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
 
               results2.forEach((r, k) => {
 
-                var data = results2[index][req.body.id].split("%|%")
+                var data = results2[index][k.uid].split("%|%")
 
                 connection3.query(`
                   UPDATE parentAccountCtrl 
@@ -676,6 +676,7 @@ var refreshData = cron.schedule('00 00 00 * * * ', () => {
                   SET ${k.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
                   WHERE id = ${index};`, function (error, results, fields) {
                   if (error) throw error;
+
                   console.log("SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
                   connection3.release();
                 })
