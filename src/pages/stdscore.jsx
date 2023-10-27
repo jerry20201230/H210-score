@@ -163,7 +163,8 @@ export function StdScore({ data, user }) {
     }).then(res => res.json())
       .then(res => {
         if (res.ok) {
-          window.location.reload()
+          setSetting1Subtitle(res.message)
+          getScore(UrlParam("q"))
         } else {
           alert(res.message)
           setSetting_1(false)
@@ -226,7 +227,7 @@ export function StdScore({ data, user }) {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
                   Number(scoreData.queryTimes.split("%|%")[0]) > 0 ?
                     <>
-                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次 (包含查詢失敗的次數)<br />
+                      家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
                       }<br />
@@ -337,7 +338,8 @@ export function StdScore({ data, user }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              <b>⟪理性使用，請勿引發家長懷疑⟫</b><br />
+              <b>⟪理性使用，請勿引發家長懷疑⟫</b>
+              <p></p>
               請不要連續使用這項功能<br />
               開啟之後<b>無法中途取消</b><br />
               你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會，確定開啟此功能?
