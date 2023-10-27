@@ -60,6 +60,31 @@ export function StdScore({ data, user }) {
     setOpen(false);
   };
 
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
+  const [open3, setOpen3] = React.useState(false);
+
+  const handleClickOpen3 = () => {
+    setOpen3(true);
+  };
+
+  const handleClose3 = (n) => {
+    setOpen3(false);
+    if (n) {
+      blockScore()
+      setSetting_1(true)
+      setDisableSetting1(true)
+    }
+  };
+
   const [setting_1, setSetting_1] = React.useState(false)
 
   function UrlParam(name) {
@@ -86,8 +111,6 @@ export function StdScore({ data, user }) {
 
             if (res.data.result[i].uid == UrlParam("q")) {
               k = true
-
-
               setAnnousment(
                 res.data.result[i].summery
               )
@@ -118,7 +141,7 @@ export function StdScore({ data, user }) {
             }
           }
           if (!k) {
-            alert("找不到考試")
+            alert("找不到成績")
             setLoadingState("發生錯誤")
             // setLoading(false)
           }
@@ -140,7 +163,7 @@ export function StdScore({ data, user }) {
     }).then(res => res.json())
       .then(res => {
         if (res.ok) {
-          setSetting1Subtitle(res.message)
+          window.location.reload()
         } else {
           alert(res.message)
           setSetting_1(false)
@@ -197,7 +220,7 @@ export function StdScore({ data, user }) {
           <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
 
           <Paper sx={{ p: 2 }}>
-            <h2>家長查詢狀態(非即時)</h2>
+            <h2>家長查詢狀態(非即時) <IconButton variant="text" onClick={() => setOpen2(true)}><HelpOutlineIcon /></IconButton></h2>
             <p>
               {
                 scoreData.queryTimes == null ? <>暫時無資料，請刷新網站</> :
@@ -210,7 +233,10 @@ export function StdScore({ data, user }) {
                       {setting1Subtitle}
                     </>
                     :
-                    <>家長還沒看過這筆成績</>
+                    <>
+                      家長還沒看過這筆成績<br />
+                      {setting1Subtitle}
+                    </>
               }
             </p>
             <Button variant="contained" onClick={() => { window.location.reload() }}>更新</Button>
@@ -235,22 +261,18 @@ export function StdScore({ data, user }) {
                 <Switch
                   edge="end"
                   onChange={() => {
-                    if (!setting_1 == true && window.confirm("請不要連續使用這項功能\n開啟之後無法中途取消\n確定開啟此功能?")) {
-                      blockScore()
-                      setSetting_1(true)
-                      setDisableSetting1(true)
+                    if (!setting_1 == true) {
+                      handleClickOpen3()
                     }
                   }}
                   checked={setting_1}
-                  disabled={disableSetting1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
+                  disabled={disableSetting1 || Number(scoreData.queryTimes.split("%|%")[2]) < 1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
                 />
               </ListItem>
             </List>
           </Paper>
         </Box>
       </div>
-
-
 
       <Dialog
         open={open}
@@ -265,12 +287,68 @@ export function StdScore({ data, user }) {
           <DialogContentText id="alert-dialog-description">
             <>
               <Alert severity="info"><b>建議</b><br />請不要連續使用這項功能</Alert>
+              <b>⟪理性使用，請勿引發家長懷疑⟫</b><br />
               暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
             </>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"家長最後查詢狀態 - 說明"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              此處顯示的查詢次數包含家長查詢失敗的次數<br />
+              在2023/10/27之前的最後查詢時間與次數<b>是由伺服器紀錄檔推算的大約值，並非實際值</b>
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose2} autoFocus>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"要啟用 短暫維持家庭和睦 嗎?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              <b>⟪理性使用，請勿引發家長懷疑⟫</b><br />
+              請不要連續使用這項功能<br />
+              開啟之後<b>無法中途取消</b><br />
+              你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會，確定開啟此功能?
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose3(false)}>
+            取消
+          </Button>
+          <Button onClick={() => handleClose3(true)}>
             確定
           </Button>
         </DialogActions>
