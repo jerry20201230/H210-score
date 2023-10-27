@@ -176,7 +176,7 @@ export function PushNewScore({ data, user }) {
         <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
         />
         <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
-
+        <p color='red'>請至少選擇1個標籤</p>
         <p></p>
         <TextField
           label="對全班的公告"
