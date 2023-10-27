@@ -89,7 +89,7 @@ export function Score({ data, user }) {
                     setLoading(false)
                   } else {
                     setLoadingState("發生錯誤")
-                    setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次<small>錯誤代碼:077</small></>)
+                    setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次</>)
                   }
                 })
                 .catch(() => {
