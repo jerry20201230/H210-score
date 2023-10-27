@@ -143,6 +143,8 @@ export function StdScore({ data, user }) {
           setSetting1Subtitle(res.message)
         } else {
           alert(res.message)
+          setSetting_1(false)
+          setDisableSetting1(false)
         }
       })
 
