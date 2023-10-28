@@ -292,7 +292,7 @@ export function StdScore({ data, user }) {
           <DialogContentText id="alert-dialog-description">
             <>
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
-              <Alert severity="info"><b>建議</b><br />請不要連續使用這項功能</Alert>
+              <Alert severity='error'>警告: 請不要連續使用這項功能</Alert><br />
               <p></p>
               暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
             </>
@@ -345,7 +345,7 @@ export function StdScore({ data, user }) {
             <>
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
 
-              <Typography color="red">警告: 請不要連續使用這項功能</Typography><br />
+              <Alert severity='error'>警告: 請不要連續使用這項功能</Alert><br />
               開啟之後<b>無法中途取消</b>
               <p></p>
 
@@ -358,7 +358,7 @@ export function StdScore({ data, user }) {
                   checked={confirmChecked}
                   onChange={() => setConfirmChecked(!confirmChecked)}
                 />
-              } label="我已詳細閱讀上述說明" />
+              } label="我已詳細閱讀並同意上述說明" />
             </>
           </DialogContentText>
         </DialogContent>
