@@ -633,7 +633,7 @@ app.post("/api/logout", (req, res) => {
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
-var refreshData = cron.schedule('0 3 * * * ', () => {
+var refreshData = cron.schedule('0 4 * * * ', () => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       SELECT * FROM parentAccountCtrl 
@@ -652,15 +652,15 @@ var refreshData = cron.schedule('0 3 * * * ', () => {
 
               results.forEach((r, k) => {
 
-                var data = String(results[index][k.uid]).split("%|%")
+                var data = String(results[index][r.uid]).split("%|%")
 
-                console.log(data, " ", k)
+                console.log(data, " ", r)
                 if (data.length > 1) {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${index + 1} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
-                  WHERE id = ${k.uid};`, function (error, results, fields) {
+                  SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
+                  WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) throw error;
 
                     console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
@@ -670,8 +670,8 @@ var refreshData = cron.schedule('0 3 * * * ', () => {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${index + 1} = "0%|%null%|%3%|%null"
-                  WHERE id = ${k.uid};`, function (error, results, fields) {
+                  SET ${r.uid} = "0%|%null%|%3%|%null"
+                  WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) throw error;
 
                     console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")

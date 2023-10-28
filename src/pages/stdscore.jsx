@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, Alert, IconButton } from '@mui/material';
+import { Box, Button, Alert, IconButton, Typography } from '@mui/material';
 import "../App.css"
 import { red, yellow, green, grey, blue } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -20,6 +20,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 export function StdScore({ data, user }) {
 
@@ -49,6 +51,8 @@ export function StdScore({ data, user }) {
     overflow: "auto",
     color: theme.palette.text.secondary,
   }));
+
+  const [confirmChecked, setConfirmChecked] = React.useState(false)
 
   const [open, setOpen] = React.useState(false);
 
@@ -287,9 +291,9 @@ export function StdScore({ data, user }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              <h4>⟪理性使用，請勿引發家長懷疑⟫</h4>
+              <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
               <Alert severity="info"><b>建議</b><br />請不要連續使用這項功能</Alert>
-
+              <p></p>
               暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
             </>
           </DialogContentText>
@@ -339,19 +343,30 @@ export function StdScore({ data, user }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              <h4>⟪理性使用，請勿引發家長懷疑⟫</h4>
+              <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
 
-              請不要連續使用這項功能<br />
-              開啟之後<b>無法中途取消</b><br />
-              你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會，確定開啟此功能?
+              <Typography color="red">警告: 請不要連續使用這項功能</Typography><br />
+              開啟之後<b>無法中途取消</b>
+              <p></p>
+
+              請再次確認以下資訊:<br />
+              你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會<br />
+              這筆成績是 {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
+              <p></p>
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked}
+                  onChange={() => setConfirmChecked(!confirmChecked)}
+                />
+              } label="我已詳細閱讀上述說明" />
             </>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose3(false)}>
+          <Button variant='contained' onClick={() => handleClose3(false)}>
             取消
           </Button>
-          <Button onClick={() => handleClose3(true)}>
+          <Button variant="outlined" disabled={!confirmChecked} onClick={() => handleClose3(true)}>
             確定
           </Button>
         </DialogActions>
