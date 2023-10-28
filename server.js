@@ -633,7 +633,7 @@ app.post("/api/logout", (req, res) => {
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
-var refreshData = cron.schedule('0 2 * * * ', () => {
+var refreshData = cron.schedule('0 3 * * * ', () => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       SELECT * FROM parentAccountCtrl 
@@ -650,9 +650,9 @@ var refreshData = cron.schedule('0 2 * * * ', () => {
             console.log("[CRON]SQL DATA WRITING", " ", i + 1, " STILL PROCESSING")
             sql_Connect.getConnection(function (err, connection3) {
 
-              results2.forEach((r, k) => {
+              results.forEach((r, k) => {
 
-                var data = String(results2[index][k.uid]).split("%|%")
+                var data = String(results[index][k.uid]).split("%|%")
 
                 console.log(data, " ", k)
                 if (data.length > 1) {
