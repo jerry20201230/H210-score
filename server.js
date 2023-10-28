@@ -652,9 +652,9 @@ var refreshData = cron.schedule('0 7 * * * ', () => {
 
               results2.forEach((r, j) => {
 
-                var data = String(results2[index][r.uid]).split("%|%")
+                var data = String(results[index][r.uid]).split("%|%")
 
-                console.log(data, " ", r, " ", results2[index])
+                console.log(data, " ", r, " ", results[index])
 
                 if (data.length > 1) {
                   connection3.query(`
