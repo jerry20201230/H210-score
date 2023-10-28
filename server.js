@@ -654,6 +654,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
                 var data = String(results2[index][k.uid]).split("%|%")
 
+                console.log(data, " ", k)
                 if (data.length > 1) {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
@@ -677,9 +678,6 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                     connection3.release();
                   })
                 }
-
-
-
               })
 
             })
