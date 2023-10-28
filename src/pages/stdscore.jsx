@@ -127,7 +127,7 @@ export function StdScore({ data, user }) {
                   'Content-Type': 'application/json',
                 },
 
-                body: JSON.stringify({ id: UrlParam("q"), isrank: res.data.result[i].isrank > 0 }),
+                body: JSON.stringify({ id: UrlParam("q"), isrank: res.data.result[i].isrank > 0, countScore: false }),
               })
                 .then(res2 => res2.json())
                 .then(res2 => {

@@ -454,21 +454,29 @@ app.post("/api/getscorebyid", (req, res) => {
                       console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                     } else {
-                      var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+                      if (req.body.Countscore) {
 
-                      for (i = 0; i < results2.length; i++) {
-                        if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
-                          tot += Number(results2[i][req.body.id].split("%|%")[0])
-                          scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+
+                        var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+
+                        for (i = 0; i < results2.length; i++) {
+                          if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
+                            tot += Number(results2[i][req.body.id].split("%|%")[0])
+                            scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+                          }
                         }
+                        hi = Math.max(...scoreList)
+                        lo = Math.min(...scoreList)
+
+                        avg = (tot / scoreList.length).toFixed(2)
+
+                        console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
+                        res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
+                      } else {
+                        console.log(`[ADVANCED DATA ] ${req.body.id} User:${req.session.username}\nrequest advanced data only\n`)
+                        res.send(JSON.stringify({ message: 'Login successful', data: { queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
+
                       }
-                      hi = Math.max(...scoreList)
-                      lo = Math.min(...scoreList)
-
-                      avg = (tot / scoreList.length).toFixed(2)
-
-                      console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                      res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
                     }
                   } else {
                     res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
@@ -643,8 +651,6 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
         connection2.query(`
       SELECT * FROM scoreUid 
     `, function (error, results2, field) {
-
-
           results.forEach((k, i) => {
             var index = i
             console.log("[CRON]SQL DATA WRITING", " ", i + 1, " STILL PROCESSING")
