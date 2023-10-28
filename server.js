@@ -454,7 +454,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                     } else {
-                      if (req.body.Countscore) {
+                      if (req.body.countScore) {
 
 
                         var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
