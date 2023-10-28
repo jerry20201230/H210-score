@@ -633,7 +633,7 @@ app.post("/api/logout", (req, res) => {
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
-var refreshData = cron.schedule('0 16 * * * ', () => {
+var refreshData = cron.schedule('0 2 * * * ', () => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       SELECT * FROM parentAccountCtrl 
