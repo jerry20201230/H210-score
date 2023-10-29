@@ -86,9 +86,10 @@ function App() {
       {!loading ?
         isLoggedIn ?
           <Routes>
+            <Route path='/route/' element={<Routing data={userData} />} ></Route>
+
             <Route path='/profile' element={<Profile data={userData} />} ></Route>
             <Route path='/setting' element={<Setting data={userData} />} ></Route>
-            <Route path='/route/' element={<Routing data={userData} />} ></Route>
 
             {userData.data.role === "teacher" ?
               <Route path='/' element={<TeacherHomePage data={userData} />} ></Route>
