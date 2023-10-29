@@ -102,7 +102,7 @@ export default function ScoreTabs({ data, role, href }) {
             data.map((d, i) => {
               return (
                 <ListItem disablePadding key={d.id}>
-                  <ListItemButton component={Link} to={`/score/${role === "std" ? (href === "more" ? "more" : "") : "class/"}?q=${d.id}`}>
+                  <ListItemButton component={Link} to={`/route/to/score/${role === "std" ? (href === "more" ? "more" : "") : "class/"}?q=${d.id}`}>
                     <ListItemText primary={d.title} />
                   </ListItemButton>
                 </ListItem>
@@ -126,7 +126,7 @@ export default function ScoreTabs({ data, role, href }) {
                         d2.subject.split(",").includes(d) ?
 
                           <ListItem disablePadding key={d2.id}>
-                            <ListItemButton component={Link} to={`/score/${role === "std" ? (href === "more" ? "more" : "") : "class/"}?q=${d2.id}`}>
+                            <ListItemButton component={Link} to={`/route/to/score/${role === "std" ? (href === "more" ? "more" : "") : "class/"}?q=${d2.id}`}>
                               <ListItemText primary={d2.title} />
                             </ListItemButton>
                           </ListItem>

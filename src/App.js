@@ -20,6 +20,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Setting } from './pages/setting';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { StdScore } from './pages/stdscore';
+import Routing from './pages/route';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -87,6 +88,7 @@ function App() {
           <Routes>
             <Route path='/profile' element={<Profile data={userData} />} ></Route>
             <Route path='/setting' element={<Setting data={userData} />} ></Route>
+            <Route path='/route/to' element={<Routing data={userData} />} ></Route>
 
             {userData.data.role === "teacher" ?
               <Route path='/' element={<TeacherHomePage data={userData} />} ></Route>

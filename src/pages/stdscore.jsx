@@ -409,12 +409,10 @@ export function StdScore({ data, user }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            快速切換到其他成績的學生專屬功能<br />
+            快速切換到其他成績的學生專屬功能頁面<br />
             <>
               {
-
                 scorelist.length > 0 ? <ScoreTabs data={scorelist} role={"std"} href={"more"} /> : <>資料讀取中...</>
-
               }
             </>
           </DialogContentText>
