@@ -244,7 +244,7 @@ export function StdScore({ data, user }) {
         <Box sx={{ p: 3 }}>
           <h2>
             {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
-            <IconButton onClick={() => setOpen4(true)}><MenuIcon /></IconButton>
+            <IconButton onClick={() => setOpen4(true)} sx={{ float: "right" }}><MenuIcon /></IconButton>
           </h2>
 
           <Paper sx={{ p: 2 }}>
@@ -409,11 +409,11 @@ export function StdScore({ data, user }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            快速切換到其他成績的學生專屬功能
+            快速切換到其他成績的學生專屬功能<br />
             <>
               {
 
-                scorelist.length < 1 ? <ScoreTabs data={scorelist} role={"std"} href={"more"} /> : <>資料讀取中...</>
+                scorelist.length > 0 ? <ScoreTabs data={scorelist} role={"std"} href={"more"} /> : <>資料讀取中...</>
 
               }
             </>
