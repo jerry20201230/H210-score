@@ -660,7 +660,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
                 var data = String(results[index][r.uid]).split("%|%")
 
-                console.log(data, " ", r, " ", results[index])
+                //console.log(data, " ", r, " ", results[index])
 
                 if (data.length > 1) {
                   connection3.query(`
@@ -670,7 +670,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) throw error;
 
-                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS] with code 0")
                     connection3.release();
                   })
                 } else {
@@ -681,7 +681,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) throw error;
 
-                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS]")
+                    console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS] with code 1")
                     connection3.release();
                   })
                 }

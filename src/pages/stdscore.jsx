@@ -22,6 +22,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import MenuIcon from '@mui/icons-material/Menu';
+import ScoreTabs from '../tabs';
 
 export function StdScore({ data, user }) {
 
@@ -42,6 +44,7 @@ export function StdScore({ data, user }) {
 
   const [disableSetting1, setDisableSetting1] = React.useState(false)
   const [setting1Subtitle, setSetting1Subtitle] = React.useState(false)
+  const [scorelist, setScoreList] = React.useState([])
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -89,6 +92,16 @@ export function StdScore({ data, user }) {
     }
   };
 
+  const [open4, setOpen4] = React.useState(false);
+
+  const handleClickOpen4 = () => {
+    setOpen4(true);
+  };
+
+  const handleClose4 = (n) => {
+    setOpen4(false);
+  };
+
   const [setting_1, setSetting_1] = React.useState(false)
 
   function UrlParam(name) {
@@ -109,7 +122,14 @@ export function StdScore({ data, user }) {
       .then(res => {
         if (res.ok) {
 
-          var list = [], k = false
+          var list = []
+          for (let i = 0; i < res.data.result.length; i++) {
+            list.push({ title: res.data.result[i].scoreName, id: res.data.result[i].uid, subject: res.data.result[i].subject })
+          }
+          setScoreList(list)
+
+          list = []
+          var k = false
           for (let i = 0; i < res.data.result.length; i++) {
             list.push(res.data.result[i].uid)
 
@@ -222,7 +242,10 @@ export function StdScore({ data, user }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
-          <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
+          <h2>
+            {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
+            <IconButton onClick={() => setOpen4(true)}><MenuIcon /></IconButton>
+          </h2>
 
           <Paper sx={{ p: 2 }}>
             <h2>家長查詢狀態(非即時) <IconButton variant="text" onClick={() => setOpen2(true)}><HelpOutlineIcon /></IconButton></h2>
@@ -371,6 +394,38 @@ export function StdScore({ data, user }) {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+
+      <Dialog
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"快速切換成績"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            快速切換到其他成績的學生專屬功能
+            <>
+              {
+
+                scorelist.length < 1 ? <ScoreTabs data={scorelist} role={"std"} href={"more"} /> : <>資料讀取中...</>
+
+              }
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose4} autoFocus>
+            關閉
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </>
   )
 }
