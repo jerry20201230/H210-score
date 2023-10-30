@@ -80,26 +80,26 @@ app.post('/api/login', async (req, res) => {
 app.post("/api/getscore", (req, res) => {
 
   if (req.session.role) {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
-        if (error) throw error;
-        if (results.length > 0) {
+    // sql_Connect.getConnection(function (err, connection) {
+    //   connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
+    //     if (error) throw error;
+    //     if (results.length > 0) {
 
-          res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
-        } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
-        }
+    //       res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+    //     } else {
+    //       res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+    //     }
 
-        res.end();
-        connection.release();
-      })
-    })
+    //     res.end();
+    //     connection.release();
+    //   })
+    // })
+    res.status(200).json({ message: '', ok: true, code: 200 });
+
   } else {
     res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
     res.end();
   }
-
-
 })
 
 app.post("/api/getallstudents", (req, res) => {
@@ -697,15 +697,41 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
 
 
-var cronGetData =
+var connectionTest =
   cron.schedule('0 */2 * * *', () => {
 
-    sql_Connect.getConnection(function (err, connection2) {
-      connection2.query(`
-                  SELECT * FROM scoreUid
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+       
+        SELECT * FROM connectionTest
         `, function (error, results, fields) {
-        console.log("[CRON] get SQL data")
-        connection2.release()
+        console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
+
+
+
+        sql_Connect.getConnection(function (err, connection2) {
+          connection2.query(`
+           DELETE FROM connectionTest
+            WHERE id > 1;
+       
+        `, function (error, results2, fields) {
+            console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+
+            sql_Connect.getConnection(function (err, connection3) {
+              connection3.query(`
+            INSERT INTO connectionTest (k,time)
+            VALUES(${1},${dayjs().format("YYYY/MM/DD HH:mm:ss")})
+
+        `, function (error, results3, fields) {
+                console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+
+                connection3.release()
+              })
+            })
+            connection2.release()
+          })
+        })
+        connection.release()
       })
     })
 
@@ -716,6 +742,8 @@ var cronGetData =
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   refreshData.start()
+  connectionTest.start()
+
   console.log(`Server is running on port ${PORT}`);
 });
 
