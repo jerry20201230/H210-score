@@ -266,7 +266,6 @@ app.post("/api/deletescore", (req, res) => {
             `, function (error, results, fields) {
         if (error) throw error;
 
-
         console.log(`[SQL RESULT] /api/deletescore\nUser:${req.session.username}\n`)
         console.log(results)
 
@@ -694,6 +693,24 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
     })
   })
 });
+
+
+
+
+var cronGetData =
+  cron.schedule('0 */2 * * *', () => {
+
+    sql_Connect.getConnection(function (err, connection2) {
+      connection2.query(`
+                  SELECT * FROM scoreUid
+        `, function (error, results, fields) {
+        console.log("[CRON] get SQL data")
+        connection2.release()
+      })
+    })
+
+
+  })
 
 
 const PORT = process.env.PORT || 3000;
