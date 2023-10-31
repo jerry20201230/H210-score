@@ -121,6 +121,8 @@ export function PushNewScore({ data, user }) {
 
 
   React.useEffect(() => {
+    alert("系統維護中，暫時無法輸入新成績")
+    window.location.href = "/"
     fetch("/api/getallstudents", {
       method: 'POST',
       headers: {
