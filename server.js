@@ -636,7 +636,7 @@ app.post("/api/checklogin", (req, res) => {
 app.post("/api/logout", (req, res) => {
   console.log(`[USER LOGOUT] User:${req.session.username} IP:${req.ip}`)
 
-  req.session.destroy()
+  req.session = null
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
