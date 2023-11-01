@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(express.static('./build'));
 app.set('trust proxy', true)
 //const serverless = require('serverless-http');
-const session = require('express-session');
+const session = require('cookie-session');
 app.use(session({
   secret: 'secret',
   resave: true,
