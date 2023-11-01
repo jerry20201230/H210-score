@@ -705,33 +705,42 @@ var connectionTest =
        
         SELECT * FROM connectionTest
         `, function (error, results, fields) {
-        console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
-
-
+        if (error) { console.log("[CRON][SQL TEST] get SQL data : [ERR!]", error) }
+        else {
+          console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
+        }
+        connection.release()
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
            DELETE FROM connectionTest
             WHERE id > 1;
        
-        `, function (error, results2, fields) {
-            console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+        `, function (error2, results2, fields) {
+            if (error2) {
+              console.log("[CRON][SQL TEST] delete SQL data : [ERR!]", error2)
+            } else {
+              console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+            }
+            connection2.release()
 
             sql_Connect.getConnection(function (err, connection3) {
               connection3.query(`
             INSERT INTO connectionTest (k,time)
             VALUES(${1},${dayjs().format("YYYY/MM/DD HH:mm:ss")})
 
-        `, function (error, results3, fields) {
-                console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+        `, function (error3, results3, fields) {
+                if (error3) {
+                  console.log("[CRON][SQL TEST] insert SQL data : [ERR]", error3)
 
+                } else {
+                  console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+                }
                 connection3.release()
               })
             })
-            connection2.release()
           })
         })
-        connection.release()
       })
     })
 

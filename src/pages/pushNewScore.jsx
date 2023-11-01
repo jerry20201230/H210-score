@@ -158,70 +158,72 @@ export function PushNewScore({ data, user }) {
   return (
     <>
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
+      <h1>系統維護中，暫時無法輸入新成績</h1>
 
-      <Box sx={{ p: 3 }}>
-        <h1>輸入新的成績資料</h1>
-        <p>
-          輸入每位同學的成績<br />
-          若該學生缺考，請將成績欄位留空即可
-        </p>
-        <TextField label="成績標題" variant="standard"
-          value={gradeTitle}
-          sx={{ width: "100%" }}
-          onInput={(e) => handleChange("gradeTitle", e.target.value)}
+      <div hidden>
+        <Box sx={{ p: 3 }}>
+          <h1>輸入新的成績資料</h1>
+          <p>
+            輸入每位同學的成績<br />
+            若該學生缺考，請將成績欄位留空即可
+          </p>
+          <TextField label="成績標題" variant="standard"
+            value={gradeTitle}
+            sx={{ width: "100%" }}
+            onInput={(e) => handleChange("gradeTitle", e.target.value)}
 
-        />
-        <p></p>
+          />
+          <p></p>
 
-        <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
-        />
-        <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
-        <Alert severity="error">為避免系統錯誤，請至少選擇1個標籤</Alert>
-        <p></p>
-        <TextField
-          label="對全班的公告"
-          multiline
-          sx={{ width: "100%" }}
-          rows={2}
-          variant="standard"
-          value={annousment}
-          onInput={(e) => setAnnousment(e.target.value)}
+          <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
+          />
+          <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
+          <Alert severity="error">為避免系統錯誤，請至少選擇1個標籤</Alert>
+          <p></p>
+          <TextField
+            label="對全班的公告"
+            multiline
+            sx={{ width: "100%" }}
+            rows={2}
+            variant="standard"
+            value={annousment}
+            onInput={(e) => setAnnousment(e.target.value)}
 
-        />
-        <p></p>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>座號</TableCell>
-                <TableCell>姓名</TableCell>
-                <TableCell>成績</TableCell>
-                <TableCell>私人留言(僅該學生與家長可查看)</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {students.map((row, i) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell>{row.username}</TableCell>
-                  <TableCell>{row.scoreInput}</TableCell>
-                  <TableCell>{row.summeryInput}</TableCell>
-
+          />
+          <p></p>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>座號</TableCell>
+                  <TableCell>姓名</TableCell>
+                  <TableCell>成績</TableCell>
+                  <TableCell>私人留言(僅該學生與家長可查看)</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <p></p>
+              </TableHead>
+              <TableBody>
+                {students.map((row, i) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.id}
+                    </TableCell>
+                    <TableCell>{row.username}</TableCell>
+                    <TableCell>{row.scoreInput}</TableCell>
+                    <TableCell>{row.summeryInput}</TableCell>
 
-        <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
-      </Box>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <p></p>
 
+          <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
+        </Box>
+      </div>
       <Dialog
         open={open}
         onClose={handleClose}
