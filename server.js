@@ -53,7 +53,11 @@ app.post('/api/login', async (req, res) => {
       if (googleRes.success) {
         sql_Connect.getConnection(function (err, connection) {
           connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
-            if (error) throw error;
+            if (error) {
+              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+              console.warn("[SEVER ERROR]", error)
+              return
+            }
             if (results.length > 0) {
               req.session.loggedin = true;
               req.session.username = results[0].username;
@@ -67,8 +71,9 @@ app.post('/api/login', async (req, res) => {
               res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
             }
             res.end();
-            connection.release();
           })
+          connection.release();
+
         })
       } else {
         console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:recaptcha verify error`)
@@ -106,7 +111,11 @@ app.post("/api/getallstudents", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query('SELECT id,username,userid,userpassword FROM userData', function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+          return
+        }
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
@@ -114,8 +123,9 @@ app.post("/api/getallstudents", (req, res) => {
         }
 
         res.end();
-        connection.release();
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
@@ -128,7 +138,11 @@ app.post("/api/getallstudentsforscore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT id,username,userid,role FROM userData WHERE role = 'std' `, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+          return
+        }
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
         } else {
@@ -136,8 +150,9 @@ app.post("/api/getallstudentsforscore", (req, res) => {
         }
 
         res.end();
-        connection.release();
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ message: 'Invalid credentials', ok: false, code: 403 });
@@ -149,7 +164,12 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT id,stdId, ${req.body.uid} FROM scoreData`, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
         if (results.length > 0) {
           console.log(`[SQL RESULT] /api/getallstudentscorebyid\nUser:${req.session.username} \nResult:`)
           console.log(results)
@@ -158,8 +178,9 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
         }
         res.end();
-        connection.release();
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ message: 'Invalid credentials', code: 403, ok: false });
@@ -176,7 +197,12 @@ app.post("/api/changepassword/student", (req, res) => {
             SET userpassword = ?
             WHERE id = ?
             `, [req.body.password, req.body.id], function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
 
         // console.log(`[SQL RESULT] /api/changepassword/student\nUser:${req.session.username}\n`)
         // console.log(results)
@@ -184,9 +210,10 @@ app.post("/api/changepassword/student", (req, res) => {
 
         res.end();
 
-        connection.release();
 
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
@@ -207,7 +234,12 @@ app.post("/api/updatescore", (req, res) => {
             SET ${req.body.scoreid} = "${req.body.scoreData}"
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
 
         console.log(`[SQL RESULT] /api/updatescore\nRESULT:\nUser:${req.session.username}\n`)
         console.log(results)
@@ -215,9 +247,10 @@ app.post("/api/updatescore", (req, res) => {
 
         res.end();
 
-        connection.release();
 
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
@@ -238,17 +271,21 @@ app.post("/api/updatescoresetting", (req, res) => {
             SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
             WHERE uid = "${req.body.scoreid}"
             `, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
 
         console.log(`[SQL RESULT] /api/updatescoresetting\nUser:${req.session.username}\n`)
         console.log(results)
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
-
-        connection.release();
-
       })
+      connection.release();
+
     })
   } else {
     res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
@@ -264,23 +301,35 @@ app.post("/api/deletescore", (req, res) => {
             ALTER TABLE scoreData
             DROP COLUMN ${req.body.scoreid};
             `, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
 
         console.log(`[SQL RESULT] /api/deletescore\nUser:${req.session.username}\n`)
         console.log(results)
+        connection.release();
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
             DELETE FROM scoreUid
             WHERE uid = ?;
             `, [req.body.scoreid], function (error2, results2, fields) {
-            if (error2) throw error2;
+            if (error2) {
+              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+              console.warn("[SEVER ERROR]", error2)
+
+              return
+            }
 
             console.log(`[SQL RESULT] /api/deletescore\nUser:${req.session.username}\n`)
             console.log(results2)
             res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
             res.end();
+            connection2.release();
 
 
             sql_Connect.getConnection(function (err, connection3) {
@@ -288,21 +337,18 @@ app.post("/api/deletescore", (req, res) => {
               ALTER TABLE parentAccountCtrl 
               DROP COLUMN ${req.body.scoreid};
             `, function (error3, results3, fields) {
+                if (error3) {
+                  console.warn("[SEVER ERROR]", error3)
+
+                }
                 console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
                 connection3.release()
               })
             })
 
-
-
-
-
-            connection2.release();
-
           })
         })
 
-        connection.release();
 
       })
     })
@@ -341,14 +387,25 @@ app.post("/api/uploadnewscore", (req, res) => {
             INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
             VALUES(?,?,?,?,?,?)
             `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
+        connection.release();
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
                     ALTER TABLE scoreData
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error, results, fields) {
-            if (error) throw error;
+            if (error) {
+              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+
+              console.warn("[SEVER ERROR]", error)
+              return
+            }
             req.body.score.scoreData.forEach((score, i) => {
               console.log("[SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
               sql_Connect.getConnection(function (err, connection3) {
@@ -360,7 +417,12 @@ app.post("/api/uploadnewscore", (req, res) => {
                   UPDATE scoreData
                   SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
                   WHERE id = ${index};`, function (error, results, fields) {
-                  if (error) throw error;
+                  if (error) {
+                    res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                    console.warn("[SEVER ERROR]", error)
+
+                    return
+                  }
                   console.log("SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
                   connection3.release();
                 })
@@ -382,7 +444,6 @@ app.post("/api/uploadnewscore", (req, res) => {
             connection2.release()
           })
         })
-        connection.release();
       })
     })
 
@@ -396,7 +457,12 @@ app.post("/api/getscorebyid", (req, res) => {
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT * FROM scoreData WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
         if (results.length > 0) {
 
           //繼續查最高/最低/平均
@@ -405,12 +471,18 @@ app.post("/api/getscorebyid", (req, res) => {
             connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+                console.warn("[SEVER ERROR]", error2)
+
               };
+              connection2.release();
+
 
               sql_Connect.getConnection(function (err, connection3) {
                 connection3.query(`SELECT * FROM parentAccountCtrl WHERE stdId = "${req.session.userid.replace("s", "p")}"`, function (error3, results3, fields3) {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+                    console.warn("[SEVER ERROR]", error3)
+
                   };
 
                   var queryTimes
@@ -482,12 +554,10 @@ app.post("/api/getscorebyid", (req, res) => {
                     console.warn(`[SEVER ERROR] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                   }
-
-                  res.end();
                   connection3.release()
+                  res.end();
                 })
               })
-              connection2.release();
             })
           })
 
@@ -511,7 +581,12 @@ app.post("/api/getscorebyid", (req, res) => {
 app.post("/api/getscoremap", (req, res) => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query('SELECT * FROM scoreUid', function (error, results, fields) {
-      if (error) throw error;
+      if (error) {
+        res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+        console.warn("[SEVER ERROR]", error)
+
+        return
+      };
       if (results.length > 0) {
 
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
@@ -535,7 +610,12 @@ app.post("/api/changepass", (req, res) => {
     SELECT * FROM userData
     WHERE userid = ?
     `, [req.body.userid], function (error, results, fields) {
-        if (error) throw error;
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+
+          return
+        }
         //   console.log(`[SQL RESULT] /api/changepass\nUser:${req.session.username}`)
 
         if (results[0].userpassword === req.body.oldpass) {
@@ -547,7 +627,12 @@ app.post("/api/changepass", (req, res) => {
           SET userpassword = ?
           WHERE userid = ?
           `, [req.body.newpass, req.body.userid], function (error, results2, fields) {
-              if (error) throw error;
+              if (error) {
+                res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                console.warn("[SEVER ERROR]", error)
+
+                return
+              }
 
 
               res.send(JSON.stringify({ message: 'Login successful', data: { result: results2 }, ok: true }));
@@ -566,7 +651,7 @@ app.post("/api/changepass", (req, res) => {
       })
     })
 
-    req.session  = null
+    req.session = null
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
@@ -667,7 +752,12 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                 
                   SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
-                    if (error) throw error;
+                    if (error) {
+                      res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                      console.warn("[SEVER ERROR]", error)
+
+                      return
+                    }
 
                     console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS] with code 0")
                     connection3.release();
@@ -678,7 +768,12 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                 
                   SET ${r.uid} = "0%|%null%|%3%|%null"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
-                    if (error) throw error;
+                    if (error) {
+                      res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                      console.warn("[SEVER ERROR]", error)
+
+                      return
+                    }
 
                     console.log("[CRON]SQL DATA WRITING : ", " ", index, " COMPLETE [SUCCESS] with code 1")
                     connection3.release();
@@ -727,7 +822,7 @@ var connectionTest =
             sql_Connect.getConnection(function (err, connection3) {
               connection3.query(`
             INSERT INTO connectionTest (k,time)
-            VALUES(${1},"${dayjs().add(8,"hours").format("YYYY/MM/DD HH:mm:ss")}")
+            VALUES(${1},${dayjs().format("YYYY/MM/DD HH:mm:ss")})
 
         `, function (error3, results3, fields) {
                 if (error3) {
