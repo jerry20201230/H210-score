@@ -62,7 +62,7 @@ app.post('/api/login', async (req, res) => {
               console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
               res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
-              req.session.destroy()
+              req.session = null
               console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
               res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
             }
@@ -566,7 +566,7 @@ app.post("/api/changepass", (req, res) => {
       })
     })
 
-    req.session.destroy()
+    req.session  = null
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
