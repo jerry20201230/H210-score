@@ -121,8 +121,8 @@ export function PushNewScore({ data, user }) {
 
 
   React.useEffect(() => {
-    alert("系統維護中，暫時無法輸入新成績")
-    window.location.href = "/"
+    // alert("系統維護中，暫時無法輸入新成績")
+    // window.location.href = "/"
     fetch("/api/getallstudents", {
       method: 'POST',
       headers: {
@@ -158,9 +158,9 @@ export function PushNewScore({ data, user }) {
   return (
     <>
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
-      <h1>系統維護中，暫時無法輸入新成績</h1>
+      <h1 style={{ color: "red" }}>系統測試中，建議先不要輸入新成績</h1>
 
-      <div hidden>
+      <div>
         <Box sx={{ p: 3 }}>
           <h1>輸入新的成績資料</h1>
           <p>
