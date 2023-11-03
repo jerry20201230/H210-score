@@ -139,7 +139,7 @@ export function PushNewScore({ data, user }) {
         method: m,
         score: {
           title: gradeTitle,
-          subject: gradeSubject,
+          subject: gradeSubject ? gradeSubject : "小考",
           annousment: annousment,
           scoreData: inputValues,
           summeryData: summeryValue,
