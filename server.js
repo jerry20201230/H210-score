@@ -382,6 +382,7 @@ app.post("/api/uploadnewscore", (req, res) => {
     //   }
     // }
     while (Number(theUUID) !== NaN) {
+      console.log("UUID",theUUID)
       theUUID = uuidv4().slice(0, 7)
     }
 
@@ -825,7 +826,7 @@ var connectionTest =
             sql_Connect.getConnection(function (err, connection3) {
               connection3.query(`
             INSERT INTO connectionTest (k,time)
-            VALUES(${1},${dayjs().format("YYYY/MM/DD HH:mm:ss")})
+            VALUES(${1},"${dayjs().format("YYYY/MM/DD HH:mm:ss")}")
 
         `, function (error3, results3, fields) {
                 if (error3) {
