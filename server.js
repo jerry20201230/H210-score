@@ -382,9 +382,10 @@ app.post("/api/uploadnewscore", (req, res) => {
     //   }
     // }
     while (Number(theUUID) == NaN) {
-      console.log("UUID",theUUID)
+      console.log("[UUID CHANGE] ",theUUID)
       theUUID = uuidv4().slice(0, 7)
     }
+    console.log("[FINAL UUID] ",theUUID)
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
@@ -436,9 +437,6 @@ app.post("/api/uploadnewscore", (req, res) => {
             res.status(200).json({ message: 'ok', ok: true, uuid: theUUID });
           })
         })
-
-
-
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
