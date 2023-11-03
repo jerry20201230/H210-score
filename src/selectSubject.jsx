@@ -3,6 +3,7 @@ import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 export default function SelectSubject({ onChangeFunc, params, defaultValue, label, helperText, placeholder }) {
   const [val, setVal] = React.useState({});
@@ -26,6 +27,7 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
     setVal(subject[0]); //you pass any value from the array of subject
     // set value in TextField from dropdown list
   };
+
   return (
     <Stack spacing={1} sx={{ width: "100%" }}>
       <Autocomplete
@@ -61,7 +63,7 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
             variant="standard"
             label={label ? label : "成績標籤"}
             placeholder={placeholder ? placeholder : "新增標籤"}
-            helperText={helperText ? helperText : "從選單選擇，或輸入標籤名稱後按enter插入"}
+            helperText={helperText ? helperText : <>從選單選擇，或輸入標籤名稱後按enter插入{<MobileView><br />行動裝置目前只能選擇現有的標籤</MobileView>}</>}
           />
         )}
       />

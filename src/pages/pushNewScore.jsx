@@ -24,7 +24,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelectSubject from '../selectSubject';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 
 export function PushNewScore({ data, user }) {
@@ -123,7 +122,7 @@ export function PushNewScore({ data, user }) {
       method: m,
       score: {
         title: gradeTitle,
-        subject: gradeSubject,
+        subject: gradeSubject ? gradeSubject : "小考",
         annousment: annousment,
         scoreData: inputValues,
         summeryData: summeryValue,
@@ -229,7 +228,7 @@ export function PushNewScore({ data, user }) {
 
           <SelectSubject defaultValue={["小考"]} onChangeFunc={handleChange} params={"gradeSubject"}
           />
-          <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
+          <Alert severity="error">為避免伺服器錯誤，請至少選擇一個標籤</Alert>
           <p></p>
           <TextField
             label="對全班的公告"
