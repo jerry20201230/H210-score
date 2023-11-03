@@ -210,7 +210,7 @@ export function PushNewScore({ data, user }) {
   return (
     <>
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
-      <h1 style={{ color: "red" }}>系統測試中，建議先不要輸入新成績</h1>
+      <h1 style={{ color: "red" }} hidden>系統測試中，建議先不要輸入新成績</h1>
 
       <div>
         <Box sx={{ p: 3 }}>
@@ -227,10 +227,9 @@ export function PushNewScore({ data, user }) {
           />
           <p></p>
 
-          <SelectSubject onChangeFunc={handleChange} params={"gradeSubject"}
+          <SelectSubject defaultValue="小考" onChangeFunc={handleChange} params={"gradeSubject"}
           />
           <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
-          <Alert severity="error">為避免系統錯誤，請至少選擇1個標籤</Alert>
           <p></p>
           <TextField
             label="對全班的公告"
