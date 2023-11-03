@@ -63,6 +63,7 @@ export function PushNewScore({ data, user }) {
 
 
   function localScore(type) {
+    console.log("localScore ", type)
     if (type === "get") {
       try {
         return JSON.parse(localStorage.getItem("localScore"))
@@ -74,7 +75,7 @@ export function PushNewScore({ data, user }) {
     else if (type === "put") {
 
       localStorage.setItem("localScore", JSON.stringify(
-        gradeTitle, gradeSubject, annousment, inputValues, summeryValue
+        { gradeTitle, gradeSubject, annousment, inputValues, summeryValue }
       ))
 
       return true
@@ -193,7 +194,7 @@ export function PushNewScore({ data, user }) {
               object.scoreInput = <TextField type='number' min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
               object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
 
-              console.log(object, i, "nioh", inputValues[i])
+              console.log(object, i, inputValues[i])
               list.push(object)
             }
           }
