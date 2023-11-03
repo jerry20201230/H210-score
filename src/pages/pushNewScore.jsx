@@ -88,19 +88,14 @@ export function PushNewScore({ data, user }) {
   function handleChange(input, value) {
     if (input === "gradeTitle") {
       setGradeTitle(value)
-      localScore("put")
-
     }
     else if (input === "gradeSubject") {
       setGradeSubject(value)
-      localScore("put")
-
     }
     else if (input === "annousment") {
       setAnnousment(value)
-      localScore("put")
-
     }
+    localScore("put")
   }
   /*const handleInputChange = (index, value) => {
     console.log(index, value, "000151656464")
@@ -200,9 +195,9 @@ export function PushNewScore({ data, user }) {
           }
           setStudents(list)
 
-          if (localScore("get") !== null) {
-            setOpen2(true)
-          }
+          // if (localScore("get") !== null) {
+          //   setOpen2(true)
+          // }
 
         } else {
           alert("發生錯誤，請刷新網站!!")
