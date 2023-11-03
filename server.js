@@ -361,8 +361,18 @@ app.post("/api/deletescore", (req, res) => {
 
 
 app.post("/api/uploadnewscore", (req, res) => {
+  function getRandomLatter() {
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+    var a = ["g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    return a[getRandomInt(0, a.length)]
+  }
+
   if (req.session.role === "teacher") {
-    var theUUID = uuidv4().slice(0, 7).replace("e", "k")
+    var theUUID = uuidv4().slice(0, 7).replace("e", "k") + getRandomLatter()
     //create uuid
     //add new column
     //put all data
