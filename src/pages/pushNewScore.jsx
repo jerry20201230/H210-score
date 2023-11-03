@@ -64,7 +64,12 @@ export function PushNewScore({ data, user }) {
 
   function localScore(type) {
     if (type === "get") {
-      return JSON.parse(localStorage.getItem("localScore"))
+      try {
+        return JSON.parse(localStorage.getItem("localScore"))
+
+      } catch (e) {
+        return undefined
+      }
     }
     else if (type === "put") {
 
