@@ -441,7 +441,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 })
 
 app.post("/api/getscorebyid", (req, res) => {
-  function resScore(results, results2, results3, results4) {
+  function resScore(results, results2, results3, results4, queryTimes) {
     if (req.body.countScore) {
 
 
@@ -543,7 +543,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                       } else {
-                        resScore(results, results2, results3)
+                        resScore(results, results2, results3, null, queryTimes)
                       }
                     } else {
                       res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
@@ -551,7 +551,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
                     }
                   } else {
-                    resScore(results, results2, results3)
+                    resScore(results, results2, results3, null, queryTimes)
 
                   }
 
