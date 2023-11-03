@@ -441,6 +441,33 @@ app.post("/api/uploadnewscore", (req, res) => {
 })
 
 app.post("/api/getscorebyid", (req, res) => {
+  function resScore(results, results2, results3, results4) {
+    if (req.body.countScore) {
+
+
+      var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
+
+      for (i = 0; i < results2.length; i++) {
+        if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
+          tot += Number(results2[i][req.body.id].split("%|%")[0])
+          scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
+        }
+      }
+      hi = Math.max(...scoreList)
+      lo = Math.min(...scoreList)
+
+      avg = (tot / scoreList.length).toFixed(2)
+
+      console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
+      res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
+    } else {
+      console.log(`[ADVANCED DATA ] ${req.body.id} User:${req.session.username}\nrequest advanced data only\n`)
+      res.send(JSON.stringify({ message: 'Login successful', data: { queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
+
+    }
+  }
+
+
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT * FROM scoreData WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {
@@ -475,69 +502,49 @@ app.post("/api/getscorebyid", (req, res) => {
                   var queryTimes
                   console.log(`[CHECKING PERMISSIONS] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
-                  if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
-                    sql_Connect.getConnection(function (err, connection4) {
-                      connection4.query(`
+                  try {
+                    if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
+                      sql_Connect.getConnection(function (err, connection4) {
+                        connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "0%|%null%|%3%|%null"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
-                        console.log("parent data writed")
-                        connection4.release()
+                          console.log("parent data writed")
+                          connection4.release()
+                        })
                       })
-                    })
-                  } else {
-                    if (req.session.role == "std") {
-                      queryTimes = results3
                     } else {
-                      queryTimes = false
-                      sql_Connect.getConnection(function (err, connection4) {
-                        connection4.query(`
+                      if (req.session.role == "std") {
+                        queryTimes = results3
+                      } else {
+                        queryTimes = false
+                        sql_Connect.getConnection(function (err, connection4) {
+                          connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
-                          console.log("parent data updateed")
-                          //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
-                          connection4.release()
+                            console.log("parent data updateed")
+                            //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
+                            connection4.release()
+                          })
                         })
-                      })
+                      }
                     }
+                  } catch (e) {
+                    resScore(results, results2, results3)
                   }
 
                   if (results2.length > 0) {
 
-                    if (req.session.role === "par") {
-                      if (results3) {
-                        if (dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
-                          res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
-                          console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
-                        }
-                      }
+                    if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
+
+                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                      console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+
                     } else {
-                      if (req.body.countScore) {
-
-
-                        var hi = 0, lo = 0, avg = 0, tot = 0, scoreList = []
-
-                        for (i = 0; i < results2.length; i++) {
-                          if (results2[i][req.body.id].split("%|%")[0] !== 'null' && results2[i][req.body.id].split("%|%")[0] !== 'undefined') {
-                            tot += Number(results2[i][req.body.id].split("%|%")[0])
-                            scoreList.push(Number(results2[i][req.body.id].split("%|%")[0]))
-                          }
-                        }
-                        hi = Math.max(...scoreList)
-                        lo = Math.min(...scoreList)
-
-                        avg = (tot / scoreList.length).toFixed(2)
-
-                        console.log(`[SCORE COUNTING] ${req.body.id} User:${req.session.username}\n${scoreList}\n`)
-                        res.send(JSON.stringify({ message: 'Login successful', data: { hi: hi, lo: lo, avg: avg, your: results[0][req.body.id].split("%|%")[0], privateMsg: results[0][req.body.id].split("%|%")[1], queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
-                      } else {
-                        console.log(`[ADVANCED DATA ] ${req.body.id} User:${req.session.username}\nrequest advanced data only\n`)
-                        res.send(JSON.stringify({ message: 'Login successful', data: { queryTimes: queryTimes ? queryTimes[0][req.body.id] : null }, ok: true }));
-
-                      }
+                      resScore(results, results2, results3)
                     }
                   } else {
                     res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
