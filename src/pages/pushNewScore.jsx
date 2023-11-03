@@ -62,7 +62,7 @@ export function PushNewScore({ data, user }) {
 
 
   function localScore(type) {
-    console.log("localScore ", type)
+    console.log(gradeSubject)
     if (type === "get") {
       try {
         return JSON.parse(localStorage.getItem("localScore"))

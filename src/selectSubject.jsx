@@ -63,7 +63,7 @@ export default function SelectSubject({ onChangeFunc, params, defaultValue, labe
             variant="standard"
             label={label ? label : "成績標籤"}
             placeholder={placeholder ? placeholder : "新增標籤"}
-            helperText={helperText ? helperText : <>從選單選擇，或輸入標籤名稱後按enter插入{<MobileView><br />行動裝置目前只能選擇現有的標籤</MobileView>}</>}
+            helperText={helperText ? helperText : <>從選單選擇，或輸入標籤名稱後按enter插入{<MobileView>行動裝置目前只能選擇現有的標籤</MobileView>}</>}
           />
         )}
       />
