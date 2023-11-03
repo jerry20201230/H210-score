@@ -502,55 +502,59 @@ app.post("/api/getscorebyid", (req, res) => {
                   var queryTimes
                   console.log(`[CHECKING PERMISSIONS] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
-                  try {
-                    if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
-                      sql_Connect.getConnection(function (err, connection4) {
-                        connection4.query(`
+                  if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
+                    sql_Connect.getConnection(function (err, connection4) {
+                      connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "0%|%null%|%3%|%null"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
-                          console.log("parent data writed")
-                          connection4.release()
-                        })
+                        console.log("parent data writed")
+                        connection4.release()
                       })
+                    })
+                  } else {
+                    if (req.session.role == "std") {
+                      queryTimes = results3
                     } else {
-                      if (req.session.role == "std") {
-                        queryTimes = results3
-                      } else {
-                        queryTimes = false
-                        sql_Connect.getConnection(function (err, connection4) {
-                          connection4.query(`
+                      queryTimes = false
+                      sql_Connect.getConnection(function (err, connection4) {
+                        connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
-                            console.log("parent data updateed")
-                            //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
-                            connection4.release()
-                          })
+                          console.log("parent data updateed")
+                          //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
+                          connection4.release()
                         })
-                      }
+                      })
                     }
-                  } catch (e) {
-                    resScore(results, results2, results3)
                   }
 
-                  if (results2.length > 0) {
 
-                    if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
 
-                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
-                      console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+                  if (results3[0][req.body.id]) {
+                    if (results2.length > 0) {
 
+                      if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
+
+                        res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                        console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+
+                      } else {
+                        resScore(results, results2, results3)
+                      }
                     } else {
-                      resScore(results, results2, results3)
+                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                      console.warn(`[SEVER ERROR] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+
                     }
                   } else {
-                    res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
-                    console.warn(`[SEVER ERROR] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+                    resScore(results, results2, results3)
 
                   }
+
                   connection3.release()
                   res.end();
                 })
