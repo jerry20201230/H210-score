@@ -362,7 +362,7 @@ app.post("/api/deletescore", (req, res) => {
 
 app.post("/api/uploadnewscore", (req, res) => {
   if (req.session.role === "teacher") {
-    var theUUID = "1234567"//uuidv4().slice(0, 7).replace("e", "k")
+    var theUUID = uuidv4().slice(0, 7).replace("e", "k")
     //create uuid
     //add new column
     //put all data
@@ -381,9 +381,12 @@ app.post("/api/uploadnewscore", (req, res) => {
     //     }
     //   }
     // }
-    while (Number(theUUID) == NaN) {
+    while (Number(theUUID) !== NaN) {
       console.log("[UUID CHANGE] ", theUUID)
       theUUID = uuidv4().slice(0, 7)
+      if (Number(theUUID) == NaN) {
+        break
+      }
     }
     console.log("[FINAL UUID] ", theUUID)
 
