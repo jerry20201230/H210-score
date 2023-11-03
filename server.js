@@ -366,28 +366,10 @@ app.post("/api/uploadnewscore", (req, res) => {
     //create uuid
     //add new column
     //put all data
-    // if (Number(theUUID) !== NaN) {
-    //   theUUID = uuidv4().slice(0, 7)
-    //   if (Number(theUUID) !== NaN) {
-
-    //     if (Number(theUUID) !== NaN) {
-    //       theUUID = uuidv4().slice(0, 7)
-    //       if (Number(theUUID) !== NaN) {
-    //         theUUID = uuidv4().slice(0, 7).replace("e", "p")
-    //         if (Number(theUUID) !== NaN) {
-    //           theUUID = uuidv4().slice(0, 7).replace("e","p")
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    while (Number(theUUID) !== NaN) {
-      console.log("[UUID CHANGE] ", theUUID)
-      theUUID = uuidv4().slice(0, 7)
-      if (Number(theUUID) == NaN) {
-        break
-      }
+    if (Number(theUUID) !== NaN) {
+      theUUID = uuidv4().slice(0, 7).replace("e", "k").replace("0", "p") + "m"
     }
+
     console.log("[FINAL UUID] ", theUUID)
 
     sql_Connect.getConnection(function (err, connection) {
