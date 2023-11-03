@@ -507,10 +507,13 @@ app.post("/api/getscorebyid", (req, res) => {
 
                   if (results2.length > 0) {
 
-                    if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
-                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
-                      console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
-
+                    if (req.session.role === "par") {
+                      if (results3) {
+                        if (dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
+                          res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                          console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
+                        }
+                      }
                     } else {
                       if (req.body.countScore) {
 
