@@ -227,7 +227,7 @@ export function PushNewScore({ data, user }) {
           />
           <p></p>
 
-          <SelectSubject defaultValue="小考" onChangeFunc={handleChange} params={"gradeSubject"}
+          <SelectSubject defaultValue={["小考"]} onChangeFunc={handleChange} params={"gradeSubject"}
           />
           <MobileView>行動裝置目前只能選擇現有的標籤</MobileView>
           <p></p>
