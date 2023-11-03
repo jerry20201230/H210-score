@@ -28,12 +28,6 @@ import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detec
 
 
 export function PushNewScore({ data, user }) {
-  const [students, setStudents] = React.useState([])
-  const [open, setOpen] = React.useState(false);
-
-  function handleClose() {
-    setOpen(false)
-  }
 
   const [inputValues, setInputValues] = React.useState(Array(46));
   const [summeryValue, setSummeryValue] = React.useState(Array(46));
@@ -42,15 +36,64 @@ export function PushNewScore({ data, user }) {
   const [gradeSubject, setGradeSubject] = React.useState()
   const [annousment, setAnnousment] = React.useState()
 
+
+  const [students, setStudents] = React.useState([])
+  const [open, setOpen] = React.useState(false);
+
+  function handleClose() {
+    setOpen(false)
+  }
+
+
+  const [open2, setOpen2] = React.useState(false);
+
+  function handleClose2(t) {
+    setOpen2(false)
+
+    if (t) {
+      var localData = localScore("get")
+      setAnnousment(localData.annousment ? localData.annousment : "")
+      setGradeSubject(localData.gradeSubject)
+      setGradeTitle(localData.gradeTitle)
+      setInputValues(localData.inputValues)
+      setSummeryValue(localData.summeryValue)
+    }
+  }
+
+
+
+  function localScore(type) {
+    if (type === "get") {
+      return JSON.parse(localStorage.getItem("localScore"))
+    }
+    else if (type === "put") {
+
+      localStorage.setItem("localScore", JSON.stringify(
+        gradeTitle, gradeSubject, annousment, inputValues, summeryValue
+      ))
+
+      return true
+    }
+    else if (type === "delete") {
+      localStorage.setItem("localScore", "null")
+    }
+  }
+
   function handleChange(input, value) {
     if (input === "gradeTitle") {
       setGradeTitle(value)
+      localScore("put")
+
     }
     else if (input === "gradeSubject") {
       setGradeSubject(value)
+      localScore("put")
+
     }
     else if (input === "annousment") {
       setAnnousment(value)
+      localScore("put")
+
     }
   }
   /*const handleInputChange = (index, value) => {
@@ -65,11 +108,13 @@ export function PushNewScore({ data, user }) {
     const newGrades = inputValues;
     newGrades[index] = newValue;
     setInputValues(newGrades);
+    localScore("put")
   };
   const handleSummeryChange = (index, newValue) => {
     const newSummery = summeryValue;
     newSummery[index] = newValue;
     setSummeryValue(newSummery);
+    localScore("put")
   };
   const handleSubmit = (m) => {
     setOpen(true)
@@ -105,8 +150,10 @@ export function PushNewScore({ data, user }) {
       .then(res => res.json())
       .then(res => {
         if (res.ok) {
+          localScore("delete")
           setOpen(false)
           window.location.href = "/"
+
         }
         else {
           alert("發生錯誤，請刷新網站!!")
@@ -146,6 +193,10 @@ export function PushNewScore({ data, user }) {
             }
           }
           setStudents(list)
+
+          if (localScore("get") !== null) {
+            setOpen2(true)
+          }
 
         } else {
           alert("發生錯誤，請刷新網站!!")
@@ -241,6 +292,30 @@ export function PushNewScore({ data, user }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>取消</Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+
+
+      <Dialog
+        open={open2}
+        onClose={() => handleClose2(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"是否要復原未送出的資料?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            上次編輯的成績 {localScore("get") == null ? "" : localScore("get").gradeTitle}有未送出的資料，是否要復原這些資料，繼續編輯?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose2(false)}>取消</Button>
+          <Button onClick={() => handleClose2(true)} variant="contained">確定</Button>
         </DialogActions>
       </Dialog>
     </>
