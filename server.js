@@ -367,8 +367,8 @@ app.post("/api/uploadnewscore", (req, res) => {
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     }
-    var a = ["g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-    return a[getRandomInt(0, a.length)]
+    var a = ["g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ""]
+    return a[getRandomInt(0, (a.length - 1))]
   }
 
   if (req.session.role === "teacher") {
