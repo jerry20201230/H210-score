@@ -388,7 +388,7 @@ app.post("/api/uploadnewscore", (req, res) => {
             VALUES(?,?,?,?,?,?)
             `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
         if (error) {
-          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          // res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
 
           return
@@ -399,11 +399,11 @@ app.post("/api/uploadnewscore", (req, res) => {
           connection2.query(`
                     ALTER TABLE scoreData
                     ADD COLUMN ${theUUID} TEXT;
-                    `, function (error, results, fields) {
-            if (error) {
-              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                    `, function (error2, results, fields) {
+            if (error2) {
+              // res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
 
-              console.warn("[SEVER ERROR]", error)
+              console.warn("[SEVER ERROR]", error2)
               return
             }
             req.body.score.scoreData.forEach((score, i) => {
@@ -416,10 +416,10 @@ app.post("/api/uploadnewscore", (req, res) => {
                 connection3.query(`
                   UPDATE scoreData
                   SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
-                  WHERE id = ${index};`, function (error, results, fields) {
-                  if (error) {
-                    res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-                    console.warn("[SEVER ERROR]", error)
+                  WHERE id = ${index};`, function (error3, results, fields) {
+                  if (error3) {
+                    //   res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+                    console.warn("[SEVER ERROR]", error3)
 
                     return
                   }
