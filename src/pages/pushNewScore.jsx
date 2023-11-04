@@ -52,7 +52,7 @@ export function PushNewScore({ data, user }) {
     if (t) {
       var localData = localScore("get")
       setAnnousment(localData.annousment ? localData.annousment : "")
-      setGradeSubject(localData.gradeSubject)
+      //  setGradeSubject(localData.gradeSubject)
       setGradeTitle(localData.gradeTitle)
       setInputValues(localData.inputValues)
       setSummeryValue(localData.summeryValue)
@@ -194,9 +194,9 @@ export function PushNewScore({ data, user }) {
           }
           setStudents(list)
 
-          // if (localScore("get") !== null) {
-          //   setOpen2(true)
-          // }
+          if (localScore("get") !== null) {
+            setOpen2(true)
+          }
 
         } else {
           alert("發生錯誤，請刷新網站!!")
