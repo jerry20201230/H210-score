@@ -194,9 +194,9 @@ export function PushNewScore({ data, user }) {
           }
           setStudents(list)
 
-          if (localScore("get") !== null) {
-            setOpen2(true)
-          }
+          // if (localScore("get") !== null) {
+          //   setOpen2(true)
+          // }
 
         } else {
           alert("發生錯誤，請刷新網站!!")
