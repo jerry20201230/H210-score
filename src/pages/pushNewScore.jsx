@@ -152,7 +152,7 @@ export function PushNewScore({ data, user }) {
         if (res.ok) {
           localScore("delete")
           setOpen(false)
-          window.location.href = `score/class/?q=${res.uuid}`
+          window.location.href = `/score/class/?q=${res.uuid}`
 
         }
         else {
