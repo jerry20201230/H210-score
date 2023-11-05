@@ -850,7 +850,7 @@ app.post("/api/sqltest", (req, res) => {
                 return
               } else {
                 console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
-                res.status(200).json({ message: "測試成功", ok: true, code: 200 })
+                res.status(200).json({ message: "伺服器連線測試成功", ok: true, code: 200 })
               }
               connection3.release()
             })

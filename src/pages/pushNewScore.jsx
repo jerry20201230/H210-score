@@ -302,7 +302,7 @@ export function PushNewScore({ data, user }) {
               </TableBody>
             </Table>
           </TableContainer>
-          <p>{connectionStatus.status ? <Typography color="green">連線成功</Typography> : <Typography color="green">連線異常</Typography>} {connectionStatus.message}</p>
+          <p>{connectionStatus.status ? <Typography color={green[400]}>連線成功</Typography> : <Typography color={red[500]}>連線異常</Typography>} {connectionStatus.message}</p>
 
           <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
 
