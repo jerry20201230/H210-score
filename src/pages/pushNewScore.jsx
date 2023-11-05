@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, Alert } from '@mui/material';
+import { Box, Button, Alert, Typography } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -170,6 +170,15 @@ export function PushNewScore({ data, user }) {
       })
 
 
+
+  };
+
+
+
+  React.useEffect(() => {
+
+
+
     fetch("/api/sqltest", {
       method: 'POST',
       headers: {
@@ -186,11 +195,12 @@ export function PushNewScore({ data, user }) {
         }
 
       })
-  };
 
 
 
-  React.useEffect(() => {
+
+
+
     // alert("系統維護中，暫時無法輸入新成績")
     // window.location.href = "/"
     fetch("/api/getallstudents", {
@@ -292,7 +302,7 @@ export function PushNewScore({ data, user }) {
               </TableBody>
             </Table>
           </TableContainer>
-          <p></p>
+          <p>{connectionStatus.status ? <Typography color="green">連線成功</Typography> : <Typography color="green">連線異常</Typography>} {connectionStatus.message}</p>
 
           <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
 
