@@ -21,6 +21,7 @@ import { Setting } from './pages/setting';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { StdScore } from './pages/stdscore';
 import Routing from './pages/route';
+import { ParentAccountMonitor } from './pages/parentAccountMonitor';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -96,8 +97,10 @@ function App() {
               : <Route path='/' element={<Homepage data={userData} />} ></Route>
             }
             {userData.data.role === "std" ?
-              <Route path='/score/more' element={<StdScore data={userData} />} ></Route>
-              : <></>}
+              <>
+                <Route path='/score/more' element={<StdScore data={userData} />} ></Route>
+                <Route path='/parentaccount' element={<ParentAccountMonitor data={userData} />} ></Route>
+              </> : <></>}
 
             {
               userData.data.role !== "teacher" ?

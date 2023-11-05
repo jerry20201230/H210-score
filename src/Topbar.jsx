@@ -97,6 +97,8 @@ export default function TopBar({ logined, title, data }) {
 
                   <MenuItem onClick={() => { handleClose("profile") }} component={Link} to="/profile">個人資料</MenuItem>
                   <MenuItem onClick={() => { handleClose("setting") }} component={Link} to="/setting">系統設定</MenuItem>
+
+                  {data.role === "std" ? <MenuItem onClick={() => { handleClose("parentaccount") }} component={Link} to="/parentaccount">家長帳號監視器</MenuItem> : <></>}
                   <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
                 </Menu>
               </div>
