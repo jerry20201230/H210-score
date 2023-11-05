@@ -39,6 +39,8 @@ export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
   const [open, setOpen] = React.useState(false);
 
+  const [connectionStatus, setConnectionStatus] = React.useState({ status: false, message: "準備測試" })
+
   function handleClose() {
     setOpen(false)
   }
@@ -117,6 +119,9 @@ export function PushNewScore({ data, user }) {
     localScore("put")
   };
   const handleSubmit = (m) => {
+    if (!connectionStatus.status) {
+      alert("伺服器連線測試失敗\n仍然要送出成績嗎?")
+    }
     setOpen(true)
     console.log({
       method: m,
@@ -162,6 +167,24 @@ export function PushNewScore({ data, user }) {
       })
       .catch(() => {
         alert("發生錯誤")
+      })
+
+
+    fetch("/api/sqltest", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({})
+    }).then(res => res.json())
+      .then(res => {
+
+        setConnectionStatus({ status: res.ok, message: res.message })
+
+        if (!res.ok) {
+          alert(`伺服器連線測試失敗，原因: ${res.message}`)
+        }
+
       })
   };
 
@@ -272,6 +295,7 @@ export function PushNewScore({ data, user }) {
           <p></p>
 
           <Button variant='contained' onClick={() => handleSubmit("save")}>送出</Button>
+
         </Box>
       </div>
       <Dialog

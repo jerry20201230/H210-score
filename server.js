@@ -801,6 +801,68 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 });
 
 
+app.post("/api/sqltest", (req, res) => {
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query(`
+       
+        SELECT * FROM connectionTest
+        `, function (error, results, fields) {
+      if (error) {
+        console.log("[CRON][SQL TEST] get SQL data : [ERR!]", error)
+        res.status(500).json({ message: "測試讀取資料時發生錯誤", ok: false, code: 500 })
+        connection.release()
+        res.end()
+        return
+      }
+      else {
+        console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
+      }
+      connection.release()
+
+      sql_Connect.getConnection(function (err, connection2) {
+        connection2.query(`
+           DELETE FROM connectionTest
+            WHERE id > 1;
+       
+        `, function (error2, results2, fields) {
+          if (error2) {
+            console.log("[CRON][SQL TEST] delete SQL data : [ERR!]", error2)
+            res.status(500).json({ message: "測試刪除資料時發生錯誤", ok: false, code: 500 })
+            connection2.release()
+            res.end()
+            return
+          } else {
+            console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+          }
+          connection2.release()
+
+          sql_Connect.getConnection(function (err, connection3) {
+            connection3.query(`
+            INSERT INTO connectionTest (k,time)
+            VALUES(${1},"${dayjs().add(8, "hours").format("YYYY/MM/DD HH:mm:ss")}")
+
+        `, function (error3, results3, fields) {
+              if (error3) {
+                console.log("[CRON][SQL TEST] insert SQL data : [ERR]", error3)
+                res.status(500).json({ message: "測試寫入資料時發生錯誤", ok: false, code: 500 })
+                connection3.release()
+                res.end()
+                return
+              } else {
+                console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+                res.status(200).json({ message: "測試成功", ok: true, code: 200 })
+              }
+              connection3.release()
+            })
+          })
+        })
+      })
+    })
+  })
+
+})
+
+
 
 
 var connectionTest =
