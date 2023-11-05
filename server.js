@@ -808,14 +808,14 @@ app.post("/api/sqltest", (req, res) => {
         SELECT * FROM connectionTest
         `, function (error, results, fields) {
       if (error) {
-        console.log("[CRON][SQL TEST] get SQL data : [ERR!]", error)
+        console.log("[SQL TEST] get SQL data : [ERR!]", error)
         res.status(500).json({ message: "測試讀取資料時發生錯誤", ok: false, code: 500 })
         connection.release()
         res.end()
         return
       }
       else {
-        console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
+        console.log("[SQL TEST] get SQL data : SUCCESS")
       }
       connection.release()
 
@@ -826,13 +826,13 @@ app.post("/api/sqltest", (req, res) => {
        
         `, function (error2, results2, fields) {
           if (error2) {
-            console.log("[CRON][SQL TEST] delete SQL data : [ERR!]", error2)
+            console.log("[[SQL TEST] delete SQL data : [ERR!]", error2)
             res.status(500).json({ message: "測試刪除資料時發生錯誤", ok: false, code: 500 })
             connection2.release()
             res.end()
             return
           } else {
-            console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+            console.log("[SQL TEST] delete SQL data : SUCCESS")
           }
           connection2.release()
 
@@ -843,13 +843,13 @@ app.post("/api/sqltest", (req, res) => {
 
         `, function (error3, results3, fields) {
               if (error3) {
-                console.log("[CRON][SQL TEST] insert SQL data : [ERR]", error3)
+                console.log("[SQL TEST] insert SQL data : [ERR]", error3)
                 res.status(500).json({ message: "測試寫入資料時發生錯誤", ok: false, code: 500 })
                 connection3.release()
                 res.end()
                 return
               } else {
-                console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+                console.log("[SQL TEST] insert SQL data : SUCCESS")
                 res.status(200).json({ message: "伺服器連線測試成功", ok: true, code: 200 })
               }
               connection3.release()
