@@ -318,7 +318,7 @@ app.post("/api/deletescore", (req, res) => {
             WHERE uid = ?;
             `, [req.body.scoreid], function (error2, results2, fields) {
             if (error2) {
-              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+              res.status(500).json({ message: 'server error 500', ok: false, code: 500 });
               console.warn("[SEVER ERROR]", error2)
 
               return
@@ -348,8 +348,6 @@ app.post("/api/deletescore", (req, res) => {
 
           })
         })
-
-
       })
     })
   } else {
@@ -449,6 +447,113 @@ app.post("/api/uploadnewscore", (req, res) => {
     res.end();
   }
 })
+
+
+
+
+
+
+
+
+
+
+//test就是測試寫入，測完刪掉
+app.post("/api/uploadnewscore/test", (req, res) => {
+  function getRandomLatter() {
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+    var a = ["g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ""]
+    return a[getRandomInt(0, (a.length - 1))]
+  }
+
+  if (req.session.role === "teacher") {
+    var theUUID = uuidv4().slice(0, 7).replace("e", "k") + getRandomLatter()
+    //create uuid
+    //add new column
+    //put all data
+    if (Number(theUUID) !== NaN) {
+      theUUID = uuidv4().slice(0, 7).replace("e", "k").replace("0", "p") + "T"
+    }
+
+    console.log("[TEST UPLOAD][FINAL UUID] ", theUUID)
+
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+            INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
+            VALUES(?,?,?,?,?,?)
+            `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
+        if (error) {
+          res.status(500).json({ message: '更新基本資料時發生錯誤', ok: false, code: 500, uuid: theUUID });
+          console.warn("[SEVER ERROR]", error)
+          connection.release();
+
+          return
+        }
+        connection.release();
+
+        sql_Connect.getConnection(function (err, connection2) {
+          connection2.query(`
+                    ALTER TABLE scoreData
+                    ADD COLUMN ${theUUID} TEXT;
+                    `, function (error2, results, fields) {
+            if (error2) {
+              res.status(500).json({ message: '新增欄位時發生錯誤 (500)', ok: false, code: 500, uuid: theUUID });
+              connection2.release()
+              console.warn("[SEVER ERROR]", error2)
+              return
+            }
+            req.body.score.scoreData.forEach((score, i) => {
+              console.log("[TEST UPLOAD][SQL DATA WRITING]", theUUID, " ", i + 1, " STILL PROCESSING")
+              sql_Connect.getConnection(function (err, connection3) {
+
+                var index = i,
+                  text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
+
+                connection3.query(`
+                  UPDATE scoreData
+                  SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
+                  WHERE id = ${index};`, function (error3, results, fields) {
+                  if (error3) {
+                    res.status(500).json({ message: '寫入資料時發生錯誤 (500)', ok: false, code: 500, uuid: theUUID });
+                    console.warn("[TEST UPLOAD][SEVER ERROR]", error3)
+                    connection3.release();
+                    return
+                  }
+                  //res.status(200).json({ code: 200, ok: true });
+
+                  console.log("[TEST UPLOAD]SQL DATA WRITING : ", theUUID, " ", index, " COMPLETE [SUCCESS]")
+                  connection3.release();
+
+                })
+              })
+            })
+            connection2.release();
+            res.status(200).json({ message: 'ok', ok: true, uuid: theUUID, message: '資料寫入測試成功', });
+          })
+        })
+      })
+    })
+
+  } else {
+    res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
+    res.end();
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.post("/api/getscorebyid", (req, res) => {
   function resScore(results, results2, results3, results4, queryTimes) {

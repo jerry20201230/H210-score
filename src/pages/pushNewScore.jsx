@@ -39,7 +39,7 @@ export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
   const [open, setOpen] = React.useState(false);
 
-  const [connectionStatus, setConnectionStatus] = React.useState({ status: false, message: "準備測試" })
+  const [connectionStatus, setConnectionStatus] = React.useState({ status: false, message: "準備測試", finished: false })
 
   function handleClose() {
     setOpen(false)
@@ -175,27 +175,54 @@ export function PushNewScore({ data, user }) {
 
 
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
 
 
 
-    fetch("/api/sqltest", {
+    fetch("/api/uploadnewscore/test", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        page: window.location.pathname + window.location.search
+        page: window.location.pathname + window.location.search,
+        method: "publish",
+        score: {
+          title: "測試用資料",
+          subject: gradeSubject ? gradeSubject.join(",") : "測試",
+          annousment: annousment,
+          scoreData: inputValues,
+          summeryData: summeryValue,
+        }
       })
     }).then(res => res.json())
       .then(res => {
 
-        setConnectionStatus({ status: res.ok, message: res.message })
+        setConnectionStatus({ status: res.ok, message: res.message, finished: false })
 
-        if (!res.ok) {
-          alert(`伺服器連線測試失敗，原因: ${res.message}`)
-        }
+        fetch('/api/deletescore', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(
+            {
+              scoreid: res.uuid,
+            }),
+        }).then(res2 => res2.json())
+          .then((res2) => {
+            if (res.ok && res2.ok) {
+              setConnectionStatus({ status: res.ok, message: res.message, finished: true })
 
+            } else {
+              setConnectionStatus({ status: res.ok, message: res.message, finished: true })
+              alert("伺服器連線測試失敗!\n請重新載入，再試一次")
+            }
+
+          })
+          .catch(() => {
+            window.alert("伺服器連線測試失敗!\n請重新載入，再試一次")
+          })
       })
 
 
@@ -205,7 +232,7 @@ export function PushNewScore({ data, user }) {
 
     // alert("系統維護中，暫時無法輸入新成績")
     // window.location.href = "/"
-    fetch("/api/getallstudents", {
+    await fetch("/api/getallstudents", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -243,6 +270,21 @@ export function PushNewScore({ data, user }) {
 
   return (
     <>
+
+
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
+        open={!connectionStatus.finished && !connectionStatus.status}
+      >
+        <h1>連線測試</h1>
+        <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績</p>
+        <p>{connectionStatus.status ? <Typography color={green[400]}>連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"} {connectionStatus.message}</p>
+      </Backdrop>
+
+
+
+
       <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
       <h1 style={{ color: "red" }} hidden>系統測試中，建議先不要輸入新成績</h1>
 

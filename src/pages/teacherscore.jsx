@@ -306,27 +306,33 @@ export function TeacherScore({ data, user }) {
   }, [])
 
   React.useEffect(() => {
+    try {
+      if (students.length > 1 && scoreData.length > 1 && students.length == scoreData.length) {
+        setTbody(
+          <>
+            <TableBody>
+              {scoreData.map((row, i) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{students[i].username}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
+                  <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
+                  <TableCell><Button variant="contained" onClick={() => handleClickOpen({ scoreData: row, userData: students[i] })}>編輯</Button></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </>
+        )
+      }
+    } catch (e) {
 
-    if (students.length > 1 && scoreData.length > 1 && students.length == scoreData.length) {
-      setTbody(
-        <>
-          <TableBody>
-            {scoreData.map((row, i) => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{students[i].username}</TableCell>
-                <TableCell>{row[UrlParam("q")].split("%|%")[0] == "null" || row[UrlParam("q")].split("%|%")[0] == "undefined" ? "缺考" : row[UrlParam("q")].split("%|%")[0]}</TableCell>
-                <TableCell>{row[UrlParam("q")].split("%|%")[1] == "null" || row[UrlParam("q")].split("%|%")[1] == "undefined" ? "(無資料)" : row[UrlParam("q")].split("%|%")[1]}</TableCell>
-                <TableCell><Button variant="contained" onClick={() => handleClickOpen({ scoreData: row, userData: students[i] })}>編輯</Button></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </>
-      )
+      setTbody("讀取成績資料時發生錯誤，請重新輸入成績資料")
+
     }
+
   }, [students, scoreData])
 
 
