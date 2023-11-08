@@ -277,7 +277,7 @@ export function PushNewScore({ data, user }) {
 
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column" }}
-        open={!connectionStatus.finished && !connectionStatus.status}
+        open={!loading}
       >
         <h1>連線測試</h1>
         <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績<br />以下是目前測試的進度:</p>
