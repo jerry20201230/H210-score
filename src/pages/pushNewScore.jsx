@@ -39,6 +39,8 @@ export function PushNewScore({ data, user }) {
   const [students, setStudents] = React.useState([])
   const [open, setOpen] = React.useState(false);
 
+  const [loading, setLoading] = React.useState(true);
+
   const [connectionStatus, setConnectionStatus] = React.useState({ status: false, message: "準備測試", finished: false })
 
   function handleClose() {
@@ -278,8 +280,9 @@ export function PushNewScore({ data, user }) {
         open={!connectionStatus.finished && !connectionStatus.status}
       >
         <h1>連線測試</h1>
-        <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績<br />以下是目前測試的進度</p>
+        <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績<br />以下是目前測試的進度:</p>
         <p>{connectionStatus.status ? <Typography color={green[400]}>連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"}<br />{connectionStatus.message}</p>
+        <Button variant='contained' color="primary" disabled={!connectionStatus.finished} onClick={() => setLoading(false)}>{connectionStatus.status ? "繼續" : !connectionStatus.finished ? "請等待測試完成" : "測試失敗，請刷新網頁"}</Button>
       </Backdrop>
 
 

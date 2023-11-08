@@ -294,7 +294,7 @@ app.post("/api/updatescoresetting", (req, res) => {
 })
 
 app.post("/api/deletescore", (req, res) => {
-  console.log(`[HTTP POST] /api/deletescore\n${req.body}\nUser:${req.session.username}`)
+  console.log(`[HTTP POST] /api/deletescore\n${req.body.scoreid}\nUser:${req.session.username}`)
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
