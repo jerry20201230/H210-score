@@ -24,6 +24,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ScoreTabs from '../tabs';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 export function StdScore({ data, user }) {
 
@@ -243,7 +244,8 @@ export function StdScore({ data, user }) {
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
           <h2>
-            {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
+            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><SyncAltIcon /></IconButton>
+            <Typography> {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</Typography>
             <IconButton onClick={() => setOpen4(true)} sx={{ float: "right" }}><SyncAltIcon /></IconButton>
           </h2>
 
