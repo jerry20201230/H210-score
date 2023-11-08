@@ -278,8 +278,8 @@ export function PushNewScore({ data, user }) {
         open={!connectionStatus.finished && !connectionStatus.status}
       >
         <h1>連線測試</h1>
-        <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績</p>
-        <p>{connectionStatus.status ? <Typography color={green[400]}>連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"} {connectionStatus.message}</p>
+        <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績<br />以下是目前測試的進度</p>
+        <p>{connectionStatus.status ? <Typography color={green[400]}>連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"}<br />{connectionStatus.message}</p>
       </Backdrop>
 
 
