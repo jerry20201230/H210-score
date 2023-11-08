@@ -180,6 +180,7 @@ export function PushNewScore({ data, user }) {
   React.useEffect(async () => {
 
 
+    setConnectionStatus({ status: false, message: "連線中...", finished: false })
 
     fetch("/api/uploadnewscore/test", {
       method: 'POST',
@@ -281,7 +282,8 @@ export function PushNewScore({ data, user }) {
       >
         <h1>連線測試</h1>
         <p>正在測試與伺服器的連線是否正常，<br />測試成功即可輸入新成績<br />以下是目前測試的進度:</p>
-        <Box sx={{ border: 1, background: "#fff", color: "#000", borderRadius: 1 }}>{connectionStatus.status ? <Typography color={green[400]} >連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"}{connectionStatus.message}</Box>
+        <Paper>{connectionStatus.status ? <Typography color={green[400]} >連線成功</Typography> : connectionStatus.finished ? <Typography color={red[500]}>連線異常</Typography> : "正在測試"}{connectionStatus.message}</Paper>
+        <p></p>
         <Button variant='contained' color="primary" disabled={!connectionStatus.finished} onClick={() => setLoading(false)}>{connectionStatus.status ? "繼續" : !connectionStatus.finished ? "請等待測試完成" : "測試失敗，請刷新網頁"}</Button>
       </Backdrop>
 

@@ -244,7 +244,7 @@ export function StdScore({ data, user }) {
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
           <h2>
-            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><SyncAltIcon /></IconButton>
+            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><KeyboardBackspaceIcon /></IconButton>
             <Typography> {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</Typography>
             <IconButton onClick={() => setOpen4(true)} sx={{ float: "right" }}><SyncAltIcon /></IconButton>
           </h2>

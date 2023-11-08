@@ -78,6 +78,7 @@ export default function ScoreTabs({ data, role, href }) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}
           variant={tabType}
+          allowScrollButtonsMobile={tabType === "scrollable"}
           scrollButtons
           sx={{
             [`& .${tabsClasses.scrollButtons}`]: {
