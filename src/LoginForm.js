@@ -96,7 +96,7 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
-          <div hidden>
+          <div>
             <Alert severity="warning">
               請勿使用機器人爬取成績資料!
             </Alert></div>

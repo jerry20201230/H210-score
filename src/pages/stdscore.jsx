@@ -247,10 +247,13 @@ export function StdScore({ data, user }) {
             display: "flex",
             justifyContent: "space-between"
           }}>
-            <div style={{ display: "flex", flexGrow: 1 }}>              <h2><IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><KeyboardBackspaceIcon /></IconButton> {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
-            </div>
+            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><KeyboardBackspaceIcon /></IconButton>
+            <h2>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}</h2>
+
+
             <IconButton onClick={() => setOpen4(true)} sx={{ float: "right" }}><SyncAltIcon /></IconButton>
-            <div><h2></h2></div>
+
+
           </div>
 
           <Paper sx={{ p: 2 }}>
