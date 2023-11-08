@@ -536,7 +536,14 @@ app.post("/api/uploadnewscore/test", (req, res) => {
         })
       })
     })
-
+    sql_Connect.getConnection(function (err, connection2) {
+      connection2.query(`
+                  ALTER TABLE parentAccountCtrl
+                    ADD COLUMN ${theUUID} TEXT;
+                    `, function (error, results, fields) {
+        connection2.release()
+      })
+    })
   } else {
     res.status(403).json({ code: 403, message: 'Invalid credentials', ok: false });
     res.end();
