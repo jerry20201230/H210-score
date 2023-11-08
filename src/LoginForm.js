@@ -98,7 +98,7 @@ function LoginForm({ set, callback }) {
         <center>
           <div hidden>
             <Alert severity="warning">
-              系統功能更新中，可能發生不穩定的情形，請見諒
+              請勿使用機器人爬取成績資料!
             </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>

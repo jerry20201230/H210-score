@@ -70,7 +70,7 @@ export default function ScoreTabs({ data, role, href }) {
   }, [data])
 
   React.useEffect(() => {
-    setTabtype("scrollable")
+    if (tabTitles.length > 1) { setTabtype("scrollable") }
   }, [tabTitles])
 
   return (
