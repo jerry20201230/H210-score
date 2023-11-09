@@ -247,11 +247,11 @@ export function StdScore({ data, user }) {
             display: "flex",
             justifyContent: "space-between"
           }}>
-            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left" }}><KeyboardBackspaceIcon /></IconButton>
+            <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left", marginTop: "-8px" }}><KeyboardBackspaceIcon /></IconButton>
             <Typography noWrap variant="h6" >{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
             </Typography>
 
-            <IconButton onClick={() => setOpen4(true)} sx={{ float: "right" }}><SyncAltIcon /></IconButton>
+            <IconButton onClick={() => setOpen4(true)} sx={{ float: "right", marginTop: "-8px" }}><SyncAltIcon /></IconButton>
 
 
           </div>
@@ -308,8 +308,8 @@ export function StdScore({ data, user }) {
               </ListItem>
             </List>
           </Paper>
-        </Box>
-      </div>
+        </Box >
+      </div >
 
       <Dialog
         open={open}
