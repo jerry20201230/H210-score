@@ -50,7 +50,7 @@ function LoginForm({ set, callback }) {
             set(true)
             localStorage.setItem("loginedUserid", userid)
             callback(res)
-            window.location.reload()
+            //window.location.reload()
           } else {
             alert(res.message)
             window.location.reload()
