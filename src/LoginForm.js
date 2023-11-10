@@ -65,18 +65,18 @@ function LoginForm({ set, callback }) {
   }
   React.useEffect(async () => {
     document.title = "登入 - H210成績查詢系統"
-    await fetch(
-      '/api/service/annoucement', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    }
-    ).then(res => res.json())
-      .then(res => {
-        setServerAnnouncement(res)
-      })
+    // await fetch(
+    //   '/api/service/annoucement', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({}),
+    // }
+    // ).then(res => res.json())
+    //   .then(res => {
+    //     setServerAnnouncement(res)
+    //   })
   }, [])
 
   React.useEffect(() => {
