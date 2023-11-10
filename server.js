@@ -830,7 +830,7 @@ app.post("/api/service/annoucement", (req, res) => {
       SELECT * FROM announcement 
     `, function (error, results, field) {
       if (error) {
-        res.status(500).json({ title: null, body: null, typt: null })
+        res.status(500).json({ title: null, body: null, type: null })
         return
       }
       res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type })
