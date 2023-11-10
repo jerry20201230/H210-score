@@ -13,6 +13,7 @@ import "../src/app.css"
 import ReCAPTCHA from "react-google-recaptcha";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AlertDialog } from './alertDialog';
+import dayjs from 'dayjs';
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
@@ -22,7 +23,7 @@ function LoginForm({ set, callback }) {
 
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
-    { title: "null", body: null, type: "info" }
+    { title: "null", body: null, type: "info", updateTime: "now" }
   )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -179,7 +180,8 @@ function LoginForm({ set, callback }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {serverAnnouncement.body}
+            <p>{serverAnnouncement.body}</p>
+            <Typography variant="button" display="block">{serverAnnouncement.updateTime == "now" ? dayjs().format("YYYY-MM-DD HH:mm:ss") : serverAnnouncement.updateTime}</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

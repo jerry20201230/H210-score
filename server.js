@@ -818,10 +818,14 @@ app.post("/api/service/annoucement", (req, res) => {
       SELECT * FROM announcement WHERE display=1
     `, function (error, results, field) {
       if (error) {
-        res.status(500).json({ title: null, body: null, type: null })
+        res.status(500).json({ title: null, body: null, type: null, updateTime: null })
         return
       }
-      res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type })
+      if (results.length > 0) {
+        res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type, updateTime: results[0].time })
+      } else {
+        res.status(200).json({ title: null, body: null, type: null, updateTime: null })
+      }
 
     })
   })
