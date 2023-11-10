@@ -115,8 +115,7 @@ function LoginForm({ set, callback }) {
         <center>
           <div hidden={serverAnnouncement.title == "null"}>
             <Alert severity={serverAnnouncement.type}>
-              <Typography>{serverAnnouncement.title} </Typography>
-              <Button color={serverAnnouncement.type}>更多</Button>
+              <Typography>{serverAnnouncement.title} <Button color={serverAnnouncement.type} onClick={() => setShowDialog2(true)}>更多</Button></Typography>
             </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
