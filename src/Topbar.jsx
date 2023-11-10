@@ -72,7 +72,7 @@ export default function TopBar({ logined, title, data }) {
             >
               <HomeIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography noWrap variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
             {auth && (

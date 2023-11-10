@@ -248,7 +248,7 @@ export function StdScore({ data, user }) {
             justifyContent: "space-between"
           }}>
             <IconButton component={Link} to={`/score?q=${UrlParam("q")}`} sx={{ float: "left", marginTop: "-8px" }}><KeyboardBackspaceIcon /></IconButton>
-            <Typography noWrap variant="h6" >{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
+            <Typography noWrap variant="h6" sx={{ marginTop: "-4px" }}>{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
             </Typography>
 
             <IconButton onClick={() => setOpen4(true)} sx={{ float: "right", marginTop: "-8px" }}><SyncAltIcon /></IconButton>

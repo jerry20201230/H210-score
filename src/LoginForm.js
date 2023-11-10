@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import { Alert, Paper } from '@mui/material';
+import { Alert, Paper, Typography } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -19,6 +19,9 @@ function LoginForm({ set, callback }) {
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
   const [recaptcha, setRecaptcha] = useState("")
+  const [serverAnnouncement, setServerAnnouncement] = React.useState(
+    { title: null, body: null, typt: null }
+  )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -57,8 +60,20 @@ function LoginForm({ set, callback }) {
   function showDialogF() {
     setShowDialog(true)
   }
-  React.useEffect(() => {
+  React.useEffect(async () => {
     document.title = "登入 - H210成績查詢系統"
+    await fetch(
+      '/api/service/annoucement', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    }
+    ).then(res => res.json())
+      .then(res => {
+        setServerAnnouncement(res)
+      })
   }, [])
 
   React.useEffect(() => {
@@ -96,9 +111,9 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
-          <div>
-            <Alert severity="warning">
-              請勿使用機器人爬取成績資料!
+          <div hidden={serverAnnouncement.title == null}>
+            <Alert severity={serverAnnouncement.typt}>
+              <Typography>{serverAnnouncement.title}</Typography>
             </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>

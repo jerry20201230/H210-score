@@ -824,6 +824,22 @@ app.post("/api/blocksearch", (req, res) => {
 })
 
 
+app.post("/api/service/annoucement", (req, res) => {
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query(`
+      SELECT * FROM announcement 
+    `, function (error, results, field) {
+      if (error) {
+        res.status(500).json({ title: null, body: null, typt: null })
+        return
+      }
+      res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type })
+
+    })
+  })
+})
+
+
 
 app.post("/api/checklogin", (req, res) => {
   console.log(`[CHECK LOGIN] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
