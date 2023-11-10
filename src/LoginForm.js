@@ -18,6 +18,8 @@ function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
+  const [showDialog2, setShowDialog2] = useState(false)
+
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
     { title: "null", body: null, type: "info" }
@@ -113,7 +115,8 @@ function LoginForm({ set, callback }) {
         <center>
           <div hidden={serverAnnouncement.title == "null"}>
             <Alert severity={serverAnnouncement.type}>
-              <Typography>{serverAnnouncement.title}</Typography>
+              <Typography>{serverAnnouncement.title} </Typography>
+              <Button color={serverAnnouncement.type}>更多</Button>
             </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
@@ -155,6 +158,29 @@ function LoginForm({ set, callback }) {
         <DialogActions>
 
           <Button onClick={() => setShowDialog(false)} autoFocus>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={showDialog2}
+        onClose={() => setShowDialog2(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {serverAnnouncement.title}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {serverAnnouncement.body}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+
+          <Button onClick={() => setShowDialog2(false)} autoFocus>
             確定
           </Button>
         </DialogActions>
