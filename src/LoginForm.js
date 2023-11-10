@@ -20,7 +20,7 @@ function LoginForm({ set, callback }) {
   const [showDialog, setShowDialog] = useState(false)
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
-    { title: null, body: null, type: null }
+    { title: null, body: null, type: "info" }
   )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
