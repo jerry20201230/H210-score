@@ -20,7 +20,7 @@ function LoginForm({ set, callback }) {
   const [showDialog, setShowDialog] = useState(false)
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
-    { title: null, body: null, type: "info" }
+    { title: "null", body: null, type: "info" }
   )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -111,7 +111,7 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
-          <div hidden={serverAnnouncement.title == null}>
+          <div hidden={serverAnnouncement.title == "null"}>
             <Alert severity={serverAnnouncement.type}>
               <Typography>{serverAnnouncement.title}</Typography>
             </Alert></div>
