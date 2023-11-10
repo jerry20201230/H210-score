@@ -115,11 +115,13 @@ function LoginForm({ set, callback }) {
         transform: "translateX(-50%) translateY(-50%)",
       }}>
         <center>
+
           <div hidden={serverAnnouncement.title == "null"}>
             <Alert severity={serverAnnouncement.type}
               action={<Button onClick={() => setShowDialog2(true)} size='small'>更多</Button>}>
               {serverAnnouncement.title}
             </Alert></div>
+
           <h1 style={{ margin: 0 }}>H210</h1>
           <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
           <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />

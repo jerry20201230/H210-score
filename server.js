@@ -453,10 +453,6 @@ app.post("/api/uploadnewscore", (req, res) => {
 
 
 
-
-
-
-
 //test就是測試寫入，測完刪掉
 app.post("/api/uploadnewscore/test", (req, res) => {
   function getRandomLatter() {
@@ -549,15 +545,6 @@ app.post("/api/uploadnewscore/test", (req, res) => {
     res.end();
   }
 })
-
-
-
-
-
-
-
-
-
 
 
 
@@ -825,9 +812,10 @@ app.post("/api/blocksearch", (req, res) => {
 
 
 app.post("/api/service/annoucement", (req, res) => {
+  console.log(`[GET ANNOUNCEMENT] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
-      SELECT * FROM announcement 
+      SELECT * FROM announcement WHERE display=1
     `, function (error, results, field) {
       if (error) {
         res.status(500).json({ title: null, body: null, type: null })
