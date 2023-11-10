@@ -115,7 +115,7 @@ function LoginForm({ set, callback }) {
         <center>
           <div hidden={serverAnnouncement.title == "null"}>
             <Alert severity={serverAnnouncement.type}
-              action={<Button onClick={() => setShowDialog2(true)}>更多</Button>}>
+              action={<Button onClick={() => setShowDialog2(true)} size='small'>更多</Button>}>
               {serverAnnouncement.title}
             </Alert></div>
           <h1 style={{ margin: 0 }}>H210</h1>
