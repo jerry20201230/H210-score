@@ -117,8 +117,8 @@ function LoginForm({ set, callback }) {
       }}>
         <center>
 
-          <div hidden={serverAnnouncement.title == "null"}>
-            <Alert severity={serverAnnouncement.type}
+          <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
+            <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
               action={<Button onClick={() => setShowDialog2(true)} size='small'>更多</Button>}>
               {serverAnnouncement.title}
             </Alert></div>
@@ -181,7 +181,7 @@ function LoginForm({ set, callback }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <p>{serverAnnouncement.body}</p>
-            <Typography variant="button" display="block">{serverAnnouncement.updateTime == "now" ? dayjs().format("YYYY-MM-DD HH:mm:ss") : serverAnnouncement.updateTime}</Typography>
+            <Typography variant="button" display="block">最後更新於{serverAnnouncement.updateTime == "now" ? dayjs().format("YYYY-MM-DD HH:mm:ss") : serverAnnouncement.updateTime}</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
