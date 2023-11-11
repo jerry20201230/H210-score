@@ -615,7 +615,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     sql_Connect.getConnection(function (err, connection4) {
                       connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = "0%|%null%|%3%|%null"
+                      SET ${req.body.id} = "0%|%null%|%6%|%null"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
                         console.log("parent data writed")
@@ -787,11 +787,11 @@ app.post("/api/blocksearch", (req, res) => {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
       UPDATE parentAccountCtrl
-      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(10, "minute").format("YYYY/MM/DD HH:mm:ss")}"
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(5, "minute").format("YYYY/MM/DD HH:mm:ss")}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
-              res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(10, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
-              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 短暫維持家庭和睦 (until ${dayjs().add(10, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")})`)
+              res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(5, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
+              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 短暫維持家庭和睦 (until ${dayjs().add(5, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")})`)
               connection2.release()
             })
           })
@@ -847,6 +847,10 @@ app.post("/api/checklogin", (req, res) => {
         }
       }
     }))
+
+  if (req.session.role == "par") {
+
+  }
 })
 
 app.post("/api/logout", (req, res) => {
@@ -881,7 +885,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${3}%|%${data[3]}"
+                  SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${6}%|%${data[3]}"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) {
                       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
@@ -897,7 +901,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${r.uid} = "0%|%null%|%3%|%null"
+                  SET ${r.uid} = "0%|%null%|%6%|%null"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) {
                       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });

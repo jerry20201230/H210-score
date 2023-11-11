@@ -3,7 +3,7 @@ import * as React from 'react'
 export function CheckLogin({ run }) {
 
     React.useEffect(() => {
-        if (run) {
+        if (run && !window.location.href.includes("/route/to")) {
             fetch("/api/checklogin", {
                 method: 'POST',
                 headers: {

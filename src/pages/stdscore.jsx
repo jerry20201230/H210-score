@@ -293,7 +293,7 @@ export function StdScore({ data, user }) {
 
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會&nbsp;<IconButton variant="text" onClick={() => setOpen(true)}><HelpOutlineIcon /></IconButton></>} primary={<>短暫維持家庭和睦</>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會 ({30 - (Number(scoreData.queryTimes.split("%|%")[2]) * 5)})分鐘&nbsp;<IconButton variant="text" onClick={() => setOpen(true)}><HelpOutlineIcon /></IconButton></>} primary={<>短暫維持家庭和睦</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
@@ -326,7 +326,7 @@ export function StdScore({ data, user }) {
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
               <Alert severity='error'>警告: 請不要連續使用這項功能</Alert><br />
               <p></p>
-              暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限10分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用3次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
+              暫停家長查詢{scoreTitle.title ? scoreTitle.title : "資料讀取中..."}的權限5分鐘，期間家長的裝置上將顯示錯誤訊息。<br />每筆成績每天限用6次，你今天還有{scoreData.queryTimes.split("%|%")[2]}次機會
             </>
           </DialogContentText>
         </DialogContent>
