@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import { Alert, Paper, Typography } from '@mui/material';
+import { Alert, Paper, Typography, CircularProgress } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -27,6 +27,8 @@ function LoginForm({ set, callback }) {
   )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const [isLogining, setIsLogining] = React.useState(false)
 
   const theme = (
     localStorage.getItem("theme") == "light" ? "light" :
@@ -119,7 +121,7 @@ function LoginForm({ set, callback }) {
 
           <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
             <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
-              action={<Button onClick={() => setShowDialog2(true)} size='small'>更多</Button>}>
+              action={<Button onClick={() => setShowDialog2(true)} size='small' color={serverAnnouncement.type ? serverAnnouncement.type : "info"}>更多</Button>}>
               {serverAnnouncement.title}
             </Alert></div>
 
@@ -137,7 +139,7 @@ function LoginForm({ set, callback }) {
           />
           <p></p>
           <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}
-            disabled={recaptcha == ""}>開始查詢</Button>
+            disabled={recaptcha == "" || isLogining}>{isLogining ? <><CircularProgress size={"1rem"} /> 正在登入</> : "開始查詢"}</Button>
           &nbsp;
           <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
         </center>
@@ -181,7 +183,7 @@ function LoginForm({ set, callback }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <p>{serverAnnouncement.body}</p>
-            <Typography variant="button" display="block">最後更新於{serverAnnouncement.updateTime == "now" ? dayjs().format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</Typography>
+            <Typography variant="button" display="block">最後更新於{serverAnnouncement.updateTime == "now" ? dayjs(new Date()).format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
