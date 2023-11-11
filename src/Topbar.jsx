@@ -16,7 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { CheckLogin } from './checklogin';
 import { Link } from "react-router-dom"
 
-export default function TopBar({ logined, title, data }) {
+export default function TopBar({ logined, title, data, needCheckLogin }) {
   const [auth, setAuth] = React.useState(logined);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -58,7 +58,7 @@ export default function TopBar({ logined, title, data }) {
 
   return (
     <>
-      <CheckLogin />
+      <CheckLogin run={needCheckLogin} />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed">
           <Toolbar>

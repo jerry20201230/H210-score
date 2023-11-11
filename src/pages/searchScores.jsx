@@ -69,7 +69,7 @@ export function SearchScoreSheet({ data, user }) {
 
 	return (
 		<>
-			<TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
+			<TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"成績管理"} />
 			<Box sx={{ p: 3 }}>
 				<h1>所有成績</h1>
 				{scoreTab}

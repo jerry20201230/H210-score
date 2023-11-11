@@ -239,7 +239,7 @@ export function StdScore({ data, user }) {
 
       </Backdrop>
 
-      <TopBar logined={true} data={data.data} user={user} title={"學生專屬功能"} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>

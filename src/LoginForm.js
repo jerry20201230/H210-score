@@ -23,7 +23,7 @@ function LoginForm({ set, callback }) {
 
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
-    { title: "null", body: null, type: "info", updateTime: "now" }
+    { title: "連線中...", body: "正在連線到伺服器...", type: "info", updateTime: "now" }
   )
   const submitButttonRef = useRef()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');

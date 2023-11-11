@@ -78,7 +78,7 @@ export function Profile({ data, user }) {
     <>
 
 
-      <TopBar logined={true} data={data.data} user={user} title={"個人資料"} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"個人資料"} />
 
       <Box sx={{ p: 3 }}>
         <Paper sx={{ p: 2 }}>

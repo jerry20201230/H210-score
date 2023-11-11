@@ -52,7 +52,7 @@ app.post('/api/login', async (req, res) => {
     .then(googleRes => {
       if (googleRes.success) {
         sql_Connect.getConnection(function (err, connection) {
-          connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid, password], function (error, results, fields) {
+          connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
             if (error) {
               res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
               console.warn("[SEVER ERROR]", error)

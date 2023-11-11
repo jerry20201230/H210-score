@@ -196,7 +196,7 @@ export function Score({ data, user }) {
 
 
 
-      <TopBar logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>

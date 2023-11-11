@@ -17,7 +17,7 @@ export function Setting({ data, user }) {
 
     return (
         <>
-            <TopBar logined={true} data={data.data} user={user} title={"系統設定"} />
+            <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"系統設定"} />
 
             <Box sx={{ p: 3 }}>
                 <Paper sx={{ p: 2 }}>

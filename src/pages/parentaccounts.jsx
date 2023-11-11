@@ -228,7 +228,7 @@ export function ParentAccounts({ data, user }) {
             </Box>
 
 
-            <TopBar logined={true} data={data.data} user={user} title={"家長帳密"} />
+            <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"家長帳密"} />
 
             <Box sx={{ p: 3 }}>
                 <h1>所有家長的帳號密碼</h1>

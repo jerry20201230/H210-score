@@ -74,7 +74,7 @@ export function Homepage({ user, data }) {
 
   return (
     <>
-      <TopBar logined={true} data={data.data} user={user} title={"首頁"} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"首頁"} />
       <Box sx={{ p: 3 }}>
 
         <Typography variant='h5'> Hi, {data.data.username}</Typography>

@@ -25,7 +25,7 @@ export function AllScoreSheet({ data, user }) {
 
     return (
         <>
-            <TopBar logined={true} data={data.data} user={user} title={"成績管理"} />
+            <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"成績管理"} />
             <Box sx={{ p: 3 }}>
                 <h1>成績管理</h1>
                 <Grid container spacing={2} >

@@ -24,7 +24,7 @@ export default function Routing({ data, user }) {
     }, [linkRef])
     return (
         <>
-            <TopBar logined={true} data={data.data} user={user} title={"正在重新導向..."} />
+            <TopBar logined={true} data={data.data} user={user} title={"正在重新導向..."} needCheckLogin={false} />
 
             <Box sx={{ p: 3, overflow: "hidden" }}>
                 正在將你重新導向到:

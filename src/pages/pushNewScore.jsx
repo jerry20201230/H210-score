@@ -290,7 +290,7 @@ export function PushNewScore({ data, user }) {
 
 
 
-      <TopBar logined={true} data={data.data} user={user} title={"新增成績"} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"新增成績"} />
       <h1 style={{ color: "red" }} hidden>系統測試中，建議先不要輸入新成績</h1>
 
       <div>
