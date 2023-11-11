@@ -37,6 +37,7 @@ function LoginForm({ set, callback }) {
   )
 
   const handleLogin = async () => {
+    setIsLogining(true)
     await fetch('/api/login', {
       method: 'POST',
       headers: {
