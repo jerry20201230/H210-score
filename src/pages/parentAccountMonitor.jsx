@@ -22,7 +22,7 @@ export function ParentAccountMonitor({ data, user }) {
   const [progress, setProgress] = React.useState(0)
 
   var rows = [
-    createData(dayjs().format("YYYY/MM/DD HH:mm:ss"), "", "連線中")
+    createData(dayjs().format("YYYY/MM/DD HH:mm:ss"), "無資料", "連線中")
   ];
 
   function getData() {

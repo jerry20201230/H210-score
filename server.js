@@ -913,11 +913,13 @@ app.post("/api/getparentaccountlogs", (req, res) => {
       SELECT * FROM parentAccountMonitor
       WHERE userid = "${req.session.userid.replace("s", "p")}"
     `, function (error, results, field) {
-      })
-      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      res.status(200).json({ data: results[0] })
+        if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+        res.status(200).json({ data: results[0] })
 
-      connection.release()
+        connection.release()
+      })
+
+
     })
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
