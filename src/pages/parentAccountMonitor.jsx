@@ -22,7 +22,7 @@ export function ParentAccountMonitor({ data, user }) {
   const [progress, setProgress] = React.useState(0)
 
   var rows = [
-    createData(dayjs().format("YYYY/MM/DD HH:mm:ss"), "無資料", "連線中")
+
   ];
 
   function getData() {
@@ -34,7 +34,9 @@ export function ParentAccountMonitor({ data, user }) {
       body: JSON.stringify({}),
     }).then(res => res.json())
       .then(res => {
-
+        rows.push(
+          createData(res.data.time, res.data.action, res.data.status)
+        )
       })
   }
 
@@ -46,6 +48,8 @@ export function ParentAccountMonitor({ data, user }) {
       if (countdown === 0) {
         getData()
         setCountdown(15)
+        setTimes(times + 1)
+        console.log(times, countdown)
       } else if (countdown > 0) {
         setProgress((15 - countdown) * (100 / 15))
       } else {
