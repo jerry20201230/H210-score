@@ -885,22 +885,21 @@ app.post("/api/logout", (req, res) => {
 
 
   if (req.session.role == "par") {
+    var s = req.session
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
       UPDATE parentAccountMonitor
       SET action = "logout",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-      WHERE userid = "${req.session.userid}"
+      WHERE userid = "${s.userid}"
     `, function (error, results, field) {
       })
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
       console.log("parent monitor updated")
-      req.session = null
+
       connection.release()
     })
-  } else {
-    req.session = null
   }
-
+  req.session = null
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
 })
 
