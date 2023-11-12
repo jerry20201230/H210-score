@@ -32,13 +32,13 @@ export function ParentAccountMonitor({ data, user }) {
     }).then(res => res.json())
       .then(res => {
 
-        if (res.data.time !== rows[-1].time) {
-          rows.push(
-            createData(res.data.time, res.data.action + (res.data.path), res.data.status)
-          )
 
-          console.log(rows)
-        }
+        rows.push(
+          createData(res.data.time, res.data.action + (res.data.path), res.data.status)
+        )
+
+        console.log(rows)
+
       })
   }
 
