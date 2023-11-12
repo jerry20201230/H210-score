@@ -894,12 +894,19 @@ app.post("/api/logout", (req, res) => {
       })
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
       console.log("parent monitor updated")
+      req.session = null
       connection.release()
     })
+  } else {
+    req.session = null
   }
 
-  req.session = null
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
+})
+
+
+app.post("/api/getparentaccountlogs", (req, res) => {
+  console.log()
 })
 
 var refreshData = cron.schedule('0 16 * * * ', () => {

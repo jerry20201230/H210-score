@@ -44,7 +44,7 @@ export function ParentAccountMonitor({ data, user }) {
                 <TableCell>時間</TableCell>
                 <TableCell>家長操作</TableCell>
                 <TableCell>操作狀態</TableCell>
-                <TableCell>更多資訊</TableCell>
+
               </TableRow>
             </TableHead>
             <TableBody>
@@ -58,7 +58,7 @@ export function ParentAccountMonitor({ data, user }) {
                   </TableCell>
                   <TableCell>{row.calories}</TableCell>
                   <TableCell>{row.fat}</TableCell>
-                  <TableCell>{row.carbs}</TableCell>
+
                 </TableRow>
               ))}
             </TableBody>
