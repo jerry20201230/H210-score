@@ -69,7 +69,7 @@ app.post('/api/login', async (req, res) => {
                 sql_Connect.getConnection(function (err, connection) {
                   connection.query(`
                   UPDATE parentAccountMonitor
-                  SET action = "login",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+                  SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
                   WHERE userid = "${req.session.userid}"
                   `, function (error, results, field) {
                   })
@@ -855,7 +855,7 @@ app.post("/api/checklogin", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
       UPDATE parentAccountMonitor
-      SET action = "open",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+      SET action = "開啟",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
       WHERE userid = "${req.session.userid}"
     `, function (error, results, field) {
       })
@@ -890,7 +890,7 @@ app.post("/api/logout", (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
       UPDATE parentAccountMonitor
-      SET action = "logout",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+      SET action = "登出系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
       WHERE userid = "${s.userid}"
     `, function (error, results, field) {
       })
