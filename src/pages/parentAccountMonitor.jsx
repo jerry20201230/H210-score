@@ -20,10 +20,7 @@ export function ParentAccountMonitor({ data, user }) {
   const [countdown, setCountdown] = React.useState(15)
   const [times, setTimes] = React.useState(0)
   const [progress, setProgress] = React.useState(0)
-
-  var rows = [
-
-  ];
+  const [rows, setRows] = React.useState([])
 
   function getData() {
     fetch("/api/getparentaccountlogs", {
@@ -37,6 +34,7 @@ export function ParentAccountMonitor({ data, user }) {
         rows.push(
           createData(res.data.time, res.data.action, res.data.status)
         )
+        console.log(rows)
       })
   }
 
@@ -68,6 +66,9 @@ export function ParentAccountMonitor({ data, user }) {
     };
 
   }, []);
+
+
+  React.useEffect(() => getData(), [])
 
 
   return (
