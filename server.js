@@ -18,6 +18,7 @@ app.use(session({
   saveUninitialized: true
 }));
 const mysql = require('mysql2');
+const e = require('express');
 var sql_Connect = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -905,7 +906,23 @@ app.post("/api/logout", (req, res) => {
 
 
 app.post("/api/getparentaccountlogs", (req, res) => {
-  console.log()
+  //  console.log("[GET MONITOR]")
+  if (req.session.role == "std") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+      SELECT * FROM parentAccountMonitor
+      WHERE userid = "${req.session.userid.replace("s", "p")}"
+    `, function (error, results, field) {
+      })
+      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+      res.status(200).json({ data: results[0] })
+
+      connection.release()
+    })
+  } else {
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
+    res.end();
+  }
 })
 
 var refreshData = cron.schedule('0 16 * * * ', () => {
