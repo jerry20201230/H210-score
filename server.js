@@ -633,7 +633,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
-                          console.log("parent data updateed")
+                          console.log("parent data updated")
                           //////////////   console.log(`${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}`)
                           connection4.release()
                         })
@@ -836,6 +836,22 @@ app.post("/api/service/annoucement", (req, res) => {
 app.post("/api/checklogin", (req, res) => {
   console.log(`[CHECK LOGIN] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
 
+
+  if (req.session.role == "par") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+      UPDATE parentAccountMonitor
+      SET action = "open",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+      WHERE userid = ${req.session.userid}
+    `, function (error, results, field) {
+      })
+      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+      console.log("parent monitor updated")
+      connection.release()
+    })
+  }
+
+
   res.send(JSON.stringify(
     {
       logined: req.session.loggedin,
@@ -848,18 +864,7 @@ app.post("/api/checklogin", (req, res) => {
       }
     }))
 
-  if (req.session.role == "par") {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-      UPDATE parentAccountMonitor
-      SET action = "open",path = ${req.body.page},time = ${dayjs().format("YYYY/MM/DD HH:mm:ss")},ip=${req.ip}
-      WHERE userid = ${req.session.userid}
-    `, function (error, results, field) {
-      })
-      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      connection.release()
-    })
-  }
+
 })
 
 app.post("/api/logout", (req, res) => {
