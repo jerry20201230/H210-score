@@ -842,7 +842,7 @@ app.post("/api/checklogin", (req, res) => {
       connection.query(`
       UPDATE parentAccountMonitor
       SET action = "open",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-      WHERE userid = ${req.session.userid}
+      WHERE userid = "${req.session.userid}"
     `, function (error, results, field) {
       })
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
