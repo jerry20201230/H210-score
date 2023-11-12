@@ -34,7 +34,7 @@ export function ParentAccountMonitor({ data, user }) {
 
 
         rows.push(
-          createData(res.data.time, res.data.action + (res.data.path), res.data.status)
+          createData(dayjs(res.data.time).add(8, "hours").format("YYYY/MM/DD HH:mm:ss"), res.data.action + (res.data.path), res.data.status)
         )
 
         console.log(rows)
