@@ -64,6 +64,19 @@ app.post('/api/login', async (req, res) => {
               req.session.userid = results[0].userid
               req.session.role = results[0].role
               console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
+              if (req.session.role == "par") {
+                sql_Connect.getConnection(function (err, connection) {
+                  connection.query(`
+                  UPDATE parentAccountMonitor
+                  SET action = "login",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+                  WHERE userid = "${req.session.userid}"
+                  `, function (error, results, field) {
+                  })
+                  if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+                  console.log("parent monitor updated")
+                  connection.release()
+                })
+              }
               res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
             } else {
               req.session = null
@@ -869,6 +882,21 @@ app.post("/api/checklogin", (req, res) => {
 
 app.post("/api/logout", (req, res) => {
   console.log(`[USER LOGOUT] User:${req.session.username} IP:${req.ip}`)
+
+
+  if (req.session.role == "par") {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query(`
+      UPDATE parentAccountMonitor
+      SET action = "logout",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+      WHERE userid = "${req.session.userid}"
+    `, function (error, results, field) {
+      })
+      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+      console.log("parent monitor updated")
+      connection.release()
+    })
+  }
 
   req.session = null
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))

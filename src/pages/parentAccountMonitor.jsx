@@ -34,9 +34,9 @@ export function ParentAccountMonitor({ data, user }) {
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長帳號的活動狀態<br />
           資料將持續自動更新5分鐘<br />
-          <b>系統只會紀錄最後一筆家長帳號的活動</b>
+          <b>系統只會記錄最後一筆家長帳號的活動</b>
         </Alert>
-
+        <p></p>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
