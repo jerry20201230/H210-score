@@ -9,19 +9,61 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import dayjs from 'dayjs';
 
 export function ParentAccountMonitor({ data, user }) {
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+  function createData(time, action, status) {
+    return { time, action, status };
   }
 
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
+
+  const [countdown, setCountdown] = React.useState(15)
+  const [times, setTimes] = React.useState(0)
+  const [progress, setProgress] = React.useState(0)
+
+  var rows = [
+    createData(dayjs().format("YYYY/MM/DD HH:mm:ss"), "", "連線中")
   ];
+
+  function getData() {
+    fetch("/api/getparentaccountlogs", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    }).then(res => res.json())
+      .then(res => {
+
+      })
+  }
+
+
+
+  React.useEffect(() => {
+
+    if (times < 20) {
+      if (countdown === 0) {
+        getData()
+        setCountdown(15)
+      } else if (countdown > 0) {
+        setProgress((15 - countdown) * (100 / 15))
+      } else {
+
+      }
+    }
+  }, [countdown]);
+
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown((prevCountdown) => prevCountdown - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+
+  }, []);
 
 
   return (
@@ -44,20 +86,19 @@ export function ParentAccountMonitor({ data, user }) {
                 <TableCell>時間</TableCell>
                 <TableCell>家長操作</TableCell>
                 <TableCell>操作狀態</TableCell>
-
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row.time}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.time}
                   </TableCell>
-                  <TableCell>{row.calories}</TableCell>
-                  <TableCell>{row.fat}</TableCell>
+                  <TableCell>{row.action}</TableCell>
+                  <TableCell>{row.status}</TableCell>
 
                 </TableRow>
               ))}
