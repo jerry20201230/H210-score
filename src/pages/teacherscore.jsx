@@ -89,6 +89,8 @@ export function TeacherScore({ data, user }) {
     }
   )
 
+  const [open3, setOpen3] = React.useState(false);
+
   const handleClickOpen = (n) => {
 
     setOpen(true);
@@ -329,7 +331,7 @@ export function TeacherScore({ data, user }) {
       }
     } catch (e) {
 
-      setTbody("讀取成績資料時發生錯誤，請重新輸入成績資料")
+      setTbody(<>讀取成績資料時發生錯誤，請重新輸入成績資料<br />如果是系統產生的測試資料，可以直接刪除</>)
 
     }
 
@@ -365,7 +367,7 @@ export function TeacherScore({ data, user }) {
             <Typography variant="body2">
               <p>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "(沒有對全班的公告)"}</p>
               <p>學生與家長的查詢連結:<br />
-                <Button component="a" href={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}>{`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`}</Button>
+                <Button onClick={() => setOpen3(true)}>選擇並複製</Button>
               </p>
               <span>成績id: {UrlParam("q")}</span>
             </Typography>
@@ -460,6 +462,35 @@ export function TeacherScore({ data, user }) {
           <Button onClick={() => handleClose2("update")}>
             {dialogSubmitBtnText2}
           </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={open3}
+        onClose={() => setOpen3(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title2">
+          {"成績查詢連結"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description2">
+            <p>從下方選擇資訊並複製</p>
+            <p>以下是學生與家長專用的查詢連結:
+              <TextField type='text' variant="standard" label="輸入新標題" value={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`} />
+            </p>
+            <p>以下是自動生成的描述:
+              <TextField
+                multiline
+                rows={3}
+                type='text' variant="standard" label={6} value={`各位家長好，${scoreSetting.scoreName} 的成績已經開放查詢，網址如下:\nhttps://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}\n帳號是P加孩子的學號，預設密碼是孩子的學號\n*查詢時如遇系統壅塞，請耐心等候*`} />
+            </p>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen3(false)}>關閉</Button>
         </DialogActions>
       </Dialog>
     </>

@@ -389,7 +389,7 @@ app.post("/api/uploadnewscore", (req, res) => {
     //add new column
     //put all data
     if (Number(theUUID) !== NaN) {
-      theUUID = uuidv4().slice(0, 7).replace("e", "k").replace("0", "p") + "m"
+      theUUID = uuidv4().slice(0, 7).replace("e", "k").replace("0", "r") + "k"
     }
 
     console.log("[FINAL UUID] ", theUUID)
