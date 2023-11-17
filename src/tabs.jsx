@@ -55,12 +55,39 @@ export default function ScoreTabs({ data, role, href }) {
 
   React.useEffect(() => {
 
-    var list = []
+    var allsubject = [
+      "國文",
+      "數學",
+      "英文",
+      "物理",
+      "化學",
+      "地理",
+      "小考",
+      "週考",
+      "二上第一次段考",
+      "二上第二次段考",
+      "二上第三次段考",
+    ]
+    var list = [], finalList = []
     for (let i = 0; i < data.length; i++) {
       var subject = data[i].subject.split(",")
       for (let j = 0; j < subject.length; j++) {
         if (!list.includes(subject[j])) {
           list.push(subject[j])
+        }
+      }
+
+      for (let k = 0; k < list.length; k++) {
+        if (!allsubject.includes(list[k])) {
+          allsubject.push(list[k])
+        }
+      }
+
+      for (let l = 0; l < allsubject.length; l++) {
+        if (!list.includes(allsubject[l])) {
+          list = list.filter(function (item) {
+            return item !== allsubject[l]
+          })
         }
       }
     }
