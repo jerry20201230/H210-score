@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import FaceIcon from '@mui/icons-material/Face';
 import Chip from '@mui/material/Chip';
 import ThemePicker from '../themePicker';
+import ToggleLabel from '../toggleLabel';
 
 export function Setting({ data, user }) {
 
@@ -24,6 +25,13 @@ export function Setting({ data, user }) {
                     <h2>色彩模式</h2>
                     <p>選擇顯示色彩的樣式</p>
                     <ThemePicker />
+                </Paper>
+                <p></p>
+                <Paper sx={{ p: 2 }}>
+                    <h2>標籤</h2>
+                    <p>在成績列表上新增標籤，方便快速取得資訊</p>
+                    {data.data.role == "std" ? <p>不用擔心，在開啟學生專屬功能時，標籤不會顯示該筆成績資料給家長</p> : <></>}
+                    <ToggleLabel user={data.data} />
                 </Paper>
                 <p></p>
                 <Paper sx={{ p: 2 }}>
