@@ -93,7 +93,7 @@ export default function ScoreTabs({ data, role, href }) {
     }
 
 
-    setTabTitles(list)
+    setTabTitles(allsubject)
   }, [data])
 
   React.useEffect(() => {

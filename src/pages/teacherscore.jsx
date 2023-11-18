@@ -479,12 +479,18 @@ export function TeacherScore({ data, user }) {
           <DialogContentText id="alert-dialog-description2">
             <p>從下方選擇資訊並複製</p>
             <p>以下是學生與家長專用的查詢連結:<br />
-              <TextField type='text' sx={{ width: "100%" }} variant="standard" label="查詢連結" value={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`} />
+              <TextField type='text'
+                InputProps={{
+                  readOnly: true,
+                }} sx={{ width: "100%" }} variant="standard" label="查詢連結" value={`https://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}`} />
             </p>
             <p>以下是自動生成的描述:<br />
               <TextField
                 multiline
-                rows={3}
+                rows={6}
+                InputProps={{
+                  readOnly: true,
+                }}
                 type='text' sx={{ width: "100%" }} variant="standard" label={"成績描述"} value={`各位家長好，${scoreSetting.scoreName} 的成績已經開放查詢，網址如下:\nhttps://h210-score-production.up.railway.app/score/?q=${UrlParam("q")}\n帳號是P加孩子的學號，預設密碼是孩子的學號\n*查詢時如遇系統壅塞，請耐心等候*`} />
             </p>
           </DialogContentText>
