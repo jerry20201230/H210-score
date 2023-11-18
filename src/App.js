@@ -84,25 +84,25 @@ function App() {
   }, [])
 
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    const onConnect = () => {
-      console.log("connected")
-    }
-    const onDisconnect = () => {
-      console.log("disconnected")
-    }
-    socket.connect()
+  //   const onConnect = () => {
+  //     console.log("connected")
+  //   }
+  //   const onDisconnect = () => {
+  //     console.log("disconnected")
+  //   }
+  //   socket.connect()
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
+  //   socket.on('connect', onConnect);
+  //   socket.on('disconnect', onDisconnect);
 
 
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-    };
-  })
+  //   return () => {
+  //     socket.off('connect', onConnect);
+  //     socket.off('disconnect', onDisconnect);
+  //   };
+  // })
 
 
   return (
