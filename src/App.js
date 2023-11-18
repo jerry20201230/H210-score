@@ -23,6 +23,8 @@ import { StdScore } from './pages/stdscore';
 import Routing from './pages/route';
 import { ParentAccountMonitor } from './pages/parentAccountMonitor';
 
+import { socket } from './socket';
+
 function App() {
   const [loading, setLoading] = React.useState(true)
 
@@ -80,6 +82,28 @@ function App() {
 
       })
   }, [])
+
+
+  React.useEffect(() => {
+
+    const onConnect = () => {
+      console.log("connected")
+    }
+    const onDisconnect = () => {
+      console.log("disconnected")
+    }
+    socket.connect()
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  })
+
 
   return (
     <ThemeProvider theme={currentTheme}>

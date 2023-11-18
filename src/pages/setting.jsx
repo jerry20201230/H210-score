@@ -26,13 +26,18 @@ export function Setting({ data, user }) {
                     <p>選擇顯示色彩的樣式</p>
                     <ThemePicker />
                 </Paper>
-                <p></p>
-                <Paper sx={{ p: 2 }}>
-                    <h2>標籤</h2>
-                    <p>在成績列表上新增標籤，方便快速取得資訊</p>
-                    {data.data.role == "std" ? <p>不用擔心，在開啟學生專屬功能時，標籤不會顯示該筆成績資料給家長</p> : <></>}
-                    <ToggleLabel user={data.data} />
-                </Paper>
+
+                {data.data.role !== "teacher" ?
+                    <>
+                        <p></p>
+                        <Paper sx={{ p: 2 }}>
+                            <h2>標籤</h2>
+                            <p>在成績列表上新增標籤，方便快速取得資訊</p>
+                            {data.data.role == "std" ? <p>不用擔心，在開啟學生專屬功能時，標籤不會顯示該筆成績資料給家長</p> : <></>}
+                            <ToggleLabel user={data.data} />
+                        </Paper>
+                    </>
+                    : <></>}
                 <p></p>
                 <Paper sx={{ p: 2 }}>
                     <h2>關於</h2>

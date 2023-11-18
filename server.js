@@ -4,6 +4,14 @@ const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const dayjs = require('dayjs')
 
+const { createServer } = require('node:http');
+
+const { Server } = require('socket.io');
+const server = createServer(app);
+const io = new Server(server);
+
+
+
 var cron = require('node-cron');
 
 
@@ -30,6 +38,12 @@ var sql_Connect = mysql.createPool({
   waitForConnections: true,
   // 連線池可建立的總連線數上限(預設最多為10個連線數)
   connectionLimit: 15
+});
+
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
 });
 
 // app.use(express.json());

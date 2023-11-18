@@ -85,8 +85,8 @@ export default function ScoreTabs({ data, role, href }) {
 
       for (let l = 0; l < allsubject.length; l++) {
         if (!list.includes(allsubject[l])) {
-          list = list.filter(function (item) {
-            return item !== allsubject[l]
+          allsubject = allsubject.filter(function (item) {
+            return item !== list[list.indexOf(allsubject[l])]
           })
         }
       }
