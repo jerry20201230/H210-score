@@ -542,7 +542,7 @@ export function StdScore({ data, user }) {
           <Button variant='contained' onClick={() => handleClose6(false)}>
             取消
           </Button>
-          <Button variant="outlined" disabled={!confirmChecked2} onClick={() => handleClose3(true)}>
+          <Button variant="outlined" disabled={!confirmChecked2} onClick={() => handleClose6(true)}>
             確定
           </Button>
         </DialogActions>

@@ -674,6 +674,23 @@ app.post("/api/getscorebyid", (req, res) => {
                   if (results3[0][req.body.id]) {
                     if (results2.length > 0) {
                       if (results3[0][req.body.id].split("%|%")[6] == "1") {
+
+
+
+
+                        sql_Connect.getConnection(function (err, connection5) {
+                          connection5.query(`
+      UPDATE parentAccountCtrl
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${Number(data[5]) - 1}%|%${0}"
+      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+    `, function (error2, results2, fields) {
+
+                            connection5.release()
+                          })
+                        })
+
+
+
                         res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
                         console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:1`)
                       } else {
