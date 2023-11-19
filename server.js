@@ -643,7 +643,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     sql_Connect.getConnection(function (err, connection4) {
                       connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = "0%|%null%|%6%|%null"
+                      SET ${req.body.id} = "1%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%6%|%null%|%1,2,3,4%|%1%|%0"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
                         console.log("parent data writed")
@@ -658,7 +658,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
                       UPDATE parentAccountCtrl
-                      SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}"
+                      SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}%|%${results3[0][req.body.id].split("%|%")[4]}%|%${results3[0][req.body.id].split("%|%")[5]}%|%${results3[0][req.body.id].split("%|%")[6]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
                           console.log("parent data updated")
@@ -673,14 +673,18 @@ app.post("/api/getscorebyid", (req, res) => {
 
                   if (results3[0][req.body.id]) {
                     if (results2.length > 0) {
-
-                      if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
-
+                      if (results3[0][req.body.id].split("%|%")[6] == "1") {
                         res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
-                        console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
-
+                        console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:1`)
                       } else {
-                        resScore(results, results2, results3, null, queryTimes)
+                        if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
+
+                          res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                          console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:2`)
+
+                        } else {
+                          resScore(results, results2, results3, null, queryTimes)
+                        }
                       }
                     } else {
                       res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
@@ -815,7 +819,7 @@ app.post("/api/blocksearch", (req, res) => {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
       UPDATE parentAccountCtrl
-      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(5, "minute").format("YYYY/MM/DD HH:mm:ss")}"
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(5, "minute").format("YYYY/MM/DD HH:mm:ss")}%|%${data[4]}%|%${data[5]}%|%${data[6]}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(5, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
@@ -837,6 +841,55 @@ app.post("/api/blocksearch", (req, res) => {
 
   }
 })
+
+
+
+
+
+
+app.post("/api/blocksearch2", (req, res) => {
+  if (req.session.role === "std") {
+
+    sql_Connect.getConnection(function (err, connection3) {
+      connection3.query(`
+      SELECT * FROM parentAccountCtrl 
+      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+    `, function (error3, results3, fields) {
+        var data = results3[0][req.body.id].split("%|%")
+        if (Number(data[5]) <= 0) {
+          res.status(404).json({ message: '今天機會已經用完', ok: false, code: 404 });
+          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 長期維持家庭和睦 (Failed : 今日機會已用完)`)
+
+        } else {
+          sql_Connect.getConnection(function (err, connection2) {
+            connection2.query(`
+      UPDATE parentAccountCtrl
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${Number(data[5]) - 1}%|%${1}"
+      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+    `, function (error2, results2, fields) {
+              res.status(200).json({ message: "已經封鎖家長的下一次查詢", ok: true, code: 200 });
+              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 長期維持家庭和睦 `)
+              connection2.release()
+            })
+          })
+        }
+
+
+        connection3.release()
+      })
+    })
+
+  } else {
+
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
+    res.end();
+
+  }
+})
+
+
+
+
 
 
 app.post("/api/service/annoucement", (req, res) => {
@@ -966,7 +1019,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${6}%|%${data[3]}"
+                  SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${6}%|%${data[3]}%|%${data[4]}%|%${1}%|%${data[6]}"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) {
                       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
@@ -982,7 +1035,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   connection3.query(`
                   UPDATE parentAccountCtrl 
                 
-                  SET ${r.uid} = "0%|%null%|%6%|%null"
+                  SET ${r.uid} = "0%|%null%|%6%|%null%|%1,2,3,4%|%1%|%0"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
                     if (error) {
                       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });

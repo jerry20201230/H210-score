@@ -44,7 +44,11 @@ export function StdScore({ data, user }) {
   const [isrank, setIsRank] = React.useState(false)
 
   const [disableSetting1, setDisableSetting1] = React.useState(false)
+  const [disableSetting2, setDisableSetting2] = React.useState(false)
+
   const [setting1Subtitle, setSetting1Subtitle] = React.useState(false)
+  const [setting2Subtitle, setSetting2Subtitle] = React.useState(false)
+
   const [scorelist, setScoreList] = React.useState([])
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -57,6 +61,7 @@ export function StdScore({ data, user }) {
   }));
 
   const [confirmChecked, setConfirmChecked] = React.useState(false)
+  const [confirmChecked2, setConfirmChecked2] = React.useState(false)
 
   const [open, setOpen] = React.useState(false);
 
@@ -103,7 +108,35 @@ export function StdScore({ data, user }) {
     setOpen4(false);
   };
 
+  const [open5, setOpen5] = React.useState(false);
+
+  const handleClickOpen5 = () => {
+    setOpen5(true);
+  };
+
+  const handleClose5 = (n) => {
+    setOpen5(false);
+  };
+
+
+  const [open6, setOpen6] = React.useState(false);
+
+  const handleClickOpen6 = () => {
+    setOpen6(true);
+  };
+
+  const handleClose6 = (n) => {
+    setOpen6(false);
+    if (n) {
+      blockScore2()
+      setSetting_2(true)
+      setDisableSetting2(true)
+    }
+  };
+
+
   const [setting_1, setSetting_1] = React.useState(false)
+  const [setting_2, setSetting_2] = React.useState(false)
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -199,6 +232,27 @@ export function StdScore({ data, user }) {
 
   }
 
+  function blockScore2() {
+    fetch("/api/blocksearch2", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: UrlParam("q") }),
+    }).then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          setSetting2Subtitle(res.message)
+          getScore(UrlParam("q"))
+        } else {
+          alert(res.message)
+          setSetting_2(false)
+          setDisableSetting2(false)
+        }
+      })
+
+  }
+
   React.useEffect(() => {
 
     getScore(UrlParam("q"))
@@ -211,6 +265,13 @@ export function StdScore({ data, user }) {
     if (dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))) {
       setSetting1Subtitle(`短暫維持家庭和睦 到 ${dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`)
       setSetting_1(true)
+    }
+
+    if (scoreData.queryTimes.split("%|%")[6] == "1" || scoreData.queryTimes.split("%|%")[5] == "0") {
+      setSetting_2(true)
+      if (scoreData.queryTimes.split("%|%")[6] == "1") {
+        setSetting2Subtitle(`已經封鎖家長的下一次查詢`)
+      }
     }
   }, [scoreData])
 
@@ -306,6 +367,23 @@ export function StdScore({ data, user }) {
                   disabled={disableSetting1 || Number(scoreData.queryTimes.split("%|%")[2]) < 1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
                 />
               </ListItem>
+
+              <ListItem>
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>長期維持家庭和睦</>}
+                ></ListItemText>
+                <Switch
+                  edge="end"
+                  onChange={() => {
+                    if (!setting_2 == true) {
+                      handleClickOpen6()
+                    }
+                  }}
+                  checked={setting_2}
+                  disabled={disableSetting2}
+                />
+              </ListItem>
+
+
             </List>
           </Paper>
         </Box >
@@ -362,6 +440,33 @@ export function StdScore({ data, user }) {
         </DialogActions>
       </Dialog>
 
+      <Dialog
+        open={open5}
+        onClose={handleClose5}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"長期維持家庭和睦 - 說明"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
+              開啟之後<b>無法取消</b>
+              <p>
+                讓家長下次無法查詢這筆成績(無論隔多久都有效)，但<b>家長刷新畫面之後就會正常</b><br />每筆成績每天有1次機會，你今天還有{scoreData.queryTimes.split("%|%")[5]}次機會
+              </p>
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose2} autoFocus>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
 
       <Dialog
         open={open3}
@@ -377,8 +482,7 @@ export function StdScore({ data, user }) {
             <>
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
 
-              <Alert severity='error'>警告: 請不要連續使用這項功能</Alert><br />
-              開啟之後<b>無法中途取消</b>
+              開啟之後<b>無法取消</b>
               <p></p>
 
               請再次確認以下資訊:<br />
@@ -404,6 +508,45 @@ export function StdScore({ data, user }) {
         </DialogActions>
       </Dialog>
 
+      <Dialog
+        open={open6}
+        onClose={() => handleClose6(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"要啟用 長期維持家庭和睦 嗎?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
+
+              開啟之後<b>無法取消</b>
+              <p></p>
+
+              請再次確認以下資訊:<br />
+              你今天還有{scoreData.queryTimes.split("%|%")[5]}次機會<br />
+              這筆成績是 {scoreTitle.title ? scoreTitle.title : "資料讀取中..."}
+              <p></p>
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked2}
+                  onChange={() => setConfirmChecked(!confirmChecked2)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' onClick={() => handleClose6(false)}>
+            取消
+          </Button>
+          <Button variant="outlined" disabled={!confirmChecked2} onClick={() => handleClose3(true)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
 
 
 
