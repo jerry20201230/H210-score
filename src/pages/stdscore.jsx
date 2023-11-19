@@ -367,9 +367,9 @@ export function StdScore({ data, user }) {
                   disabled={disableSetting1 || Number(scoreData.queryTimes.split("%|%")[2]) < 1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
                 />
               </ListItem>
-
+              <p></p>
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>長期維持家庭和睦</>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[5]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>長期維持家庭和睦</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
@@ -532,7 +532,7 @@ export function StdScore({ data, user }) {
               <FormControlLabel control={
                 <Checkbox
                   checked={confirmChecked2}
-                  onChange={() => setConfirmChecked(!confirmChecked2)}
+                  onChange={() => setConfirmChecked2(!confirmChecked2)}
                 />
               } label="我已詳細閱讀並同意上述說明" />
             </>
