@@ -681,7 +681,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         sql_Connect.getConnection(function (err, connection5) {
                           connection5.query(`
                          UPDATE parentAccountCtrl
-                         SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${Number(data[5]) - 1}%|%${0}"
+                         SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${data[5]}%|%${0}"
                          WHERE stdId = "${req.session.userid.replace("s", "p")}";
                           `, function (error2, results2, fields) {
 

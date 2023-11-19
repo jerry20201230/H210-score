@@ -328,12 +328,14 @@ export function StdScore({ data, user }) {
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
                       }<br />
-                      {setting1Subtitle}
+                      {setting1Subtitle}<br />
+                      {setting2Subtitle}
                     </>
                     :
                     <>
                       家長還沒看過這筆成績<br />
-                      {setting1Subtitle}
+                      {setting1Subtitle}<br />
+                      {setting2Subtitle}
                     </>
               }
             </p>
