@@ -461,7 +461,7 @@ export function StdScore({ data, user }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose2} autoFocus>
+          <Button onClick={handleClose5} autoFocus>
             確定
           </Button>
         </DialogActions>

@@ -673,7 +673,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
                   if (results3[0][req.body.id]) {
                     if (results2.length > 0) {
-                      if (results3[0][req.body.id].split("%|%")[6] == "1") {
+                      if (results3[0][req.body.id].split("%|%")[6] == "1" && req.session.role !== "std") {
 
 
 
