@@ -329,16 +329,27 @@ export function StdScore({ data, user }) {
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
                       }
-                      <p>
-                        {setting1Subtitle}<br />
-                        {setting2Subtitle}</p>
+                      {setting1Subtitle !== "" || setting2Subtitle !== "" ?
+                        <>
+                          <p>
+                            {setting1Subtitle ? <>{setting1Subtitle}<br /></> : <></>}
+                            {setting2Subtitle ? <>{setting2Subtitle}</> : <></>}
+                          </p>
+                        </>
+                        : <></>}
+
                     </>
                     :
                     <>
                       家長還沒看過這筆成績
-                      <p>
-                        {setting1Subtitle}<br />
-                        {setting2Subtitle}</p>
+                      {setting1Subtitle !== "" || setting2Subtitle !== "" ?
+                        <>
+                          <p>
+                            {setting1Subtitle ? <>{setting1Subtitle}<br /></> : <></>}
+                            {setting2Subtitle ? <>{setting2Subtitle}</> : <></>}
+                          </p>
+                        </>
+                        : <></>}
                     </>
               }
             </p>

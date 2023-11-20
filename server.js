@@ -684,7 +684,7 @@ app.post("/api/getscorebyid", (req, res) => {
                          SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${data[5]}%|%${0}"
                          WHERE stdId = "${req.session.userid.replace("s", "p")}";
                           `, function (error2, results2, fields) {
-
+                            console.log("[FEATURE DATA] updated")
                             connection5.release()
                           })
                         })
