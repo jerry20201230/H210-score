@@ -268,8 +268,9 @@ export function StdScore({ data, user }) {
     }
 
     if (scoreData.queryTimes.split("%|%")[6] == "1" || scoreData.queryTimes.split("%|%")[5] == "0") {
-      setSetting_2(true)
+      setDisableSetting2(true)
       if (scoreData.queryTimes.split("%|%")[6] == "1") {
+        setSetting_2(true)
         setSetting2Subtitle(`已經封鎖家長的下一次查詢`)
       }
     }

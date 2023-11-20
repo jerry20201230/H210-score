@@ -710,7 +710,6 @@ app.post("/api/getscorebyid", (req, res) => {
                     }
                   } else {
                     resScore(results, results2, results3, null, queryTimes)
-
                   }
 
                   connection3.release()
