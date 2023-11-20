@@ -328,15 +328,17 @@ export function StdScore({ data, user }) {
                       家長已經看過這筆成績 {Number(scoreData.queryTimes.split("%|%")[0])}次<br />
                       最近一次在 {
                         (dayjs(scoreData.queryTimes.split("%|%")[1]).add(8, "hour")).format("YYYY/MM/DD HH:mm:ss")
-                      }<br />
-                      {setting1Subtitle}<br />
-                      {setting2Subtitle}
+                      }
+                      <p>
+                        {setting1Subtitle}<br />
+                        {setting2Subtitle}</p>
                     </>
                     :
                     <>
-                      家長還沒看過這筆成績<br />
-                      {setting1Subtitle}<br />
-                      {setting2Subtitle}
+                      家長還沒看過這筆成績
+                      <p>
+                        {setting1Subtitle}<br />
+                        {setting2Subtitle}</p>
                     </>
               }
             </p>
@@ -345,6 +347,10 @@ export function StdScore({ data, user }) {
           <p></p>
           <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
+            <Alert severity="warning">
+              <b>警告</b><br />
+              以下選項請勿同時使用，以免發生錯誤
+            </Alert>
             <div hidden>
               <Alert severity="warning">
                 <b>警告</b><br />
@@ -370,9 +376,9 @@ export function StdScore({ data, user }) {
                   disabled={disableSetting1 || Number(scoreData.queryTimes.split("%|%")[2]) < 1 || dayjs().isBefore(dayjs(scoreData.queryTimes.split("%|%")[3]).add(8, "hours"))}
                 />
               </ListItem>
-              <p></p>
+
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[5]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>長期維持家庭和睦</>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[5]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>暫時關閉查詢權限</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
@@ -450,7 +456,7 @@ export function StdScore({ data, user }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"長期維持家庭和睦 - 說明"}
+          {"暫時關閉查詢權限 - 說明"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -518,7 +524,7 @@ export function StdScore({ data, user }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"要啟用 長期維持家庭和睦 嗎?"}
+          {"要啟用 暫時關閉查詢權限 嗎?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

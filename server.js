@@ -874,7 +874,7 @@ app.post("/api/blocksearch2", (req, res) => {
         var data = results3[0][req.body.id].split("%|%")
         if (Number(data[5]) <= 0) {
           res.status(404).json({ message: '今天機會已經用完', ok: false, code: 404 });
-          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 長期維持家庭和睦 (Failed : 今日機會已用完)`)
+          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 暫時關閉查詢權限 (Failed : 今日機會已用完)`)
 
         } else {
           sql_Connect.getConnection(function (err, connection2) {
@@ -884,7 +884,7 @@ app.post("/api/blocksearch2", (req, res) => {
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: "已經封鎖家長的下一次查詢", ok: true, code: 200 });
-              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 長期維持家庭和睦 `)
+              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 暫時關閉查詢權限 `)
               connection2.release()
             })
           })
