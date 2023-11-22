@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useLocation } from "react-router-dom";
 import TopBar from '../Topbar'
 
-export default function Routing({ data, user }) {
+export default function Routing({ data, user, handleError }) {
     function UrlParam(name) {
         var url = new URL(window.location.href),
             result = url.searchParams.get(name);

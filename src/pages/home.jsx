@@ -13,7 +13,7 @@ import ScoreTabs from '../tabs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export function Homepage({ user, data }) {
+export function Homepage({ user, data, handleError }) {
 
   const [scorelist, setScoreList] = React.useState([])
   const [loading, setLoading] = React.useState(true)
@@ -54,12 +54,15 @@ export function Homepage({ user, data }) {
                 }
                 setScoreList(list)
               } else {
+                handleError([true, 700])
                 alert("發生錯誤，請刷新網站!!")
+
               }
 
             })
         } else {
           setLoading(false)
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
       })

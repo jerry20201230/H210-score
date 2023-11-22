@@ -24,12 +24,15 @@ import Routing from './pages/route';
 import { ParentAccountMonitor } from './pages/parentAccountMonitor';
 
 import { socket } from './socket';
+import { ErrorPage } from './pages/errorPage';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
 
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem(""));
   const [userData, setUserData] = useState([])
+
+  const [pageError, setPageError] = React.useState([false, 0])
 
   const darkTheme = createTheme({
     palette: {
@@ -108,62 +111,64 @@ function App() {
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      {!loading ?
-        isLoggedIn ?
-          <Routes>
-            <Route path='/route/to/*' element={<Routing data={userData} />} ></Route>
+      {
+        !pageError[0] ?
+          !loading ?
+            isLoggedIn ?
+              <Routes>
+                <Route path='/route/to/*' element={<Routing data={userData} handleError={setPageError} />} ></Route>
 
-            <Route path='/profile' element={<Profile data={userData} />} ></Route>
-            <Route path='/setting' element={<Setting data={userData} />} ></Route>
+                <Route path='/profile' element={<Profile data={userData} handleError={setPageError} />} ></Route>
+                <Route path='/setting' element={<Setting data={userData} handleError={setPageError} />} ></Route>
 
-            {userData.data.role === "teacher" ?
-              <Route path='/' element={<TeacherHomePage data={userData} />} ></Route>
-              : <Route path='/' element={<Homepage data={userData} />} ></Route>
-            }
-            {userData.data.role === "std" ?
-              <>
-                <Route path='/score/more' element={<StdScore data={userData} />} ></Route>
-                <Route path='/parentaccount' element={<ParentAccountMonitor data={userData} />} ></Route>
-              </> : <></>}
+                {userData.data.role === "teacher" ?
+                  <Route path='/' element={<TeacherHomePage data={userData} handleError={setPageError} />} ></Route>
+                  : <Route path='/' element={<Homepage data={userData} handleError={setPageError} />} ></Route>
+                }
+                {userData.data.role === "std" ?
+                  <>
+                    <Route path='/score/more' element={<StdScore data={userData} handleError={setPageError} />} ></Route>
+                    <Route path='/parentaccount' element={<ParentAccountMonitor data={userData} handleError={setPageError} />} ></Route>
+                  </> : <></>}
 
-            {
-              userData.data.role !== "teacher" ?
-                <Route path='/score' element={<Score data={userData} />} ></Route>
-                :
-                <Route path='/score' element={<SearchScoreSheet data={userData} />} ></Route>
+                {
+                  userData.data.role !== "teacher" ?
+                    <Route path='/score' element={<Score data={userData} handleError={setPageError} />} ></Route>
+                    :
+                    <Route path='/score' element={<SearchScoreSheet data={userData} handleError={setPageError} />} ></Route>
 
-            }
+                }
 
 
-            {userData.data.role === "teacher" ?
-              <>
-                <Route path='/backend' element={<TeacherHomePage data={userData} />}></Route>
-                <Route path='/backend/score' element={<AllScoreSheet data={userData} />}></Route>
-                <Route path='/backend/score/push' element={<PushNewScore data={userData} />}></Route>
-                <Route path='/backend/score/search' element={<SearchScoreSheet data={userData} />} ></Route>
+                {userData.data.role === "teacher" ?
+                  <>
+                    <Route path='/backend' element={<TeacherHomePage data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/backend/score' element={<AllScoreSheet data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/backend/score/push' element={<PushNewScore data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/backend/score/search' element={<SearchScoreSheet data={userData} handleError={setPageError} />} ></Route>
 
-                <Route path='/backend/account' element={<AllAccountSheet data={userData} />}></Route>
-                <Route path='/backend/account/student' element={<StudentAccounts data={userData} />}></Route>
-                <Route path='/backend/account/parent' element={<ParentAccounts data={userData} />}></Route>
-                <Route path='/score/class' element={<TeacherScore data={userData} />}></Route>
+                    <Route path='/backend/account' element={<AllAccountSheet data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/backend/account/student' element={<StudentAccounts data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/backend/account/parent' element={<ParentAccounts data={userData} handleError={setPageError} />}></Route>
+                    <Route path='/score/class' element={<TeacherScore data={userData} handleError={setPageError} />}></Route>
 
-              </>
-              : <></>}
-            <Route path='*' element={<Homepage data={userData} />}></Route>
+                  </>
+                  : <></>}
+                <Route path='*' element={<Homepage data={userData} handleError={setPageError} />}></Route>
 
-          </Routes>
-          :
-          <Routes>
-            <Route path='*' element={<LoginForm set={setIsLoggedIn} callback={handleCallBack} />} ></Route>
-          </Routes>
-        :
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-
+              </Routes>
+              :
+              <Routes>
+                <Route path='*' element={<LoginForm set={setIsLoggedIn} callback={handleCallBack} handleError={setPageError} />} ></Route>
+              </Routes>
+            :
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={loading}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          : <ErrorPage errorId={pageError[1]} data={userData} />
       }
     </ThemeProvider>
   );

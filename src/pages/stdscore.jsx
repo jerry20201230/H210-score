@@ -26,7 +26,7 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ScoreTabs from '../tabs';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-export function StdScore({ data, user }) {
+export function StdScore({ data, user, handleError }) {
 
 
   const [scoreData, setScoreData] = React.useState(
@@ -189,21 +189,24 @@ export function StdScore({ data, user }) {
                     setScoreData(res2.data)
                     setLoading(false)
                   } else {
+                    handleError([true, 700])
                     alert("發生錯誤，請刷新網站!!")
                   }
                 })
                 .catch(() => {
-
+                  handleError([true, 700])
                   setLoadingState("發生錯誤")
                 })
             }
           }
           if (!k) {
+            handleError([true, 404])
             alert("找不到成績")
             setLoadingState("發生錯誤")
             // setLoading(false)
           }
         } else {
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
 
@@ -358,10 +361,7 @@ export function StdScore({ data, user }) {
           <p></p>
           <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
-            <Alert severity="warning">
-              <b>警告</b><br />
-              以下選項請勿同時使用，以免發生錯誤
-            </Alert>
+
             <div hidden>
               <Alert severity="warning">
                 <b>警告</b><br />
@@ -371,7 +371,11 @@ export function StdScore({ data, user }) {
             </div>
 
 
-
+            <Alert severity="warning">
+              <b>警告</b><br />
+              以下選項請勿同時使用，以免發生不可預期的錯誤
+            </Alert>
+            <p></p>
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
                 <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會 ({(Number(scoreData.queryTimes.split("%|%")[2]) * 5)}分鐘)&nbsp;<IconButton variant="text" onClick={() => setOpen(true)}><HelpOutlineIcon /></IconButton></>} primary={<>短暫維持家庭和睦</>}

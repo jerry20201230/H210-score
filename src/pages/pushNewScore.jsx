@@ -26,7 +26,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SelectSubject from '../selectSubject';
 
 
-export function PushNewScore({ data, user }) {
+export function PushNewScore({ data, user, handleError }) {
 
   const [inputValues, setInputValues] = React.useState(Array(46));
   const [summeryValue, setSummeryValue] = React.useState(Array(46));
@@ -163,11 +163,13 @@ export function PushNewScore({ data, user }) {
 
         }
         else {
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
 
       })
       .catch(() => {
+        handleError([true, 500])
         alert("發生錯誤")
       })
 
@@ -264,6 +266,7 @@ export function PushNewScore({ data, user }) {
           // }
 
         } else {
+          handleError([true, 500])
           alert("發生錯誤，請刷新網站!!")
         }
 

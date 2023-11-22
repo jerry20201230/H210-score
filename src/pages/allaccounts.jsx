@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
-export function AllAccountSheet({ data, user }) {
+export function AllAccountSheet({ data, user, handleError }) {
 
 
     const Item = styled(Paper)(({ theme }) => ({

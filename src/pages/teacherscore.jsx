@@ -32,7 +32,7 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
-export function TeacherScore({ data, user }) {
+export function TeacherScore({ data, user, handleError }) {
   const [students, setStudents] = React.useState([
     { username: "" }
   ])
@@ -264,10 +264,12 @@ export function TeacherScore({ data, user }) {
 
                 setStudents(list)
               } else {
+                handleError([true, 700])
                 alert("發生錯誤，請刷新網站!!")
               }
             })
         } else {
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
 
@@ -297,6 +299,7 @@ export function TeacherScore({ data, user }) {
           }
           if (!k) alert("找不到成績")
         } else {
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
 

@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 
-export function Score({ data, user }) {
+export function Score({ data, user, handleError }) {
 
   const [scoreData, setScoreData] = React.useState(
     { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00%|%0%|%2023/1/1 00:00:00" }
@@ -88,23 +88,27 @@ export function Score({ data, user }) {
                     setScoreData(res2.data)
                     setLoading(false)
                   } else {
+                    handleError([true, 700])
                     setLoadingState("發生錯誤")
                     setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次</>)
                   }
                 })
                 .catch(() => {
+                  handleError([true, 700])
                   setLoadingState("發生錯誤")
                   setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次</>)
                 })
             }
           }
           if (!k) {
+            handleError([true, 404])
             setLoadingState("發生錯誤")
             setLoadingState2("成績不存在")
 
             // setLoading(false)
           }
         } else {
+          handleError([true, 700])
           alert("發生錯誤，請刷新網站!!")
         }
 

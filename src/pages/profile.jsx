@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import FaceIcon from '@mui/icons-material/Face';
 import Chip from '@mui/material/Chip';
 
-export function Profile({ data, user }) {
+export function Profile({ data, user, handleError }) {
   const [oldPassword, setOldPassword] = React.useState()
   const [newPassword, setNewPassword] = React.useState()
   const [confirmNewPassword, setConfirmNewPassword] = React.useState()
@@ -56,6 +56,7 @@ export function Profile({ data, user }) {
             }
             else {
               if (res.code == 403) {
+                handleError([true, 500])
                 alert("發生錯誤，請刷新網站!!")
               } else if (res.code == 404) {
                 alert("原本密碼錯誤\n請重新登入")

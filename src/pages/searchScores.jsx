@@ -16,7 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ScoreTabs from '../tabs';
 
-export function SearchScoreSheet({ data, user }) {
+export function SearchScoreSheet({ data, user, handleError }) {
 
 	const [scoreList, setScoreList] = React.useState(
 		[{ title: "", id: "", subject: "" }]
@@ -51,6 +51,7 @@ export function SearchScoreSheet({ data, user }) {
 					}
 					setScoreList(list)
 				} else {
+					handleError([true, 700])
 					alert("發生錯誤，請刷新網站!!")
 				}
 

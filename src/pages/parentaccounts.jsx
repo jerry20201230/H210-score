@@ -26,7 +26,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
-export function ParentAccounts({ data, user }) {
+export function ParentAccounts({ data, user, handleError }) {
     const [students, setStudents] = React.useState([
         { username: "", userpassword: "" }
     ])
@@ -171,6 +171,7 @@ export function ParentAccounts({ data, user }) {
                     setStudents(list)
                     console.log(students, list, idList)
                 } else {
+                    handleError([true, 700])
                     alert("發生錯誤，請刷新網站!!")
                 }
 

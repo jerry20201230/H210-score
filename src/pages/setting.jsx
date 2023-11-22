@@ -13,7 +13,7 @@ import Chip from '@mui/material/Chip';
 import ThemePicker from '../themePicker';
 import ToggleLabel from '../toggleLabel';
 
-export function Setting({ data, user }) {
+export function Setting({ data, user, handleError }) {
 
 
     return (

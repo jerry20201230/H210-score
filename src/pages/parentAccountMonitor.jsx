@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import dayjs from 'dayjs';
 
-export function ParentAccountMonitor({ data, user }) {
+export function ParentAccountMonitor({ data, user, handleError }) {
   function createData(time, action, status) {
     return { time, action, status };
   }

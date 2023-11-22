@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import { CheckLogin } from '../checklogin';
 
-export function TeacherHomePage({ data, user }) {
+export function TeacherHomePage({ data, user, handleError }) {
 
 
     const Item = styled(Paper)(({ theme }) => ({
