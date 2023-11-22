@@ -36,8 +36,8 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                         {errorDefSummery[errorIdList.indexOf(errorId)][1]}
                     </p>
                     <p>
-                        <Button variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
-                        <Button component={Link} to="/" variant="outlined">回首頁</Button>
+                        <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
+                        <Button sx={{ m: 1 }} component={Link} to="/" variant="outlined">回首頁</Button>
                     </p>
                     <pre>
                         錯誤代碼: {errorId}
