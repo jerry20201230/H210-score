@@ -39,9 +39,10 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                         <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
                         <Button sx={{ m: 1 }} color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
                     </p>
-                    <pre>
+                    <hr />
+                    <code>
                         錯誤代碼: {errorId}
-                    </pre>
+                    </code>
                 </center>
             </Box>
         </>
