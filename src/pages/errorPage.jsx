@@ -35,31 +35,31 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         <>
             <TopBar needCheckLogin={false} logined={true} data={data.data} user={user} title={"發生錯誤"} />
             <Box sx={{ p: 3 }}>
-                <center>
-                    <Typography variant="h2" gutterBottom color="blue">
-                        : (
-                    </Typography>
-                    <h2>
-                        {errorDefSummery[errorIdList.indexOf(errorId)][0]}
-                    </h2>
-                    <p>
-                        {errorDefSummery[errorIdList.indexOf(errorId)][1]}
-                    </p>
-                    <p>
-                        <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
-                        <Button sx={{ m: 1 }} color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
-                    </p>
-                    <hr />
-                    <code>
-                        錯誤代碼: {errorId}
-                        <p></p>
-                        詳細資料如下:<br />
-                        路徑:{window.location.pathname}{window.location.search}<br />
-                        使用者:{data.data.username}<br />
-                        時間:{dayjs().format("YYYY/MM/DD HH:mm:ss")}<br />
-                        隨機碼:{uuidv4().slice(0, 4)}
-                    </code>
-                </center>
+
+                <Typography variant="h2" gutterBottom>
+                    : (
+                </Typography>
+                <h2>
+                    {errorDefSummery[errorIdList.indexOf(errorId)][0]}
+                </h2>
+                <p>
+                    {errorDefSummery[errorIdList.indexOf(errorId)][1]}
+                </p>
+                <p>
+                    <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
+                    <Button sx={{ m: 1 }} color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
+                </p>
+                <hr />
+                <code>
+                    錯誤代碼: {errorId}
+                    <p></p>
+                    詳細資料如下:<br />
+                    路徑:{window.location.pathname}{window.location.search}<br />
+                    使用者:{data.data.username}<br />
+                    時間:{dayjs().format("YYYY/MM/DD HH:mm:ss")}<br />
+                    隨機碼:{uuidv4().slice(0, 4)}
+                </code>
+
             </Box>
         </>
     )
