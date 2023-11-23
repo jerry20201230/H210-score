@@ -201,7 +201,7 @@ export function StdScore({ data, user, handleError }) {
           }
           if (!k) {
             handleError([true, 404])
-            alert("找不到成績")
+            // alert("找不到成績")
             setLoadingState("發生錯誤")
             // setLoading(false)
           }
