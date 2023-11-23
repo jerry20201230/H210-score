@@ -9,6 +9,13 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import dayjs from 'dayjs';
+const { v4: uuidv4 } = require('uuid');
 
 export function ErrorPage({ errorId, errorSummery, data, user }) {
     // ERRORID LIST
@@ -29,6 +36,9 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
             <TopBar needCheckLogin={false} logined={true} data={data.data} user={user} title={"發生錯誤"} />
             <Box sx={{ p: 3 }}>
                 <center>
+                    <Typography variant="h2" gutterBottom color="blue">
+                        : (
+                    </Typography>
                     <h2>
                         {errorDefSummery[errorIdList.indexOf(errorId)][0]}
                     </h2>
@@ -42,6 +52,12 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                     <hr />
                     <code>
                         錯誤代碼: {errorId}
+                        <p></p>
+                        詳細資料如下:<br />
+                        路徑:{window.location.pathname}{window.location.search}<br />
+                        使用者:{data.data.username}<br />
+                        時間:{dayjs().format("YYYY/MM/DD HH:mm:ss")}<br />
+                        隨機碼:{uuidv4().slice(0, 4)}
                     </code>
                 </center>
             </Box>

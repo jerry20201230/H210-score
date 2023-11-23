@@ -62,16 +62,29 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton
-              component={Link} to="/"
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <HomeIcon />
-            </IconButton>
+
+            {title === "發生錯誤" ?
+              <IconButton
+                onClick={() => window.location.href = "/"}
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+              >
+                <HomeIcon />
+              </IconButton>
+              : <IconButton
+                component={Link} to="/"
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+              >
+                <HomeIcon />
+              </IconButton>}
+
             <Typography noWrap variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
@@ -94,11 +107,20 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
+                  {title === "發生錯誤" ?
+                    <>
+                      <MenuItem onClick={() => { window.location.href = "/profile" }} >個人資料</MenuItem>
+                      <MenuItem onClick={() => { window.location.href = "/setting" }} >系統設定</MenuItem>
 
-                  <MenuItem onClick={() => { handleClose("profile") }} component={Link} to="/profile">個人資料</MenuItem>
-                  <MenuItem onClick={() => { handleClose("setting") }} component={Link} to="/setting">系統設定</MenuItem>
+                      {/*data.role === "std" ? <MenuItem onClick={() => { handleClose("parentaccount") }} component={Link} to="/parentaccount">家長帳號監視器</MenuItem> : <></>*/}
+                    </>
+                    : <>
+                      <MenuItem onClick={() => { handleClose("profile") }} component={Link} to="/profile">個人資料</MenuItem>
+                      <MenuItem onClick={() => { handleClose("setting") }} component={Link} to="/setting">系統設定</MenuItem>
 
-                  {/*data.role === "std" ? <MenuItem onClick={() => { handleClose("parentaccount") }} component={Link} to="/parentaccount">家長帳號監視器</MenuItem> : <></>*/}
+                      {/*data.role === "std" ? <MenuItem onClick={() => { handleClose("parentaccount") }} component={Link} to="/parentaccount">家長帳號監視器</MenuItem> : <></>*/}
+                    </>}
+
                   <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
                 </Menu>
               </div>
