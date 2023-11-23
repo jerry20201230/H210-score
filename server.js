@@ -640,16 +640,30 @@ app.post("/api/getscorebyid", (req, res) => {
                   console.log(`[CHECKING PERMISSIONS] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                   if (results3[0][req.body.id] == null || results3[0][req.body.id] == undefined) {
-                    sql_Connect.getConnection(function (err, connection4) {
-                      connection4.query(`
+                    if (req.session.role == "std") {
+                      sql_Connect.getConnection(function (err, connection4) {
+                        connection4.query(`
+                      UPDATE parentAccountCtrl
+                      SET ${req.body.id} = "0%|%null%|%6%|%null%|%1,2,3,4%|%1%|%0"
+                      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+                    `, function (error4, results4, fields4) {
+                          console.log("parent data writed")
+                          connection4.release()
+                        })
+                      })
+                    } else {
+                      sql_Connect.getConnection(function (err, connection4) {
+                        connection4.query(`
                       UPDATE parentAccountCtrl
                       SET ${req.body.id} = "1%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%6%|%null%|%1,2,3,4%|%1%|%0"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
-                        console.log("parent data writed")
-                        connection4.release()
+                          console.log("parent data writed")
+                          connection4.release()
+                        })
                       })
-                    })
+                    }
+
                   } else {
                     if (req.session.role == "std") {
                       queryTimes = results3
@@ -1001,13 +1015,15 @@ app.post("/api/getparentaccountlogs", (req, res) => {
 
         connection.release()
       })
-
-
     })
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
   }
+})
+
+app.post("/pusherrorlog", (req, res) => {
+
 })
 
 var refreshData = cron.schedule('0 16 * * * ', () => {
