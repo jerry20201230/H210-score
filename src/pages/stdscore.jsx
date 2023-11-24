@@ -189,9 +189,9 @@ export function StdScore({ data, user, handleError }) {
                     setScoreData(res2.data)
                     setLoading(false)
                   } else {
-                    console.log(res.code)
+                    console.log(res2.code)
 
-                    handleError([true, res.code])
+                    handleError([true, res2.code])
                     alert("發生錯誤，請刷新網站!!")
                   }
                 })
