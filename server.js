@@ -1027,7 +1027,7 @@ app.post("/api/report/pusherrorlog", (req, res) => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       INSERT INTO errorReport (random_code,username,error_code,time,path)
-      VALUES(?,?,?,?,?,?)
+      VALUES(?,?,?,?,?)
     `, [req.body.randomCode, req.session.username, req.body.errorCode, req.body.time, req.body.path], function (error, results, field) {
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
       res.status(200).json({ message: "錯誤回報成功", code: 200, ok: true })
