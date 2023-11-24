@@ -40,6 +40,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
 
     function sendReport() {
+        setReportState("正在傳送錯誤報告...")
         console.log("error page", errorId)
         fetch("/api/report/pusherrorlog", {
             method: 'POST',
@@ -58,7 +59,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                 if (res.ok) {
                     setReportState("錯誤報告已經傳送")
                 } else {
-                    setReportState(<>錯誤報告傳送失敗 <a href='#' onClick={() => sendReport()}>重新傳送</a></>)
+                    setReportState(<>錯誤報告傳送失敗<Button variant='text' onClick={() => sendReport()}>重新傳送</Button></>)
                 }
             })
     }
