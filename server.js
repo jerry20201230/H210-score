@@ -1,3 +1,11 @@
+// ERRORID LIST
+// 0: no error
+// 403: blocked
+// 404: score not found
+// 500: server error
+// 700: blocked via student's feature(701/702) or something went wrong
+// 1000:network error
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
