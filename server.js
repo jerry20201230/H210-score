@@ -705,12 +705,12 @@ app.post("/api/getscorebyid", (req, res) => {
 
 
 
-                        res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                        res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 702 });
                         console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:1`)
                       } else {
                         if (req.session.role === "par" && dayjs().isBefore(dayjs(results3[0][req.body.id].split("%|%")[3]))) {
 
-                          res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                          res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 701 });
                           console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:2`)
 
                         } else {
@@ -718,7 +718,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         }
                       }
                     } else {
-                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 404 });
+                      res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 500 });
                       console.warn(`[SEVER ERROR] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
                     }
@@ -736,7 +736,7 @@ app.post("/api/getscorebyid", (req, res) => {
           //    console.log(results)
           //    res.send(JSON.stringify({ message: 'Login successful', data: { result: {yourScore:results[i][req.id],} }, ok: true }));
         } else {
-          res.status(404).json({ message: '請刷新網站', ok: false, code: 404 });
+          res.status(500).json({ message: '請刷新網站', ok: false, code: 500 });
         }
 
         ////     res.end();
@@ -1022,8 +1022,18 @@ app.post("/api/getparentaccountlogs", (req, res) => {
   }
 })
 
-app.post("/pusherrorlog", (req, res) => {
-
+app.post("/api/report/pusherrorlog", (req, res) => {
+  console.log("[CLIENT ERROR REPORT]", req.body.errorid)
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query(`
+      INSERT INTO  scoreUid (random_code,username,error_code,time,path)
+      VALUES(?,?,?,?,?,?)
+    `, [req.body.randomCode, req.session.username, req.body.errorCode, req.body.time, req.body.path], function (error, results, field) {
+      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+      res.status(200).json({ data: results[0], message: "錯誤回報成功", code: 200 })
+      connection.release()
+    })
+  })
 })
 
 var refreshData = cron.schedule('0 16 * * * ', () => {

@@ -23,14 +23,47 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
     // 403: blocked
     // 404: score not found
     // 500: server error
-    // 700: blocked via student's feature or something went wrong
+    // 700: blocked via student's feature(701/702) or something went wrong
     // 1000:network error
-    const errorIdList = [0, 403, 404, 500, 700, 1000]
-    const errorDefSummery = [["未偵測到錯誤", ": )"], ["沒有權限使用", "請確定你登入的帳號是否正確"], ["找不到成績", "請確定你的網址是否正確，或聯絡老師取得新網址"], ["內部伺服器錯誤", "對不起，我們正在努力修復，稍後將恢復正常"], ["暫時性錯誤", "請等待幾分鐘，然後再試一次"], ["網路錯誤", "請檢查你的網路連線，然後再試一次"]]
+    const errorIdList = [0, 403, 404, 500, 700, 701, 702, 1000]
+    const errorDefSummery = [
+        ["未偵測到錯誤", ": )"],//0
+        ["沒有權限使用", "請確定你登入的帳號是否正確"],//403
+        ["找不到成績", "請確定你的網址是否正確，或聯絡老師取得新網址"],//404
+        ["內部伺服器錯誤", "對不起，我們正在努力修復，稍後將恢復正常"],//500
+        ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//700
+        ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//701(block 5min)
+        ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//702(block once)
+        ["網路錯誤", "請檢查你的網路連線，然後再試一次"]]//1000
 
     const [pageContent, setPageContent] = React.useState(["正在偵測錯誤類型", "正在偵測錯誤類型"])
 
+    const [randomCode, setRandomCode] = React.useState("準備中...")
+    const [reportState, setReportState] = React.useState("正在準備送出錯誤報告...")
 
+    const [errorTime, setErrorTime] = React.useState(dayjs().format("YYYY/MM/DD HH:mm:ss"))
+    React.useEffect(() => {
+        fetch("/api/report/pusherrorlog", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                randomCode: randomCode,
+                errorCode: errorId,
+                time: errorTime,
+                path: window.location.pathname + window.location.search
+            }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    setReportState("錯誤報告回報成功，我們將盡速處理")
+                } else {
+                    setReportState("自動錯誤回報失敗")
+                }
+            })
+    }, [])
     return (
         <>
             <TopBar needCheckLogin={false} logined={true} data={data.data} user={user} title={"發生錯誤"} />
@@ -56,8 +89,9 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                     詳細資料如下:<br />
                     路徑:{window.location.pathname}{window.location.search}<br />
                     使用者:{data.data.username}<br />
-                    時間:{dayjs().format("YYYY/MM/DD HH:mm:ss")}<br />
-                    隨機碼:{uuidv4().slice(0, 4)}
+                    時間:{errorTime}<br />
+                    隨機碼:{randomCode}<br />
+                    {reportState}
                 </code>
 
             </Box>
