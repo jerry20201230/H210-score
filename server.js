@@ -1030,7 +1030,7 @@ app.post("/api/report/pusherrorlog", (req, res) => {
       VALUES(?,?,?,?,?,?)
     `, [req.body.randomCode, req.session.username, req.body.errorCode, req.body.time, req.body.path], function (error, results, field) {
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      res.status(200).json({ data: results[0], message: "錯誤回報成功", code: 200 })
+      res.status(200).json({ message: "錯誤回報成功", code: 200 })
       connection.release()
     })
   })

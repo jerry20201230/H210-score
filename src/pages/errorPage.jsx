@@ -38,7 +38,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
     const [pageContent, setPageContent] = React.useState(["正在偵測錯誤類型", "正在偵測錯誤類型"])
 
-    const [randomCode, setRandomCode] = React.useState("準備中...")
+    const [randomCode, setRandomCode] = React.useState(uuidv4().slice(0, 4))
     const [reportState, setReportState] = React.useState("正在準備送出錯誤報告...")
 
     const [errorTime, setErrorTime] = React.useState(dayjs().format("YYYY/MM/DD HH:mm:ss"))
