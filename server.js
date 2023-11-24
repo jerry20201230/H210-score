@@ -1023,14 +1023,14 @@ app.post("/api/getparentaccountlogs", (req, res) => {
 })
 
 app.post("/api/report/pusherrorlog", (req, res) => {
-  console.log("[CLIENT ERROR REPORT]", req.body.errorid)
+  console.log("[CLIENT ERROR REPORT]", req.body.randomCode)
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
-      INSERT INTO  scoreUid (random_code,username,error_code,time,path)
+      INSERT INTO errorReport (random_code,username,error_code,time,path)
       VALUES(?,?,?,?,?,?)
     `, [req.body.randomCode, req.session.username, req.body.errorCode, req.body.time, req.body.path], function (error, results, field) {
       if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      res.status(200).json({ message: "錯誤回報成功", code: 200 })
+      res.status(200).json({ message: "錯誤回報成功", code: 200, ok: true })
       connection.release()
     })
   })
