@@ -88,12 +88,15 @@ export function Score({ data, user, handleError }) {
                     setScoreData(res2.data)
                     setLoading(false)
                   } else {
+                    console.log(res.code)
+
                     handleError([true, res.code])
                     setLoadingState("發生錯誤")
                     setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次</>)
                   }
                 })
                 .catch(() => {
+                  console.log(res.code)
                   handleError([true, res.code])
                   setLoadingState("發生錯誤")
                   setLoadingState2(<>暫時無法查詢這筆成績<br />請過幾分鐘再試一次</>)
