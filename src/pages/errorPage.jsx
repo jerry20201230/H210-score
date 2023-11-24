@@ -43,6 +43,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
     const [errorTime, setErrorTime] = React.useState(dayjs().format("YYYY/MM/DD HH:mm:ss"))
     React.useEffect(() => {
+        console.log("error page", errorId)
         fetch("/api/report/pusherrorlog", {
             method: 'POST',
             headers: {
