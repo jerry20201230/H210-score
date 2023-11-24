@@ -56,7 +56,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
             .then(res => res.json())
             .then(res => {
                 if (res.ok) {
-                    setReportState("錯誤報告已經傳送，我們將盡速處理")
+                    setReportState("錯誤報告已經傳送")
                 } else {
                     setReportState(<>錯誤報告傳送失敗 <a href='#' onClick={() => sendReport()}>重新傳送</a></>)
                 }
