@@ -67,7 +67,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
 
     React.useEffect(() => {
-        if (errorId == 500 || errorId > 700 && errorId < 800) {
+        if (errorId == 500 || errorId >= 700 && errorId < 800) {
             setCountdown(30)
             const intervalId = setInterval(() => {
                 setCountdown((prevCountdown) => prevCountdown - 1);
@@ -76,9 +76,14 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
             return () => {
                 clearInterval(intervalId);
             };
+        } else {
+            setCountdown(0)
         }
     }, []);
 
+    React.useEffect(() => {
+        console.log(countdown)
+    }, [countdown])
 
 
     React.useEffect(() => {
