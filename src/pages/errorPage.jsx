@@ -70,13 +70,17 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         if (errorId == 500 || errorId >= 700 && errorId < 800) {
             setCountdown(30)
             const intervalId = setInterval(() => {
-                setCountdown((prevCountdown) => prevCountdown - 1);
+                if (countdown > 0) {
+                    setCountdown((prevCountdown) => prevCountdown - 1);
+                } else {
+                    clearInterval(intervalId)
+                }
             }, 1000);
 
             if (countdown < 0) {
-                return () => {
-                    clearInterval(intervalId);
-                };
+                console.log("<0")
+                clearInterval(intervalId);
+                return;
             }
             return () => {
                 clearInterval(intervalId);
