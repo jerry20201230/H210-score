@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 const { v4: uuidv4 } = require('uuid');
 
 export function ErrorPage({ errorId, errorSummery, data, user }) {
+    const [countdown, setCountdown] = React.useState(30)
 
     const errorIdList = [0, 403, 404, 500, 700, 701, 702, 1000]
     const errorDefSummery = [
@@ -65,6 +66,20 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
     }
 
 
+    React.useEffect(() => {
+        if (errorId == 500 || errorId > 700 && errorId < 800) {
+            setCountdown(30)
+            const intervalId = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+
+            return () => {
+                clearInterval(intervalId);
+            };
+        }
+    }, []);
+
+
 
     React.useEffect(() => {
         sendReport()
@@ -84,7 +99,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                     {errorDefSummery[errorIdList.indexOf(errorId)][1]}
                 </p>
                 <p>
-                    <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()}>重新整理</Button>
+                    <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()} disabled={countdown > 0}>{countdown > 0 ? `可於${countdown}秒內重新整理` : "重新整理"}</Button>
                     <Button sx={{ m: 1 }} color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
                 </p>
                 <hr />
