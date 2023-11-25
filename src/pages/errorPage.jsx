@@ -73,6 +73,11 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                 setCountdown((prevCountdown) => prevCountdown - 1);
             }, 1000);
 
+            if (countdown < 0) {
+                return () => {
+                    clearInterval(intervalId);
+                };
+            }
             return () => {
                 clearInterval(intervalId);
             };
