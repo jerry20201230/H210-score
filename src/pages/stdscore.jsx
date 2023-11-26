@@ -629,20 +629,20 @@ export function StdScore({ data, user, handleError }) {
               <FormControlLabel control={
                 <Checkbox
                   checked={activeTiles[1] == 2}
-                  onChange={() => { if (activeTiles[1] == 2) { activeTiles[1] = null } else { activeTiles[1] = 2 } }}
+                  onChange={() => { if (activeTiles[1] == 2) { setActiveTiles([activeTiles[0], false, activeTiles[2], activeTiles[3]]) } else { setActiveTiles([activeTiles[0], 2, activeTiles[2], activeTiles[3]]) } }}
                 />
               } label={isrank ? "全班最低名次" : "全班最高分"} />
               <FormControlLabel control={
                 <Checkbox
                   checked={activeTiles[2] == 3}
-                  onChange={() => { if (activeTiles[2] == 3) { activeTiles[2] = null } else { activeTiles[2] = 3 } }}
+                  onChange={() => { if (activeTiles[2] == 3) { setActiveTiles([activeTiles[0], activeTiles[1], false, activeTiles[3]]) } else { setActiveTiles([activeTiles[0], activeTiles[1], 3, activeTiles[3]]) } }}
                 />
               } label={isrank ? "全班最高名次" : "全班最低分"} />
               <FormControlLabel control={
                 <Checkbox
                   disabled={isrank}
                   checked={activeTiles[3] == 4}
-                  onChange={() => { if (activeTiles[3] == 4) { activeTiles[3] = null } else { activeTiles[3] = 4 } }}
+                  onChange={() => { if (activeTiles[3] == 4) { setActiveTiles([activeTiles[0], activeTiles[1], activeTiles[2], false]) } else { setActiveTiles([activeTiles[0], activeTiles[1], activeTiles[2], 4]) } }}
                 />
               } label={isrank ? "全班平均 [不須設定]" : "全班平均"} />
             </>
