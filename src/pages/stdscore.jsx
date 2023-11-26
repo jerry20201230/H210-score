@@ -433,7 +433,7 @@ export function StdScore({ data, user, handleError }) {
               <ListItem>
                 <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊</>}
                 ></ListItemText>
-                <Button disabled variant="outlined">更新</Button>
+                <Button variant="outlined" onClick={() => handleClickOpen7()}>更新</Button>
               </ListItem>
 
             </List>
@@ -609,7 +609,7 @@ export function StdScore({ data, user, handleError }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {""}
+          {"管理家長能查看的資訊"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
