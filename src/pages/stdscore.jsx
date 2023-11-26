@@ -51,6 +51,8 @@ export function StdScore({ data, user, handleError }) {
 
   const [scorelist, setScoreList] = React.useState([])
 
+  const [activeTiles, setActiveTiles] = React.useState([1, 2, 3, 4])
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -281,8 +283,8 @@ export function StdScore({ data, user, handleError }) {
     console.log(scoreData.queryTimes.split("%|%"))
     var arr = [(isrank ? "我的排名" : "我的成績")]
     if (isrank) {
-      if (tiles.includes("2")) { arr.push("全班最低排名") }
-      if (tiles.includes("3")) { arr.push("全班最高排名") }
+      if (tiles.includes("2")) { arr.push("全班最低名次") }
+      if (tiles.includes("3")) { arr.push("全班最高名次") }
     }
     else {
       if (tiles.includes("2")) { arr.push("全班最高分") }
@@ -619,29 +621,30 @@ export function StdScore({ data, user, handleError }) {
 
               <FormControlLabel control={
                 <Checkbox
-                  checked={confirmChecked2}
+                  checked={true}
                   disabled
-                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+
                 />
-              } label="我的成績" />
+              } label={isrank ? "我的排名" : "我的成績"} />
               <FormControlLabel control={
                 <Checkbox
-                  checked={confirmChecked2}
-                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                  checked={activeTiles[1] == 2}
+                  onChange={() => { if (activeTiles[1] == 2) { activeTiles[1] = null } else { activeTiles[1] = 2 } }}
                 />
-              } label="全班最高分" />
+              } label={isrank ? "全班最低名次" : "全班最高分"} />
               <FormControlLabel control={
                 <Checkbox
-                  checked={confirmChecked2}
-                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                  checked={activeTiles[2] == 3}
+                  onChange={() => { if (activeTiles[2] == 3) { activeTiles[2] = null } else { activeTiles[2] = 3 } }}
                 />
-              } label="全班最低分" />
+              } label={isrank ? "全班最高名次" : "全班最低分"} />
               <FormControlLabel control={
                 <Checkbox
-                  checked={confirmChecked2}
-                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                  disabled={isrank}
+                  checked={activeTiles[3] == 4}
+                  onChange={() => { if (activeTiles[3] == 4) { activeTiles[3] = null } else { activeTiles[3] = 4 } }}
                 />
-              } label="全班平均" />
+              } label={isrank ? "全班平均 [不須設定]" : "全班平均"} />
             </>
           </DialogContentText>
         </DialogContent>
