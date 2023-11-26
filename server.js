@@ -945,7 +945,7 @@ app.post("/api/setsearchtiles", (req, res) => {
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
       UPDATE parentAccountCtrl
-      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${req.body.tileid}%|%${1}"
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${req.body.tileid}%|%${data[5]}%|%${data[6]}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
             res.status(200).json({ message: "更新成功", ok: true, code: 200 });

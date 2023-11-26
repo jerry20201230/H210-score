@@ -135,6 +135,20 @@ export function StdScore({ data, user, handleError }) {
   };
 
 
+  const [open7, setOpen7] = React.useState(false);
+
+  const handleClickOpen7 = () => {
+    setOpen7(true);
+  };
+
+  const handleClose7 = (n) => {
+    setOpen7(false);
+    if (n) {
+
+    }
+  };
+
+
   const [setting_1, setSetting_1] = React.useState(false)
   const [setting_2, setSetting_2] = React.useState(false)
 
@@ -275,7 +289,7 @@ export function StdScore({ data, user, handleError }) {
       if (tiles.includes("3")) { arr.push("全班最低分") }
       if (tiles.includes("4")) { arr.push("全班平均") }
     }
-    return (arr.join(","))
+    return (arr.join("、"))
   }
 
   React.useEffect(() => {
@@ -417,7 +431,7 @@ export function StdScore({ data, user, handleError }) {
 
 
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊(開發中)</>}
+                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊</>}
                 ></ListItemText>
                 <Button disabled variant="outlined">更新</Button>
               </ListItem>
@@ -585,6 +599,61 @@ export function StdScore({ data, user, handleError }) {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+      <Dialog
+        open={open7}
+        onClose={() => handleClose7(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {""}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              以下設定<b>永久有效</b>
+              <p></p>
+
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked2}
+                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked2}
+                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked2}
+                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked2}
+                  onChange={() => setConfirmChecked2(!confirmChecked2)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' onClick={() => handleClose7(false)}>
+            取消
+          </Button>
+          <Button variant="outlined" onClick={() => handleClose7(true)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
 
 
 
