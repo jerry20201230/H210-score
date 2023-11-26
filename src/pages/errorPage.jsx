@@ -69,22 +69,17 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
     React.useEffect(() => {
         if (errorId == 500 || errorId >= 700 && errorId < 800) {
             setCountdown(30)
-            const intervalId = setInterval(() => {
-                if (countdown > 0) {
-                    setCountdown((prevCountdown) => prevCountdown - 1);
-                } else {
-                    clearInterval(intervalId)
-                }
-            }, 1000);
 
-            if (countdown < 0) {
-                console.log("<0")
-                clearInterval(intervalId);
-                return;
+
+            while (countdown > 0) {
+                function delay(n) {
+                    return new Promise(function (resolve) {
+                        setTimeout(resolve, n * 1000);
+                    });
+                }
+                delay(1)
+                setCountdown(countdown - 1)
             }
-            return () => {
-                clearInterval(intervalId);
-            };
         } else {
             setCountdown(0)
         }
