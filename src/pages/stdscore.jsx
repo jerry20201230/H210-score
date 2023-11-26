@@ -263,7 +263,8 @@ export function StdScore({ data, user, handleError }) {
 
 
   function tilesIdtoName(tiles) {
-    var arr = ["我的成績"]
+    console.log(tiles)
+    var arr = [(isrank ? "我的排名" : "我的成績")]
     if (isrank) {
       if (tiles.includes("2")) { arr.push("全班最低排名") }
       if (tiles.includes("3")) { arr.push("全班最高排名") }
