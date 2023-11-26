@@ -264,6 +264,7 @@ export function StdScore({ data, user, handleError }) {
 
   function tilesIdtoName(tiles) {
     console.log(tiles)
+    console.log(scoreData.queryTimes.split("%|%"))
     var arr = [(isrank ? "我的排名" : "我的成績")]
     if (isrank) {
       if (tiles.includes("2")) { arr.push("全班最低排名") }
@@ -416,7 +417,7 @@ export function StdScore({ data, user, handleError }) {
 
 
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[5])} primary={<>管理家長能查看的資訊(開發中)</>}
+                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊(開發中)</>}
                 ></ListItemText>
                 <Button disabled variant="outlined">更新</Button>
               </ListItem>
