@@ -431,7 +431,7 @@ export function StdScore({ data, user, handleError }) {
 
 
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊</>}
+                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[4])} primary={<>管理家長能查看的資訊[🚧開發中🚧]</>}
                 ></ListItemText>
                 <Button variant="outlined" onClick={() => handleClickOpen7()}>更新</Button>
               </ListItem>
@@ -620,27 +620,28 @@ export function StdScore({ data, user, handleError }) {
               <FormControlLabel control={
                 <Checkbox
                   checked={confirmChecked2}
+                  disabled
                   onChange={() => setConfirmChecked2(!confirmChecked2)}
                 />
-              } label="我已詳細閱讀並同意上述說明" />
+              } label="我的成績" />
               <FormControlLabel control={
                 <Checkbox
                   checked={confirmChecked2}
                   onChange={() => setConfirmChecked2(!confirmChecked2)}
                 />
-              } label="我已詳細閱讀並同意上述說明" />
+              } label="全班最高分" />
               <FormControlLabel control={
                 <Checkbox
                   checked={confirmChecked2}
                   onChange={() => setConfirmChecked2(!confirmChecked2)}
                 />
-              } label="我已詳細閱讀並同意上述說明" />
+              } label="全班最低分" />
               <FormControlLabel control={
                 <Checkbox
                   checked={confirmChecked2}
                   onChange={() => setConfirmChecked2(!confirmChecked2)}
                 />
-              } label="我已詳細閱讀並同意上述說明" />
+              } label="全班平均" />
             </>
           </DialogContentText>
         </DialogContent>
