@@ -78,7 +78,11 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
             for (let i = 0; i < 30; i++) {
                 await delay(1)
-                setCountdown(countdown - 1)
+
+                setCountdown((old) => old - 1)
+
+                console.log(countdown)
+
             }
 
         } else {
