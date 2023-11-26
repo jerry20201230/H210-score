@@ -75,14 +75,9 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         if (errorId == 500 || errorId >= 700 && errorId < 800) {
             setCountdown(30)
 
-
             for (let i = 0; i < 30; i++) {
                 await delay(1)
-
                 setCountdown((old) => old - 1)
-
-                console.log(countdown)
-
             }
 
         } else {
@@ -90,9 +85,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         }
     }, []);
 
-    React.useEffect(() => {
-        console.log(countdown)
-    }, [countdown])
+
 
 
     React.useEffect(() => {

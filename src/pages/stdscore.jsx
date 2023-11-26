@@ -30,7 +30,7 @@ export function StdScore({ data, user, handleError }) {
 
 
   const [scoreData, setScoreData] = React.useState(
-    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/1/1 00:00:00%|%0%|%2023/1/1 00:00:00" }
+    { your: -1, avg: -1, hi: -1, lo: -1, privateMsg: null, queryTimes: "0%|%2023/01/01 12:00:00%|%6%|%2023/01/01 12:00:00%|%1,2,3,4%|%1%|%0" }
   )
 
   const [scoreTitle, setScoreTitle] = React.useState({ title: "", id: "" })
@@ -260,6 +260,22 @@ export function StdScore({ data, user, handleError }) {
 
   }
 
+
+
+  function tilesIdtoName(tiles) {
+    var arr = ["我的成績"]
+    if (isrank) {
+      if (tiles.includes("2")) { arr.push("全班最低排名") }
+      if (tiles.includes("3")) { arr.push("全班最高排名") }
+    }
+    else {
+      if (tiles.includes("2")) { arr.push("全班最高分") }
+      if (tiles.includes("3")) { arr.push("全班最低分") }
+      if (tiles.includes("4")) { arr.push("全班平均") }
+    }
+    return (arr.join(","))
+  }
+
   React.useEffect(() => {
 
     getScore(UrlParam("q"))
@@ -366,20 +382,6 @@ export function StdScore({ data, user, handleError }) {
           <Paper sx={{ p: 2 }}>
             <h2>進階設定</h2>
 
-            <div hidden>
-              <Alert severity="warning">
-                <b>警告</b><br />
-                請確定你身邊沒有大人、監控攝影機與錄音設備，再繼續下一步
-              </Alert>
-              <Button color="error" variant="contained" >下一步</Button>
-            </div>
-
-
-            <Alert severity="warning">
-              <b>警告</b><br />
-              以下選項請勿同時使用，以免發生不可預期的錯誤
-            </Alert>
-            <p></p>
             <List sx={{ width: '100%', bgcolor: 'background.paper' }} >
               <ListItem>
                 <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[2]}次機會 ({(Number(scoreData.queryTimes.split("%|%")[2]) * 5)}分鐘)&nbsp;<IconButton variant="text" onClick={() => setOpen(true)}><HelpOutlineIcon /></IconButton></>} primary={<>短暫維持家庭和睦</>}
@@ -397,7 +399,7 @@ export function StdScore({ data, user, handleError }) {
               </ListItem>
 
               <ListItem>
-                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[5]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>暫時關閉查詢權限</>}
+                <ListItemText id="switch-list-label-wifi" secondary={<>還有{scoreData.queryTimes.split("%|%")[5]}次機會 <IconButton variant="text" onClick={() => setOpen5(true)}><HelpOutlineIcon /></IconButton></>} primary={<>關閉家長查詢權限</>}
                 ></ListItemText>
                 <Switch
                   edge="end"
@@ -411,6 +413,12 @@ export function StdScore({ data, user, handleError }) {
                 />
               </ListItem>
 
+
+              <ListItem>
+                <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(scoreData.queryTimes.split("%|%")[5])} primary={<>管理家長能查看的資訊(開發中)</>}
+                ></ListItemText>
+                <Button disabled variant="outlined">更新</Button>
+              </ListItem>
 
             </List>
           </Paper>
@@ -475,13 +483,13 @@ export function StdScore({ data, user, handleError }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"暫時關閉查詢權限 - 說明"}
+          {"關閉家長查詢權限 - 說明"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
-              開啟之後<b>無法取消</b>
+              開啟之後<b>無法取消</b>(直到下次家長查詢)
               <p>
                 讓家長下次無法查詢這筆成績(無論隔多久都有效)，但<b>家長刷新畫面之後就會正常</b><br />每筆成績每天有1次機會，你今天還有{scoreData.queryTimes.split("%|%")[5]}次機會
               </p>
@@ -510,7 +518,7 @@ export function StdScore({ data, user, handleError }) {
             <>
               <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
 
-              開啟之後<b>無法取消</b>
+              開啟之後<b>無法取消</b>(持續五分鐘)
               <p></p>
 
               請再次確認以下資訊:<br />
@@ -543,7 +551,7 @@ export function StdScore({ data, user, handleError }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"要啟用 暫時關閉查詢權限 嗎?"}
+          {"要啟用 關閉家長查詢權限 嗎?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

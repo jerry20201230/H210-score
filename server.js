@@ -6,6 +6,11 @@
 // 700: blocked via student's feature(701/702) or something went wrong
 // 1000:network error
 
+
+//1 - 個人成績
+//2 - 最高分/最低排名
+//3 - 最低分/最高排名
+//4 - 平均
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -896,7 +901,7 @@ app.post("/api/blocksearch2", (req, res) => {
         var data = results3[0][req.body.id].split("%|%")
         if (Number(data[5]) <= 0) {
           res.status(404).json({ message: '今天機會已經用完', ok: false, code: 404 });
-          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 暫時關閉查詢權限 (Failed : 今日機會已用完)`)
+          console.log(`[FEATURE OPENED FAILED] ${req.session.username} (IP:${req.ip}) opened 關閉家長查詢權限 (Failed : 今日機會已用完)`)
 
         } else {
           sql_Connect.getConnection(function (err, connection2) {
@@ -906,7 +911,7 @@ app.post("/api/blocksearch2", (req, res) => {
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: "已經封鎖家長的下一次查詢", ok: true, code: 200 });
-              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 暫時關閉查詢權限 `)
+              console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 關閉家長查詢權限 `)
               connection2.release()
             })
           })
@@ -925,6 +930,43 @@ app.post("/api/blocksearch2", (req, res) => {
   }
 })
 
+
+
+app.post("/api/setsearchtiles", (req, res) => {
+  if (req.session.role === "std") {
+
+    sql_Connect.getConnection(function (err, connection3) {
+      connection3.query(`
+      SELECT * FROM parentAccountCtrl 
+      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+    `, function (error3, results3, fields) {
+        var data = results3[0][req.body.id].split("%|%")
+        //not changed yet
+        sql_Connect.getConnection(function (err, connection2) {
+          connection2.query(`
+      UPDATE parentAccountCtrl
+      SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${req.body.tileid}%|%${1}"
+      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+    `, function (error2, results2, fields) {
+            res.status(200).json({ message: "更新成功", ok: true, code: 200 });
+            console.log(`[FEATURE UPDATED SUCCESS] ${req.session.username} (IP:${req.ip}) updated 管理家長能查看的資訊 to ${req.body.tileid} `)
+            connection2.release()
+          })
+        })
+
+
+
+        connection3.release()
+      })
+    })
+
+  } else {
+
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
+    res.end();
+
+  }
+})
 
 
 
