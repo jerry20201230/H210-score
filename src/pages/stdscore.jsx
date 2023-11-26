@@ -51,7 +51,7 @@ export function StdScore({ data, user, handleError }) {
 
   const [scorelist, setScoreList] = React.useState([])
 
-  const [activeTiles, setActiveTiles] = React.useState([1, 2, 3, 4])
+  const [activeTiles, setActiveTiles] = React.useState(scoreData.queryTimes.split("%|%")[4].split(","))
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -638,13 +638,14 @@ export function StdScore({ data, user, handleError }) {
                   onChange={() => { if (activeTiles[2] == 3) { setActiveTiles([activeTiles[0], activeTiles[1], false, activeTiles[3]]) } else { setActiveTiles([activeTiles[0], activeTiles[1], 3, activeTiles[3]]) } }}
                 />
               } label={isrank ? "全班最高名次" : "全班最低分"} />
-              <FormControlLabel control={
+              {isrank ? <></> : <FormControlLabel control={
                 <Checkbox
                   disabled={isrank}
                   checked={activeTiles[3] == 4}
                   onChange={() => { if (activeTiles[3] == 4) { setActiveTiles([activeTiles[0], activeTiles[1], activeTiles[2], false]) } else { setActiveTiles([activeTiles[0], activeTiles[1], activeTiles[2], 4]) } }}
                 />
-              } label={isrank ? "全班平均 [不須設定]" : "全班平均"} />
+              } label={isrank ? "全班平均 [不須設定]" : "全班平均"} />}
+
             </>
           </DialogContentText>
         </DialogContent>
