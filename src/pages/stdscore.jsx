@@ -432,11 +432,11 @@ export function StdScore({ data, user, handleError }) {
               </ListItem>
 
 
-              <ListItem>
+              {/*<ListItem>
                 <ListItemText id="switch-list-label-wifi" secondary={tilesIdtoName(activeTiles.join(","))} primary={<>管理家長能查看的資訊[🚧開發中🚧]</>}
                 ></ListItemText>
                 <Button variant="outlined" onClick={() => handleClickOpen7()}>更新</Button>
-              </ListItem>
+                </ListItem>*/}
 
             </List>
           </Paper>
