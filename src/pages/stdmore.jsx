@@ -45,14 +45,14 @@ export function StdMore({ data, user, handleError }) {
       field: 'temp_block',
       headerName: '短暫維持家庭和睦',
       type: 'text',
-      width: 170,
+
       editable: false,
     },
     {
       field: 'long_block',
       headerName: '家長查詢權限',
       type: 'text',
-      width: 170,
+
       editable: false,
     },
     // {
@@ -112,17 +112,19 @@ export function StdMore({ data, user, handleError }) {
         let longBlockTxt = ""
 
         if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
-          tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours")} 為止`
+          tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours").format("HH:mm:ss")} 為止`
         } else {
           tempBlockTxt = "未開啟"
         }
 
         if (PACrow[6] == "1") {
-          longBlockTxt = "作用中 | "
+          longBlockTxt = "關閉 | "
+        } else {
+          longBlockTxt = "開啟 | "
         }
 
         tempRows.push(
-          { id: i, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: PACrow[1], temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: PACrow[1], temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
         )
       }
       setFinalRows(tempRows)
