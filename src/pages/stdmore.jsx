@@ -39,7 +39,7 @@ export function StdMore({ data, user, handleError }) {
     {
       field: 'temp_block',
       headerName: '短暫維持家庭和睦',
-      width: 200,
+      width: 230,
       type: 'text',
 
       editable: false,
@@ -48,7 +48,7 @@ export function StdMore({ data, user, handleError }) {
       field: 'long_block',
       headerName: '家長查詢權限',
       type: 'text',
-      width: 200,
+      width: 230,
       editable: false,
     },
     // {
@@ -120,7 +120,7 @@ export function StdMore({ data, user, handleError }) {
         }
 
         tempRows.push(
-          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: dayjs(PACrow[1]).add(8, "hours").format("HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
         )
       }
       setFinalRows(tempRows)
@@ -168,7 +168,7 @@ export function StdMore({ data, user, handleError }) {
               if (!params.field.includes("block") || params.value == null) {
                 return '';
               }
-              return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : "green";
+              return params.value.includes("未開啟") || (params.value.includes("開啟") && params.field == "long_block") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
