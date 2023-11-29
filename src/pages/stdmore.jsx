@@ -30,28 +30,28 @@ export function StdMore({ data, user, handleError }) {
     {
       field: 'lastName',
       headerName: '家長查詢次數',
-      width: 150,
+      width: 170,
       editable: false,
     },
     {
       field: 'lastquery',
       headerName: '家長最後查詢時間',
-      type: 'number',
-      width: 110,
+      type: 'text',
+      width: 170,
       editable: false,
     },
     {
       field: 'temp_block',
       headerName: '短暫維持家庭和睦',
       type: 'text',
-      width: 110,
+      width: 170,
       editable: false,
     },
     {
       field: 'long_block',
-      headerName: '關閉家長查詢權限',
-      type: 'number',
-      width: 110,
+      headerName: '家長查詢權限',
+      type: 'text',
+      width: 170,
       editable: false,
     },
     {
@@ -64,7 +64,7 @@ export function StdMore({ data, user, handleError }) {
     },
   ];
 
-  var rows = [
+  var temprows = [
     { id: 1, scoreTitle: 'Snow', firstName: 'Jon', age: 35 },
     { id: 2, scoreTitle: 'Lannister', firstName: 'Cersei', age: 42 },
     { id: 3, scoreTitle: 'Lannister', firstName: 'Jaime', age: 45 },
@@ -76,8 +76,17 @@ export function StdMore({ data, user, handleError }) {
     { id: 9, scoreTitle: 'Roxie', firstName: 'Harvey', age: 65 },
   ];
 
-  function setRows(rows) {
+
+  const [rows, setRows] = React.useState(temprows)
+  const [score, setScore] = React.useState([])
+
+
+  function FsetRows(rows) {
     console.log(rows)
+  }
+
+  function FsetScore(score) {
+    console.log(score)
   }
 
 
@@ -91,7 +100,17 @@ export function StdMore({ data, user, handleError }) {
 
       }),
     }).then(res => res.json())
-      .then((res) => setRows(res.data))
+      .then((res) => FsetRows(res.data))
+
+    fetch("/api/getscoremap", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(res2 => res2.json())
+      .then(res2 => FsetScore(res2.data.result))
   }, [])
 
   return (
@@ -104,7 +123,7 @@ export function StdMore({ data, user, handleError }) {
           這個頁面顯示家長查詢每筆成績的狀態<br />
         </Alert>
         <p></p>
-        <Box sx={{ height: 400, width: '100%' }}>
+        <Box sx={{ height: 800, width: '100%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
