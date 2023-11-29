@@ -13,6 +13,10 @@ import ScoreTabs from '../tabs';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import { red, yellow, green, grey, blue } from '@mui/material/colors';
+import Grid from '@mui/material/Unstable_Grid2';
+import { styled } from '@mui/material/styles';
+
 export function Homepage({ user, data, handleError }) {
 
   const [scorelist, setScoreList] = React.useState([])
@@ -67,6 +71,19 @@ export function Homepage({ user, data, handleError }) {
         }
       })
   }
+
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    overflow: "auto",
+    color: theme.palette.text.secondary,
+  }));
+
+
+
   React.useEffect(() => {
     if (scorelist.length < 1) {
       setScoreTab(<p>沒有可查詢的資料</p>)
@@ -82,8 +99,18 @@ export function Homepage({ user, data, handleError }) {
 
         <Typography variant='h5'> Hi, {data.data.username}</Typography>
         <Typography variant='h6'>選擇成績，開始查詢</Typography>
+        {data.data.role === "std" ?
+          <>
+            <Item sx={{ background: blue[500], color: "#fff" }}>
+              <h3>學生專屬功能</h3>
+              <p>家長查詢狀態</p>
+              <Button variant="contained" component={Link} to={`/more}`} color={"primary"}>前往</Button>
+            </Item>
+            <p></p></>
+          : <></>}
         {scoreTab}
-        <Button sx={{ display: "none" }} onClick={() => getScore()}>重新整理</Button>
+        <p></p>
+        <Button variant="outlined" onClick={() => getScore()}>重新整理</Button>
       </Box>
 
       <Backdrop

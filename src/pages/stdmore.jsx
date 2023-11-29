@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Alert, AlertTitle, Box, Button } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import { red, yellow, orange, green } from '@mui/material/colors';
 import "../App.css"
 
@@ -131,10 +131,11 @@ export function StdMore({ data, user, handleError }) {
     <>
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
       <Box sx={{ p: 3 }}>
-        <h1>學生專屬功能</h1>
+        <Typography variant='h5'>家長查詢狀態總表</Typography>
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
+          系統<b>不會</b>自動刷新
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
