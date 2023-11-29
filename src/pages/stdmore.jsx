@@ -120,7 +120,7 @@ export function StdMore({ data, user, handleError }) {
         }
 
         tempRows.push(
-          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: PACrow[1], temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: dayjs(PACrow[1]).add(8, "hours").format("HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
         )
       }
       setFinalRows(tempRows)
@@ -168,7 +168,7 @@ export function StdMore({ data, user, handleError }) {
               if (!params.field.includes("block") || params.value == null) {
                 return '';
               }
-              return params.value.includes("未開啟") || params.value.includes("關閉") ? "yellow" : "green";
+              return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
