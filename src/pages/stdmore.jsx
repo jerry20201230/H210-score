@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import dayjs from 'dayjs';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, zhTW } from '@mui/x-data-grid';
 
 export function StdMore({ data, user, handleError }) {
   function createData(time, action, status) {
@@ -20,10 +20,10 @@ export function StdMore({ data, user, handleError }) {
 
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: '編號', headerName: '編號', width: 90 },
     {
-      field: 'firstName',
-      headerName: 'First name',
+      field: '成績名稱',
+      headerName: '成績名稱',
       width: 150,
       editable: true,
     },
@@ -73,7 +73,7 @@ export function StdMore({ data, user, handleError }) {
           這個頁面顯示每筆成績的查詢狀態<br />
         </Alert>
         <p></p>
-        <Box sx={{ height: 600, width: '100%' }}>
+        <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -87,6 +87,7 @@ export function StdMore({ data, user, handleError }) {
             pageSizeOptions={[5]}
             checkboxSelection
             disableRowSelectionOnClick
+            localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
           />
         </Box>
       </Box>
