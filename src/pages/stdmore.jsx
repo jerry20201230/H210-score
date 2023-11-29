@@ -8,11 +8,17 @@ import dayjs from 'dayjs';
 import { DataGrid, zhTW } from '@mui/x-data-grid';
 
 export function StdMore({ data, user, handleError }) {
-  function createData(time, action, status) {
-    return { time, action, status };
-  }
+
+  const currentTheme = (
+    localStorage.getItem("theme") == "light" ? "light" :
+      localStorage.getItem("theme") == "dark" ? "dark" :
+        "light"
+  )
 
 
+  const handleRowClick = (params) => {
+    window.location.href = `/score/more/?q=${params.row.scoreid}`
+  };
 
   const columns = [
     { field: 'id', headerName: '編號', width: 90, editable: false, },
@@ -25,7 +31,7 @@ export function StdMore({ data, user, handleError }) {
     {
       field: 'querytimes',
       headerName: '家長查詢次數',
-      type: 'text',
+      type: 'number',
       width: 130,
       editable: false,
     },
@@ -49,6 +55,12 @@ export function StdMore({ data, user, handleError }) {
       headerName: '家長查詢權限',
       type: 'text',
       width: 230,
+      editable: false,
+    }, {
+      field: 'scoreid',
+      headerName: '成績ID',
+      type: 'text',
+      width: 110,
       editable: false,
     },
     // {
@@ -120,7 +132,7 @@ export function StdMore({ data, user, handleError }) {
         }
 
         tempRows.push(
-          { id: i + 1, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
         )
       }
       setFinalRows(tempRows)
@@ -145,15 +157,15 @@ export function StdMore({ data, user, handleError }) {
               width: '100%',
               '& .green': {
                 backgroundColor: green[100],
-
+                color: "#000"
               },
               '& .red': {
                 backgroundColor: red[100],
-
+                color: "#000"
               },
               '& .yellow': {
                 backgroundColor: yellow[100],
-
+                color: "#000"
               },
             }}
             rows={finalRows}
@@ -172,6 +184,7 @@ export function StdMore({ data, user, handleError }) {
               return params.value.includes("未開啟") || (params.value.includes("開啟") && params.field == "long_block") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
+            onRowClick={handleRowClick}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
           />
         </Box>
