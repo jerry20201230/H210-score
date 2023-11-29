@@ -25,6 +25,7 @@ import { ParentAccountMonitor } from './pages/parentAccountMonitor';
 
 import { socket } from './socket';
 import { ErrorPage } from './pages/errorPage';
+import { StdMore } from './pages/stdmore';
 
 function App() {
   const [loading, setLoading] = React.useState(true)
@@ -127,6 +128,7 @@ function App() {
                 }
                 {userData.data.role === "std" ?
                   <>
+                    <Route path='/more' element={<StdMore data={userData} handleError={setPageError} />} ></Route>
                     <Route path='/score/more' element={<StdScore data={userData} handleError={setPageError} />} ></Route>
                     <Route path='/parentaccount' element={<ParentAccountMonitor data={userData} handleError={setPageError} />} ></Route>
                   </> : <></>}
