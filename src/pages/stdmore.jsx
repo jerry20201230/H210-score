@@ -30,14 +30,14 @@ export function StdMore({ data, user, handleError }) {
     },
     {
       field: 'querytimes',
-      headerName: '家長查詢次數',
+      headerName: '查詢次數',
       type: 'number',
       width: 130,
       editable: false,
     },
     {
       field: 'lastquery',
-      headerName: '家長最後查詢時間',
+      headerName: '最後查詢時間',
       type: 'text',
       width: 170,
       editable: false,
@@ -115,25 +115,32 @@ export function StdMore({ data, user, handleError }) {
     if (rows && score) {
       var tempRows = [];
       for (let i = 0; i < score.length; i++) {
-        let PACrow = rows[score[i].uid].split("%|%")
-        let tempBlockTxt = ""
-        let longBlockTxt = ""
+        try {
+          let PACrow = rows[score[i].uid].split("%|%")
+          let tempBlockTxt = ""
+          let longBlockTxt = ""
 
-        if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
-          tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours").format("HH:mm:ss")} 為止`
-        } else {
-          tempBlockTxt = "未開啟"
+          if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
+            tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours").format("HH:mm:ss")} 為止`
+          } else {
+            tempBlockTxt = "未開啟"
+          }
+
+          if (PACrow[6] == "1") {
+            longBlockTxt = "關閉 | "
+          } else {
+            longBlockTxt = "開啟 | "
+          }
+
+          tempRows.push(
+            { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          )
+        } catch (error) {
+          tempRows.push(
+            { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "無資料", temp_block: "無資料", long_block: "無資料" },
+          )
         }
 
-        if (PACrow[6] == "1") {
-          longBlockTxt = "關閉 | "
-        } else {
-          longBlockTxt = "開啟 | "
-        }
-
-        tempRows.push(
-          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
-        )
       }
       setFinalRows(tempRows)
     }
@@ -147,13 +154,14 @@ export function StdMore({ data, user, handleError }) {
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
-          系統<b>不會</b>自動刷新
+          系統<b>不會</b>自動刷新<br />
+          如果顯示無資料，請點擊該筆成績，系統就會自動更新資料
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
             sx={{
-              height: 300,
+              height: 600,
               width: '100%',
               '& .green': {
                 backgroundColor: green[100],
