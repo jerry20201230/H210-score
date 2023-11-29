@@ -20,31 +20,30 @@ export function StdMore({ data, user, handleError }) {
 
 
   const columns = [
-    { field: '編號', headerName: '編號', width: 90 },
+    { field: '編號', headerName: 'id', width: 90, editable: false, },
     {
       field: '成績名稱',
-      headerName: '成績名稱',
+      headerName: 'scoreTitle',
       width: 150,
-      editable: true,
+      editable: false,
     },
     {
       field: 'lastName',
       headerName: 'Last name',
       width: 150,
-      editable: true,
+      editable: false,
     },
     {
       field: 'age',
       headerName: 'Age',
       type: 'number',
       width: 110,
-      editable: true,
+      editable: false,
     },
     {
       field: 'fullName',
       headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
+
       width: 160,
       valueGetter: (params) =>
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
@@ -52,15 +51,15 @@ export function StdMore({ data, user, handleError }) {
   ];
 
   const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { id: 1, scoreTitle: 'Snow', firstName: 'Jon', age: 35 },
+    { id: 2, scoreTitle: 'Lannister', firstName: 'Cersei', age: 42 },
+    { id: 3, scoreTitle: 'Lannister', firstName: 'Jaime', age: 45 },
+    { id: 4, scoreTitle: 'Stark', firstName: 'Arya', age: 16 },
+    { id: 5, scoreTitle: 'Targaryen', firstName: 'Daenerys', age: null },
+    { id: 6, scoreTitle: 'Melisandre', firstName: null, age: 150 },
+    { id: 7, scoreTitle: 'Clifford', firstName: 'Ferrara', age: 44 },
+    { id: 8, scoreTitle: 'Frances', firstName: 'Rossini', age: 36 },
+    { id: 9, scoreTitle: 'Roxie', firstName: 'Harvey', age: 65 },
   ];
 
   return (
@@ -80,11 +79,11 @@ export function StdMore({ data, user, handleError }) {
             initialState={{
               pagination: {
                 paginationModel: {
-                  pageSize: 5,
+                  pageSize: 10,
                 },
               },
             }}
-            pageSizeOptions={[5]}
+            pageSizeOptions={[10]}
             checkboxSelection
             disableRowSelectionOnClick
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
