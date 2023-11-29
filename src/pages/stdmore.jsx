@@ -20,22 +20,36 @@ export function StdMore({ data, user, handleError }) {
 
 
   const columns = [
-    { field: '編號', headerName: 'id', width: 90, editable: false, },
+    { field: 'id', headerName: '編號', width: 90, editable: false, },
     {
-      field: '成績名稱',
-      headerName: 'scoreTitle',
+      field: 'scoreTitle',
+      headerName: '成績名稱',
       width: 150,
       editable: false,
     },
     {
       field: 'lastName',
-      headerName: 'Last name',
+      headerName: '家長查詢次數',
       width: 150,
       editable: false,
     },
     {
-      field: 'age',
-      headerName: 'Age',
+      field: 'lastquery',
+      headerName: '家長最後查詢時間',
+      type: 'number',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'temp_block',
+      headerName: '短暫維持家庭和睦',
+      type: 'text',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'long_block',
+      headerName: '關閉家長查詢權限',
       type: 'number',
       width: 110,
       editable: false,
@@ -87,7 +101,7 @@ export function StdMore({ data, user, handleError }) {
         <h1>學生專屬功能</h1>
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
-          這個頁面顯示每筆成績的查詢狀態<br />
+          這個頁面顯示家長查詢每筆成績的狀態<br />
         </Alert>
         <p></p>
         <Box sx={{ height: 400, width: '100%' }}>
