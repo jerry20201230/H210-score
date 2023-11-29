@@ -103,8 +103,8 @@ export function Homepage({ user, data, handleError }) {
           <>
             <Item sx={{ background: blue[500], color: "#fff" }}>
               <h3>學生專屬功能</h3>
-              <p>家長查詢狀態</p>
-              <Button variant="contained" component={Link} to={`/more}`} color={"primary"}>前往</Button>
+              <p>查看家長查詢狀態</p>
+              <Button variant="contained" component={Link} to={`/more`} color={"primary"}>前往</Button>
             </Item>
             <p></p></>
           : <></>}
