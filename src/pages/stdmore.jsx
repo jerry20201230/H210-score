@@ -31,19 +31,20 @@ export function StdMore({ data, user, handleError }) {
       field: 'querytimes',
       headerName: '家長查詢次數',
       type: 'text',
-      width: 170,
+      width: 130,
       editable: false,
     },
     {
       field: 'lastquery',
       headerName: '家長最後查詢時間',
       type: 'text',
-
+      width: 170,
       editable: false,
     },
     {
       field: 'temp_block',
       headerName: '短暫維持家庭和睦',
+      width: 200,
       type: 'text',
 
       editable: false,
@@ -52,7 +53,7 @@ export function StdMore({ data, user, handleError }) {
       field: 'long_block',
       headerName: '家長查詢權限',
       type: 'text',
-
+      width: 200,
       editable: false,
     },
     // {
