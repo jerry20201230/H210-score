@@ -50,7 +50,7 @@ export function StdMore({ data, user, handleError }) {
     },
   ];
 
-  const rows = [
+  var rows = [
     { id: 1, scoreTitle: 'Snow', firstName: 'Jon', age: 35 },
     { id: 2, scoreTitle: 'Lannister', firstName: 'Cersei', age: 42 },
     { id: 3, scoreTitle: 'Lannister', firstName: 'Jaime', age: 45 },
@@ -61,6 +61,24 @@ export function StdMore({ data, user, handleError }) {
     { id: 8, scoreTitle: 'Frances', firstName: 'Rossini', age: 36 },
     { id: 9, scoreTitle: 'Roxie', firstName: 'Harvey', age: 65 },
   ];
+
+  function setRows(rows) {
+    console.log(rows)
+  }
+
+
+  React.useEffect(() => {
+    fetch("/api/getparentaccountctrl/all", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+
+      }),
+    }).then(res => res.json())
+      .then((res) => setRows(res.data))
+  }, [])
 
   return (
     <>

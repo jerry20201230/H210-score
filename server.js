@@ -969,6 +969,27 @@ app.post("/api/setsearchtiles", (req, res) => {
 })
 
 
+app.post("/api/getparentaccountctrl/all", (req, res) => {
+  if (req.session.role === "std") {
+    sql_Connect.getConnection(function (err, connection3) {
+      connection3.query(`
+      SELECT * FROM parentAccountCtrl 
+      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+    `, function (error3, results3, fields) {
+        res.status(200).json({ message: "ok", ok: true, code: 200, data: results3[0] });
+      })
+    })
+  }
+  else {
+
+    res.status(403).json({ code: 403, message: 'error 403', ok: false });
+    res.end();
+
+  }
+}
+)
+
+
 
 
 
