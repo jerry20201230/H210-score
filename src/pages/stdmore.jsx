@@ -1,14 +1,9 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
 import { Alert, AlertTitle, Box, Button } from '@mui/material';
+import { red, yellow, orange, green } from '@mui/material/colors';
 import "../App.css"
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+
 import dayjs from 'dayjs';
 import { DataGrid, zhTW } from '@mui/x-data-grid';
 
@@ -24,7 +19,7 @@ export function StdMore({ data, user, handleError }) {
     {
       field: 'scoreTitle',
       headerName: '成績名稱',
-      width: 150,
+      width: 170,
       editable: false,
     },
     {
@@ -144,6 +139,22 @@ export function StdMore({ data, user, handleError }) {
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
+            sx={{
+              height: 300,
+              width: '100%',
+              '& .green': {
+                backgroundColor: green[100],
+
+              },
+              '& .red': {
+                backgroundColor: red[100],
+
+              },
+              '& .yellow': {
+                backgroundColor: yellow[100],
+
+              },
+            }}
             rows={finalRows}
             columns={columns}
             initialState={{
@@ -152,6 +163,12 @@ export function StdMore({ data, user, handleError }) {
                   pageSize: 10,
                 },
               },
+            }}
+            getCellClassName={(params) => {
+              if (!params.field.includes("block") || params.value == null) {
+                return '';
+              }
+              return params.value.includes("未開啟") || params.value.includes("關閉") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
