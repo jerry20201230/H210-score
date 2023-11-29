@@ -28,8 +28,9 @@ export function StdMore({ data, user, handleError }) {
       editable: false,
     },
     {
-      field: 'lastName',
+      field: 'querytimes',
       headerName: '家長查詢次數',
+      type: 'text',
       width: 170,
       editable: false,
     },
@@ -54,42 +55,31 @@ export function StdMore({ data, user, handleError }) {
       width: 170,
       editable: false,
     },
-    {
-      field: 'fullName',
-      headerName: 'Full name',
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
 
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
-  ];
-
-  var temprows = [
-    { id: 1, scoreTitle: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, scoreTitle: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, scoreTitle: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, scoreTitle: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, scoreTitle: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, scoreTitle: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, scoreTitle: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, scoreTitle: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, scoreTitle: 'Roxie', firstName: 'Harvey', age: 65 },
+    //   width: 160,
+    //   valueGetter: (params) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
   ];
 
 
-  const [rows, setRows] = React.useState(temprows)
-  const [score, setScore] = React.useState([])
+  const [rows, setRows] = React.useState(null)
+  const [score, setScore] = React.useState(null)
+
+  const [finalRows, setFinalRows] = React.useState([])
 
 
   function FsetRows(rows) {
+    setRows(rows)
     console.log(rows)
   }
-
   function FsetScore(score) {
+    setScore(score)
     console.log(score)
   }
-
-
   React.useEffect(() => {
     fetch("/api/getparentaccountctrl/all", {
       method: 'POST',
@@ -113,6 +103,32 @@ export function StdMore({ data, user, handleError }) {
       .then(res2 => FsetScore(res2.data.result))
   }, [])
 
+  React.useEffect(() => {
+    if (rows && score) {
+      var tempRows = [];
+      for (let i = 0; i < score.length; i++) {
+        let PACrow = rows[score[i].uid].split("%|%")
+        let tempBlockTxt = ""
+        let longBlockTxt = ""
+
+        if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
+          tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours")} 為止`
+        } else {
+          tempBlockTxt = "未開啟"
+        }
+
+        if (PACrow[6] == "1") {
+          longBlockTxt = "作用中 | "
+        }
+
+        tempRows.push(
+          { id: i, scoreTitle: score[i].scoreName, querytimes: PACrow[0], lastquery: PACrow[1], temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+        )
+      }
+      setFinalRows(tempRows)
+    }
+  }, [rows, score])
+
   return (
     <>
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
@@ -123,9 +139,9 @@ export function StdMore({ data, user, handleError }) {
           這個頁面顯示家長查詢每筆成績的狀態<br />
         </Alert>
         <p></p>
-        <Box sx={{ height: 800, width: '100%' }}>
+        <Box sx={{ height: 700, width: '100%' }}>
           <DataGrid
-            rows={rows}
+            rows={finalRows}
             columns={columns}
             initialState={{
               pagination: {
@@ -135,8 +151,6 @@ export function StdMore({ data, user, handleError }) {
               },
             }}
             pageSizeOptions={[10]}
-            checkboxSelection
-            disableRowSelectionOnClick
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
           />
         </Box>
