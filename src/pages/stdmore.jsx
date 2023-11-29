@@ -38,7 +38,7 @@ export function StdMore({ data, user, handleError }) {
       field: 'lastquery',
       headerName: '家長最後查詢時間',
       type: 'text',
-      width: 170,
+
       editable: false,
     },
     {
@@ -141,7 +141,7 @@ export function StdMore({ data, user, handleError }) {
           這個頁面顯示家長查詢每筆成績的狀態<br />
         </Alert>
         <p></p>
-        <Box sx={{ height: 700, width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
           <DataGrid
             rows={finalRows}
             columns={columns}
