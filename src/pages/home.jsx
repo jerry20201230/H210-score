@@ -99,7 +99,7 @@ export function Homepage({ user, data, handleError }) {
 
         <Typography variant='h5'> Hi, {data.data.username}</Typography>
         <Typography variant='h6'>選擇成績，開始查詢</Typography>
-        {data.data.role === "std" ?
+        {/* {data.data.role === "std" ?
           <>
             <Item sx={{ background: blue[500], color: "#fff" }}>
               <h3>學生專屬功能</h3>
@@ -107,10 +107,10 @@ export function Homepage({ user, data, handleError }) {
               <Button variant="contained" component={Link} to={`/more`} color={"primary"}>前往</Button>
             </Item>
             <p></p></>
-          : <></>}
+          : <></>} */}
         {scoreTab}
         <p></p>
-        <Button variant="outlined" onClick={() => getScore()}>重新整理</Button>
+        <Button variant="contained" onClick={() => getScore()}>重新整理</Button>
       </Box>
 
       <Backdrop
