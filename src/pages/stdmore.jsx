@@ -47,12 +47,13 @@ export function StdMore({ data, user, handleError }) {
       headerName: '短暫維持家庭和睦',
       width: 230,
       type: 'text',
-
+      describe: "學生專屬功能中 短暫維持家庭和睦 功能的狀態",
       editable: false,
     },
     {
       field: 'long_block',
-      headerName: '家長查詢權限',
+      headerName: '關閉家長查詢權限',
+      describe: "學生專屬功能中 關閉家長查詢權限 功能的狀態",
       type: 'text',
       width: 230,
       editable: false,
@@ -77,7 +78,14 @@ export function StdMore({ data, user, handleError }) {
   const [rows, setRows] = React.useState(null)
   const [score, setScore] = React.useState(null)
 
+  const [countdown, setCountdown] = React.useState(0)
+
   const [finalRows, setFinalRows] = React.useState([])
+  function delay(n) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, n * 1000);
+    });
+  }
 
 
   function FsetRows(rows) {
@@ -88,8 +96,10 @@ export function StdMore({ data, user, handleError }) {
     setScore(score)
     console.log(score)
   }
-  React.useEffect(() => {
-    fetch("/api/getparentaccountctrl/all", {
+
+  async function fetchData() {
+
+    await fetch("/api/getparentaccountctrl/all", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,53 +108,75 @@ export function StdMore({ data, user, handleError }) {
 
       }),
     }).then(res => res.json())
-      .then((res) => FsetRows(res.data))
+      .then(async (res) => {
+        FsetRows(res.data)
+        await fetch("/api/getscoremap", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        })
+          .then(res2 => res2.json())
+          .then(res2 => { FsetScore(res2.data.result); setCountdown(30) })
+          .catch((err) => setCountdown(30))
+      })
+      .catch((err) => setCountdown(30))
 
-    fetch("/api/getscoremap", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    })
-      .then(res2 => res2.json())
-      .then(res2 => FsetScore(res2.data.result))
-  }, [])
+  }
+
+  function processData() {
+    var tempRows = [];
+    for (let i = 0; i < score.length; i++) {
+      try {
+        let PACrow = rows[score[i].uid].split("%|%")
+        let tempBlockTxt = ""
+        let longBlockTxt = ""
+
+        if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
+          tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours").format("HH:mm:ss")} 為止`
+        } else {
+          tempBlockTxt = "未開啟"
+        }
+
+        if (PACrow[6] == "1") {
+          longBlockTxt = "開啟 | "
+        } else {
+          longBlockTxt = "開啟 | "
+        }
+
+        tempRows.push(
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+        )
+      } catch (error) {
+        tempRows.push(
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "無資料", temp_block: "無資料", long_block: "無資料" },
+        )
+      }
+
+    }
+    setFinalRows(tempRows)
+  }
+
+
 
   React.useEffect(() => {
     if (rows && score) {
-      var tempRows = [];
-      for (let i = 0; i < score.length; i++) {
-        try {
-          let PACrow = rows[score[i].uid].split("%|%")
-          let tempBlockTxt = ""
-          let longBlockTxt = ""
-
-          if (dayjs().isBefore(dayjs(PACrow[3]).add(8, "hours"))) {
-            tempBlockTxt = `到 ${dayjs(PACrow[3]).add(8, "hours").format("HH:mm:ss")} 為止`
-          } else {
-            tempBlockTxt = "未開啟"
-          }
-
-          if (PACrow[6] == "1") {
-            longBlockTxt = "關閉 | "
-          } else {
-            longBlockTxt = "開啟 | "
-          }
-
-          tempRows.push(
-            { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
-          )
-        } catch (error) {
-          tempRows.push(
-            { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "無資料", temp_block: "無資料", long_block: "無資料" },
-          )
-        }
-
-      }
-      setFinalRows(tempRows)
+      // fetchData()
+      processData()
     }
   }, [rows, score])
+
+
+  React.useEffect(async () => {
+    for (let i = 0; i < 6; i++) {
+      setCountdown(o => o - 1)
+      await delay(1)
+      if (countdown <= 0) {
+        await fetchData()
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -154,14 +186,15 @@ export function StdMore({ data, user, handleError }) {
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
-          系統<b>不會</b>自動刷新<br />
-          如果顯示無資料，請點擊該筆成績，系統就會自動更新資料
+          每隔30秒刷新一次，持續5分鐘<br />
+          如果顯示無資料，請點擊該筆成績，系統就會自動更新資料<br />
+          點擊
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
             sx={{
-              height: 600,
+              // height: 600,
               width: '100%',
               '& .green': {
                 backgroundColor: green[100],
@@ -189,7 +222,7 @@ export function StdMore({ data, user, handleError }) {
               if (!params.field.includes("block") || params.value == null) {
                 return '';
               }
-              return params.value.includes("未開啟") || (params.value.includes("開啟") && params.field == "long_block") ? "yellow" : "green";
+              return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
             onRowClick={handleRowClick}

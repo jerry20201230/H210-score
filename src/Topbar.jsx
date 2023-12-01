@@ -112,14 +112,14 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
                       <MenuItem onClick={() => { window.location.href = "/profile" }} >個人資料</MenuItem>
                       <MenuItem onClick={() => { window.location.href = "/setting" }} >系統設定</MenuItem>
 
-                      {data.role === "std" ? <MenuItem onClick={() => { handleClose("more") }} component={Link} to="/more">家長查詢狀態</MenuItem> : <></>}
+                      {/* {data.role === "std" ? <MenuItem onClick={() => { handleClose("more") }} component={Link} to="/more">家長查詢狀態</MenuItem> : <></>} */}
                     </>
                     :
                     <>
                       <MenuItem onClick={() => { handleClose("profile") }} component={Link} to="/profile">個人資料</MenuItem>
                       <MenuItem onClick={() => { handleClose("setting") }} component={Link} to="/setting">系統設定</MenuItem>
 
-                      {data.role === "std" ? <MenuItem onClick={() => { handleClose("more") }} component={Link} to="/more">家長查詢狀態</MenuItem> : <></>}
+                      {/* {data.role === "std" ? <MenuItem onClick={() => { handleClose("more") }} component={Link} to="/more">家長查詢狀態</MenuItem> : <></>} */}
                     </>}
 
                   <MenuItem onClick={() => { handleClose("logout") }}>登出</MenuItem>
