@@ -78,7 +78,7 @@ export function StdMore({ data, user, handleError }) {
   const [rows, setRows] = React.useState(null)
   const [score, setScore] = React.useState(null)
 
-  const [countdown, setCountdown] = React.useState(0)
+  const [countdown, setCountdown] = React.useState(30)
 
   const [finalRows, setFinalRows] = React.useState([])
   function delay(n) {
@@ -170,11 +170,13 @@ export function StdMore({ data, user, handleError }) {
 
   React.useEffect(async () => {
     for (let i = 0; i < 6; i++) {
-      setCountdown(o => o - 1)
       if (countdown <= 0) {
         await fetchData()
+        setCountdown(30)
       } else {
         await delay(1)
+        setCountdown(o => o - 1)
+
       }
     }
   }, [])
