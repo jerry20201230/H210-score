@@ -20,6 +20,10 @@ export function StdMore({ data, user, handleError }) {
     window.location.href = `/score/more/?q=${params.row.scoreid}`
   };
 
+  const handleCellClick = (params) => {
+    console.log(params)
+  };
+
   const columns = [
     { field: 'id', headerName: '編號', width: 90, editable: false, },
     {
@@ -119,10 +123,10 @@ export function StdMore({ data, user, handleError }) {
           body: JSON.stringify({}),
         })
           .then(res2 => res2.json())
-          .then(res2 => { FsetScore(res2.data.result); setCountdown(60) })
-          .catch((err) => setCountdown(60))
+          .then(res2 => { FsetScore(res2.data.result); setCountdown(30) })
+          .catch((err) => setCountdown(30))
       })
-      .catch((err) => setCountdown(60))
+      .catch((err) => setCountdown(30))
 
   }
 
@@ -171,16 +175,16 @@ export function StdMore({ data, user, handleError }) {
 
   React.useEffect(async () => {
     await fetchData()
-    setCountdown(60)
-    for (let j = 0; j < 6; j++) {
+    setCountdown(30)
+    for (let j = 0; j < 10; j++) {
       setRefTimes(j)
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 30; i++) {
         await delay(1)
         setCountdown(o => o - 1)
       }
 
       await fetchData()
-      setCountdown(60)
+      setCountdown(30)
 
     }
   }, [])
@@ -193,9 +197,8 @@ export function StdMore({ data, user, handleError }) {
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
-          每隔60秒自動刷新一次，持續5分鐘<br />
-
-          已經經過{refTimes}分鐘 | 將在{countdown}秒後刷新
+          每隔30秒會自動刷新一次，持續5分鐘<br />
+          已經刷新過{refTimes}次 | 將在{countdown}秒後刷新
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
@@ -233,6 +236,7 @@ export function StdMore({ data, user, handleError }) {
             }}
             pageSizeOptions={[10]}
             onRowClick={handleRowClick}
+            onCellClick={handleCellClick}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
           />
         </Box>
