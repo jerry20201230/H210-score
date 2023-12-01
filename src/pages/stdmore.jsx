@@ -150,7 +150,7 @@ export function StdMore({ data, user, handleError }) {
         )
       } catch (error) {
         tempRows.push(
-          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "無資料", temp_block: "無資料", long_block: "無資料" },
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "目前無資料", temp_block: "目前無資料", long_block: "目前無資料" },
         )
       }
 
@@ -171,9 +171,10 @@ export function StdMore({ data, user, handleError }) {
   React.useEffect(async () => {
     for (let i = 0; i < 6; i++) {
       setCountdown(o => o - 1)
-      await delay(1)
       if (countdown <= 0) {
         await fetchData()
+      } else {
+        await delay(1)
       }
     }
   }, [])
@@ -187,8 +188,8 @@ export function StdMore({ data, user, handleError }) {
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
           每隔30秒刷新一次，持續5分鐘<br />
-          如果顯示無資料，請點擊該筆成績，系統就會自動更新資料<br />
-          點擊
+
+          {countdown}
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
