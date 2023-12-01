@@ -143,7 +143,7 @@ export function StdMore({ data, user, handleError }) {
         if (PACrow[6] == "1") {
           longBlockTxt = "開啟 | "
         } else {
-          longBlockTxt = "開啟 | "
+          longBlockTxt = "關閉 | "
         }
 
         tempRows.push(

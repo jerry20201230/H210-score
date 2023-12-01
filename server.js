@@ -977,6 +977,7 @@ app.post("/api/getparentaccountctrl/all", (req, res) => {
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
         res.status(200).json({ message: "ok", ok: true, code: 200, data: results3[0] });
+        connection3.release()
       })
     })
   }

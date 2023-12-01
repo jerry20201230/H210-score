@@ -75,7 +75,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         if (errorId == 500 || errorId >= 700 && errorId < 800) {
             setCountdown(60)
 
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 60; i++) {
                 await delay(1)
                 setCountdown((old) => old - 1)
             }
