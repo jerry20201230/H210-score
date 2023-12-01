@@ -169,8 +169,10 @@ export function StdMore({ data, user, handleError }) {
 
 
   React.useEffect(async () => {
+    await fetchData()
+    setCountdown(30)
     for (let j = 0; j < 6; j++) {
-      while (countdown > 0) {
+      for (let i = 0; i < 30; i++) {
         await delay(1)
         setCountdown(o => o - 1)
       }
