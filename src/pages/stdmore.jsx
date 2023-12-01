@@ -79,6 +79,7 @@ export function StdMore({ data, user, handleError }) {
   const [score, setScore] = React.useState(null)
 
   const [countdown, setCountdown] = React.useState(30)
+  const [refTimes, setRefTimes] = React.useState(0)
 
   const [finalRows, setFinalRows] = React.useState([])
   function delay(n) {
@@ -118,10 +119,10 @@ export function StdMore({ data, user, handleError }) {
           body: JSON.stringify({}),
         })
           .then(res2 => res2.json())
-          .then(res2 => { FsetScore(res2.data.result); setCountdown(30) })
-          .catch((err) => setCountdown(30))
+          .then(res2 => { FsetScore(res2.data.result); setCountdown(60) })
+          .catch((err) => setCountdown(60))
       })
-      .catch((err) => setCountdown(30))
+      .catch((err) => setCountdown(60))
 
   }
 
@@ -170,15 +171,16 @@ export function StdMore({ data, user, handleError }) {
 
   React.useEffect(async () => {
     await fetchData()
-    setCountdown(30)
+    setCountdown(60)
     for (let j = 0; j < 6; j++) {
-      for (let i = 0; i < 30; i++) {
+      setRefTimes(j)
+      for (let i = 0; i < 60; i++) {
         await delay(1)
         setCountdown(o => o - 1)
       }
 
       await fetchData()
-      setCountdown(30)
+      setCountdown(60)
 
     }
   }, [])
@@ -191,9 +193,9 @@ export function StdMore({ data, user, handleError }) {
         <Alert severity="info">
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
-          每隔30秒刷新一次，持續5分鐘<br />
+          每隔60秒自動刷新一次，持續5分鐘<br />
 
-          {countdown}
+          已經經過{refTimes}分鐘 | 將在{countdown}秒後刷新
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
