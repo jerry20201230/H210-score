@@ -17,7 +17,7 @@ export function StdMore({ data, user, handleError }) {
 
 
   const handleRowClick = (params) => {
-    window.location.href = `/score/more/?q=${params.row.scoreid}`
+    //window.location.href = `/score/more/?q=${params.row.scoreid}`
   };
 
   const handleCellClick = (params) => {
@@ -177,7 +177,7 @@ export function StdMore({ data, user, handleError }) {
     await fetchData()
     setCountdown(30)
     for (let j = 0; j < 10; j++) {
-      setRefTimes(j)
+      setRefTimes(j + 1)
       for (let i = 0; i < 30; i++) {
         await delay(1)
         setCountdown(o => o - 1)
@@ -198,7 +198,8 @@ export function StdMore({ data, user, handleError }) {
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
           每隔30秒會自動刷新一次，持續5分鐘<br />
-          已經刷新過{refTimes}次 | 將在{countdown}秒後刷新
+          {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
+
         </Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
