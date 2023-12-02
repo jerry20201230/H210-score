@@ -272,7 +272,7 @@ export function StdMore({ data, user, handleError }) {
               return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : "green";
             }}
             pageSizeOptions={[10]}
-            onRowClick={handleRowClick}
+
             onCellClick={handleCellClick}
             localeText={zhTW.components.MuiDataGrid.defaultProps.localeText}
           />
