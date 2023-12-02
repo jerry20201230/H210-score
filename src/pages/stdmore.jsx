@@ -3,11 +3,30 @@ import TopBar from '../Topbar'
 import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import { red, yellow, orange, green } from '@mui/material/colors';
 import "../App.css"
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import dayjs from 'dayjs';
 import { DataGrid, zhTW } from '@mui/x-data-grid';
 
 export function StdMore({ data, user, handleError }) {
+  const [rows, setRows] = React.useState(null)
+  const [score, setScore] = React.useState(null)
+
+  const [countdown, setCountdown] = React.useState(30)
+  const [refTimes, setRefTimes] = React.useState(0)
+
+  const [finalRows, setFinalRows] = React.useState([])
+  function delay(n) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, n * 1000);
+    });
+  }
 
   const currentTheme = (
     localStorage.getItem("theme") == "light" ? "light" :
@@ -15,9 +34,38 @@ export function StdMore({ data, user, handleError }) {
         "light"
   )
 
+  const [open, setOpen] = React.useState(false)
+  const [open2, setOpen2] = React.useState(false)
+  const [open3, setOpen3] = React.useState(false)
+
+  const [confirmChecked, setConfirmChecked] = React.useState(false)
+
+  const [dialogObj, setDialogObj] = React.useState({ scoreName: "NULL", featureName: "NULL", remainTimes: "NULL" })
+  const handleClickOpen = () => {
+    setConfirmChecked(false)
+    setOpen(true);
+  };
+
+  const handleClose = (n) => {
+    setOpen3(false);
+    if (n) {
+      // blockScore()
+    }
+  };
 
   const handleRowClick = (params) => {
-    //window.location.href = `/score/more/?q=${params.row.scoreid}`
+    if (params.field == "scoreTitle" || params.field == "scoreid") {
+      window.location.href = `/score/more/?q=${params.row.scoreid}`
+    }
+    else if (params.field == "temp_block") {
+      console.log(params.row.temp_block.split(" "))
+      setDialogObj({ scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[2] })
+      setOpen(true)
+    }
+    else if (params.field == "long_block") {
+
+    }
+
   };
 
   const handleCellClick = (params) => {
@@ -79,18 +127,6 @@ export function StdMore({ data, user, handleError }) {
   ];
 
 
-  const [rows, setRows] = React.useState(null)
-  const [score, setScore] = React.useState(null)
-
-  const [countdown, setCountdown] = React.useState(30)
-  const [refTimes, setRefTimes] = React.useState(0)
-
-  const [finalRows, setFinalRows] = React.useState([])
-  function delay(n) {
-    return new Promise(function (resolve) {
-      setTimeout(resolve, n * 1000);
-    });
-  }
 
 
   function FsetRows(rows) {
@@ -151,7 +187,7 @@ export function StdMore({ data, user, handleError }) {
         }
 
         tempRows.push(
-          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]}次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]}次機會` },
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]} 次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]} 次機會` },
         )
       } catch (error) {
         tempRows.push(
@@ -242,6 +278,50 @@ export function StdMore({ data, user, handleError }) {
           />
         </Box>
       </Box>
+
+
+
+
+
+      <Dialog
+        open={open}
+        onClose={() => handleClose(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`要啟用 ${dialogObj.featureName} 嗎?`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              <h3>⟪理性使用，請勿引發家長懷疑⟫</h3>
+
+              開啟之後<b>無法中途取消</b>
+              <p></p>
+
+              請再次確認以下資訊:<br />
+              你今天還有{dialogObj.remainTimes}次機會<br />
+              這筆成績是 {dialogObj.scoreName}
+              <p></p>
+              <FormControlLabel control={
+                <Checkbox
+                  checked={confirmChecked}
+                  onChange={() => setConfirmChecked(!confirmChecked)}
+                />
+              } label="我已詳細閱讀並同意上述說明" />
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' onClick={() => handleClose(false)}>
+            取消
+          </Button>
+          <Button variant="outlined" disabled={!confirmChecked} onClick={() => handleClose(true)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
