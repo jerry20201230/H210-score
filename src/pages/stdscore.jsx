@@ -346,6 +346,7 @@ export function StdScore({ data, user, handleError }) {
 
       <div className='backdrop-slash'>
         <Box sx={{ p: 3 }}>
+
           <div style={{
             display: "flex",
             justifyContent: "space-between"
@@ -673,6 +674,15 @@ export function StdScore({ data, user, handleError }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
+            <Alert
+              action={
+                <Button color="inherit" size="small" component={Link} to="/more">
+                  立即前往
+                </Button>
+              }
+            >
+              查看所有成績的家長查詢狀態
+            </Alert>
             切換到其他成績的學生專屬功能頁面<br />
             <>
               {

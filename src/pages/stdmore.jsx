@@ -255,7 +255,7 @@ export function StdMore({ data, user, handleError }) {
         }
 
         tempRows.push(
-          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss"), temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]} 次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]} 次機會` },
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: Number(PACrow[0]), lastquery: dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss") !== "Invalid Date" ? dayjs(PACrow[1]).add(8, "hours").format("MM/DD HH:mm:ss") : "家長還沒看過", temp_block: tempBlockTxt + " | " + `還有 ${PACrow[2]} 次機會`, long_block: longBlockTxt + `還有 ${PACrow[5]} 次機會` },
         )
       } catch (error) {
         tempRows.push(

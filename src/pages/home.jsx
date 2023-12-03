@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button, Paper, Typography } from '@mui/material'
+import { Box, Button, Paper, Typography, Alert } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -96,7 +96,16 @@ export function Homepage({ user, data, handleError }) {
     <>
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"首頁"} />
       <Box sx={{ p: 3 }}>
-
+        {data.data.role === "std" ? <Alert
+          action={
+            <Button color="inherit" size="small" component={Link} to="/more">
+              立即前往
+            </Button>
+          }
+        >
+          查看所有成績的家長查詢狀態
+        </Alert>
+          : <></>}
         <Typography variant='h5'> Hi, {data.data.username}</Typography>
         <Typography variant='h6'>選擇成績，開始查詢</Typography>
         {/* {data.data.role === "std" ?
