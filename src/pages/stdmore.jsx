@@ -34,7 +34,7 @@ export function StdMore({ data, user, handleError }) {
         "light"
   )
 
-  const [infoAlertStat, setInfoAlertStat] = [false, "NULL", "info"]
+  const [infoAlertStat, setInfoAlertStat] = React.useState([false, "NULL", "info"])
 
   const [open, setOpen] = React.useState(false)
   const [open2, setOpen2] = React.useState(false)
