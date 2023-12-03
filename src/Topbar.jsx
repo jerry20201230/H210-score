@@ -107,7 +107,7 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {title === "發生錯誤" ?
+                  {title === "發生錯誤" || title === "家長查詢狀態總表" ?
                     <>
                       <MenuItem onClick={() => { window.location.href = "/profile" }} >個人資料</MenuItem>
                       <MenuItem onClick={() => { window.location.href = "/setting" }} >系統設定</MenuItem>

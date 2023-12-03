@@ -22,6 +22,7 @@ export function StdMore({ data, user, handleError }) {
   const [refTimes, setRefTimes] = React.useState(0)
 
   const [finalRows, setFinalRows] = React.useState([])
+
   function delay(n) {
     return new Promise(function (resolve) {
       setTimeout(resolve, n * 1000);
@@ -250,7 +251,7 @@ export function StdMore({ data, user, handleError }) {
 
   return (
     <>
-      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
+      <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"家長查詢狀態總表"} />
       <Box sx={{ p: 3 }}>
         <Typography variant='h5'>家長查詢狀態總表</Typography>
         <Alert severity='info'>

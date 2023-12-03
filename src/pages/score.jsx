@@ -34,6 +34,12 @@ export function Score({ data, user, handleError }) {
   const [recaptcha, setRecaptcha] = React.useState("")
   const [isrank, setIsRank] = React.useState(false)
 
+  function delay(n) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, n * 1000);
+    });
+  }
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -270,13 +276,14 @@ export function Score({ data, user, handleError }) {
 
         : <>
           <Box sx={{ p: 3, textAlign: "center" }}>
-            <p>為了預防機器人爬取成績資料，請先完成以下驗證</p>
+            <p>為了預防機器人爬取成績資料，請完成以下驗證</p>
             <ReCAPTCHA
               sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
-              onChange={e => { setRecaptcha(e) }}
+              onChange={async e => { await delay(1); setRecaptcha(e) }}
               onExpired={e => { setRecaptcha("") }}
               theme={theme}
             />
+            <p></p>
           </Box>
         </>
       }

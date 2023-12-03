@@ -1095,7 +1095,7 @@ app.post("/api/getparentaccountlogs", (req, res) => {
 })
 
 app.post("/api/report/pusherrorlog", (req, res) => {
-  console.log("[CLIENT ERROR REPORT]", req.body.randomCode)
+  console.log(`[CLIENT ERROR REPORT] ID:${req.body.randomCode} FROM:${req.session.username} IP:${req.ip}`)
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
       INSERT INTO errorReport (random_code,username,error_code,time,path)
