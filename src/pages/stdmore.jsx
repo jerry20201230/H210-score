@@ -34,7 +34,7 @@ export function StdMore({ data, user, handleError }) {
         "light"
   )
 
-  const [infoAlertStat, setInfoAlertStat] = React.useState([false, "NULL", "info"])
+  const [infoAlertStat, setInfoAlertStat] = React.useState([true, "NULL", "info"])
 
   const [open, setOpen] = React.useState(false)
   const [open2, setOpen2] = React.useState(false)
@@ -43,9 +43,8 @@ export function StdMore({ data, user, handleError }) {
   const [confirmChecked, setConfirmChecked] = React.useState(false)
 
   const [dialogObj, setDialogObj] = React.useState({ id: "NULL", scoreName: "NULL", featureName: "NULL", remainTimes: "NULL" })
-  const handleClickOpen = () => {
-    setConfirmChecked(false)
-    setOpen(true);
+  const handleClose2 = () => {
+    setOpen2(false);
   };
 
 
@@ -62,14 +61,14 @@ export function StdMore({ data, user, handleError }) {
         },
         body: JSON.stringify({ id: dialogObj.id }),
       }).then(res => res.json())
-        .then(res => {
+        .then(async res => {
           if (res.ok) {
-            setInfoAlertStat([true, "變更成功，將在下次刷新時顯示", "success"])
+            await fetchData()
           } else {
-            setInfoAlertStat([true, "變更失敗，請再試一次", "error"])
+            setInfoAlertStat([false, "變更失敗，請再試一次", "error"])
           }
 
-        }).catch(() => setInfoAlertStat([true, "變更失敗，請再試一次 [500]", "error"]))
+        }).catch(() => setInfoAlertStat([false, "變更失敗，請再試一次 [500]", "error"]))
 
     }
   };
@@ -81,11 +80,13 @@ export function StdMore({ data, user, handleError }) {
     }
     else if (params.field == "temp_block") {
       console.log(params.row.temp_block.split(" "))
+      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
       setOpen(true)
     }
     else if (params.field == "long_block") {
       console.log(params.row.temp_block.split(" "))
+      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
       setOpen(true)
     }
@@ -250,12 +251,12 @@ export function StdMore({ data, user, handleError }) {
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
       <Box sx={{ p: 3 }}>
         <Typography variant='h5'>家長查詢狀態總表</Typography>
-        <Box sx={{ p: 2 }}>
+        <Alert severity='info'>
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
           每隔30秒會自動刷新一次，持續5分鐘<br />
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
-        </Box>
+        </Alert>
 
         <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0]}>{infoAlertStat[1]}</Alert>
         <p></p>
@@ -339,6 +340,36 @@ export function StdMore({ data, user, handleError }) {
             取消
           </Button>
           <Button variant="outlined" disabled={!confirmChecked} onClick={() => handleClose(true)}>
+            確定
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog
+        open={open2}
+        onClose={() => handleClose2(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`無法啟用 ${dialogObj.featureName}`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <>
+              <h3>目前無法對{dialogObj.scoreName}啟用{dialogObj.featureName}</h3>
+              請確認以下資訊:<br />
+              <ol>
+                <li>你是否已經對{dialogObj.scoreName}啟用了{dialogObj.featureName}?</li>
+                <li>你今天的機會是否已經用完?</li>
+              </ol>
+
+            </>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' onClick={() => handleClose2(false)}>
             確定
           </Button>
         </DialogActions>
