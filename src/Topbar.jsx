@@ -63,7 +63,7 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
         <AppBar position="fixed">
           <Toolbar>
 
-            {title === "發生錯誤" ?
+            {title === "發生錯誤" || title === "家長查詢狀態總表" ?
               <IconButton
                 onClick={() => window.location.href = "/"}
                 size="large"
@@ -112,7 +112,7 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
                       <MenuItem onClick={() => { window.location.href = "/profile" }} >個人資料</MenuItem>
                       <MenuItem onClick={() => { window.location.href = "/setting" }} >系統設定</MenuItem>
 
-                      {data.role === "std" ? <MenuItem onClick={() => { handleClose("more") }} component={Link} to="/more">家長查詢狀態</MenuItem> : <></>}
+                      {data.role === "std" ? <MenuItem onClick={() => { window.location.href = "/more" }} >家長查詢狀態</MenuItem> : <></>}
                     </>
                     :
                     <>
