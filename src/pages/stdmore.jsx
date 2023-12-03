@@ -35,7 +35,7 @@ export function StdMore({ data, user, handleError }) {
         "light"
   )
 
-  const [infoAlertStat, setInfoAlertStat] = React.useState([true, "NULL", "info"])
+  const [infoAlertStat, setInfoAlertStat] = React.useState(["hide", "NULL", "info"])
 
   const [open, setOpen] = React.useState(false)
   const [open2, setOpen2] = React.useState(false)
@@ -66,32 +66,77 @@ export function StdMore({ data, user, handleError }) {
           if (res.ok) {
             await fetchData()
           } else {
-            setInfoAlertStat([false, "變更失敗，請再試一次", "error"])
+            setInfoAlertStat(["show", "變更失敗，請再試一次", "error"])
           }
 
-        }).catch(() => setInfoAlertStat([false, "變更失敗，請再試一次 [500]", "error"]))
+        }).catch(() => setInfoAlertStat(["show", "變更失敗，請再試一次 [500]", "error"]))
 
     }
   };
 
+
   const handleCellClick = (params) => {
+
+
+    function refreshSpecificData() {
+      setInfoAlertStat(["show", `正在重新刷新${params.row.scoreTitle}的資料`, "info"])
+      fetch("/api/getscorebyid", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({ id: params.row.scoreid, isrank: false, countScore: false }),
+      })
+        .then(res => res.json())
+        .then(async res => {
+          if (res.ok) {
+            console.log("UPDATE SUCCESS");
+            setInfoAlertStat(["show", `${params.row.scoreTitle}的資料刷新成功`, "success"])
+            await fetchData()
+          }
+          else { setInfoAlertStat(["show", `刷新${params.row.scoreTitle}的資料時發生錯誤`, "error"]) }
+        })
+        .catch(e => { console.log("UPDATE FAILED"); setInfoAlertStat(["show", `刷新${params.row.scoreTitle}的資料時發生錯誤 [500]`, "error"]) })
+    }
+
+
+
+
     console.log(params)
     if (params.field == "scoreTitle" || params.field == "scoreid") {
       window.location.href = `/score/more/?q=${params.row.scoreid}`
     }
     else if (params.field == "temp_block") {
-      console.log(params.row.temp_block.split(" "))
-      setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
-      if (Number(params.row.temp_block.split(" "))[3] <= 0 || params.row.temp_block.split(" ").includes("到") || params.row.temp_block.includes("還有 0 次機會")) { setOpen2(true); return }
+      if (params.row.temp_block.includes("目前無資料")) {
+        refreshSpecificData()
+      } else {
+        console.log(params.row.temp_block.split(" "))
+        setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
+        if (Number(params.row.temp_block.split(" "))[3] <= 0 || params.row.temp_block.split(" ").includes("到") || params.row.temp_block.includes("還有 0 次機會") || params.row.temp_block.includes("目前無資料")) { setOpen2(true); return }
 
-      setOpen(true)
+        setOpen(true)
+
+      }
+
     }
     else if (params.field == "long_block") {
-      console.log(params.row.long_block.split(" "))
-      setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
-      if ((params.row.long_block.split(" "))[3] == "0" || params.row.long_block.split(" ").includes("開啟") || params.row.long_block.includes("還有 0 次機會")) { setOpen2(true); return }
 
-      setOpen(true)
+      if (params.row.long_block.includes("目前無資料")) {
+        refreshSpecificData()
+      } else {
+
+        console.log(params.row.long_block.split(" "))
+        setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
+        if ((params.row.long_block.split(" "))[3] == "0" || params.row.long_block.split(" ").includes("開啟") || params.row.long_block.includes("還有 0 次機會") || params.row.long_block.includes("目前無資料")) { setOpen2(true); return }
+
+        setOpen(true)
+      }
+    }
+
+
+    else if (params.field == "querytimes" && params.row.querytimes.includes("目前無資料")) {
+      refreshSpecificData()
     }
   };
 
@@ -214,7 +259,7 @@ export function StdMore({ data, user, handleError }) {
         )
       } catch (error) {
         tempRows.push(
-          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "目前無資料", temp_block: "目前無資料", long_block: "目前無資料" },
+          { id: i + 1, scoreid: score[i].uid, scoreTitle: score[i].scoreName, scoreTitle: score[i].scoreName, querytimes: 0, lastquery: "目前無資料.點一下再試一次", temp_block: "目前無資料.點一下再試一次", long_block: "目前無資料.點一下再試一次" },
         )
       }
 
@@ -244,7 +289,7 @@ export function StdMore({ data, user, handleError }) {
 
       await fetchData()
       setCountdown(30)
-      setInfoAlertStat([true, "NULL", "success"])
+      setInfoAlertStat(["hide", "NULL", "success"])
 
     }
   }, [])
@@ -261,7 +306,7 @@ export function StdMore({ data, user, handleError }) {
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
         </Alert>
         <p></p>
-        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0] || infoAlertStat[1] == "NULL"}>{infoAlertStat[1]}</Alert>
+        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0] == "hide" || infoAlertStat[1] == "NULL"}>{infoAlertStat[1]}</Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
@@ -361,11 +406,12 @@ export function StdMore({ data, user, handleError }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              <h3>目前無法對 {dialogObj.scoreName} 啟用 {dialogObj.featureName} </h3>
-              請確認以下資訊:<br />
+              <h3>目前無法對 {dialogObj.scoreName}啟用 {dialogObj.featureName}</h3>
+              以下是可能的原因:<br />
               <ol>
-                <li>你是否已經對{dialogObj.scoreName}啟用了{dialogObj.featureName}?</li>
-                <li>你今天的機會是否已經用完?</li>
+                <li>你已經對{dialogObj.scoreName}啟用了{dialogObj.featureName}</li>
+                <li>你今天的機會已經用完</li>
+                <li>這筆成績的資料還沒被更新(通常發生在新成績被輸入後24小時內)</li>
               </ol>
 
             </>
