@@ -34,28 +34,44 @@ export function StdMore({ data, user, handleError }) {
         "light"
   )
 
+  const [infoAlertStat, setInfoAlertStat] = [false, "NULL", "info"]
+
   const [open, setOpen] = React.useState(false)
   const [open2, setOpen2] = React.useState(false)
   const [open3, setOpen3] = React.useState(false)
 
   const [confirmChecked, setConfirmChecked] = React.useState(false)
 
-  const [dialogObj, setDialogObj] = React.useState({ scoreName: "NULL", featureName: "NULL", remainTimes: "NULL" })
+  const [dialogObj, setDialogObj] = React.useState({ id: "NULL", scoreName: "NULL", featureName: "NULL", remainTimes: "NULL" })
   const handleClickOpen = () => {
     setConfirmChecked(false)
     setOpen(true);
   };
 
+
+
   const handleClose = (n) => {
     setOpen(false);
+    setConfirmChecked(false)
     if (n) {
-      // blockScore()
+
+      fetch(`/api/blocksearch${dialogObj.featureName == "短暫維持家庭和睦" ? "" : "2"}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: dialogObj.id }),
+      }).then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            setInfoAlertStat([true, "變更成功，將在下次刷新時顯示", "success"])
+          } else {
+            setInfoAlertStat([true, "變更失敗，請再試一次", "error"])
+          }
+
+        }).catch(() => setInfoAlertStat([true, "變更失敗，請再試一次 [500]", "error"]))
+
     }
-  };
-
-  const handleRowClick = (params) => {
-
-
   };
 
   const handleCellClick = (params) => {
@@ -65,11 +81,13 @@ export function StdMore({ data, user, handleError }) {
     }
     else if (params.field == "temp_block") {
       console.log(params.row.temp_block.split(" "))
-      setDialogObj({ scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
+      setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
       setOpen(true)
     }
     else if (params.field == "long_block") {
-
+      console.log(params.row.temp_block.split(" "))
+      setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
+      setOpen(true)
     }
   };
 
@@ -222,6 +240,7 @@ export function StdMore({ data, user, handleError }) {
 
       await fetchData()
       setCountdown(30)
+      setInfoAlertStat([false, "NULL", "success"])
 
     }
   }, [])
@@ -231,13 +250,14 @@ export function StdMore({ data, user, handleError }) {
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={"學生專屬功能"} />
       <Box sx={{ p: 3 }}>
         <Typography variant='h5'>家長查詢狀態總表</Typography>
-        <Alert severity="info">
+        <Box sx={{ p: 2 }}>
           <AlertTitle>說明</AlertTitle>
           這個頁面顯示家長查詢每筆成績的狀態<br />
           每隔30秒會自動刷新一次，持續5分鐘<br />
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
+        </Box>
 
-        </Alert>
+        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0]}>{infoAlertStat[1]}</Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
