@@ -261,7 +261,14 @@ export function StdMore({ data, user, handleError }) {
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
         </Alert>
         <p></p>
-        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0]}>{infoAlertStat[1]}</Alert>
+        <Alert severity='info'>
+          <AlertTitle>操作說明</AlertTitle>
+          點擊成績名稱或成績ID可以跳轉到該成績的學生專屬功能頁面<br />
+          點擊各學生專屬功能可快速開啟<br />
+          {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
+        </Alert>
+        <p></p>
+        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0] || infoAlertStat == "NULL"}>{infoAlertStat[1]}</Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
