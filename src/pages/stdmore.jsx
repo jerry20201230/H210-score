@@ -80,14 +80,16 @@ export function StdMore({ data, user, handleError }) {
     }
     else if (params.field == "temp_block") {
       console.log(params.row.temp_block.split(" "))
-      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
+      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
+
       setOpen(true)
     }
     else if (params.field == "long_block") {
       console.log(params.row.temp_block.split(" "))
-      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
+      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
+
       setOpen(true)
     }
   };
@@ -241,7 +243,7 @@ export function StdMore({ data, user, handleError }) {
 
       await fetchData()
       setCountdown(30)
-      setInfoAlertStat([false, "NULL", "success"])
+      setInfoAlertStat([true, "NULL", "success"])
 
     }
   }, [])
@@ -257,7 +259,7 @@ export function StdMore({ data, user, handleError }) {
           每隔30秒會自動刷新一次，持續5分鐘<br />
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
         </Alert>
-
+        <p></p>
         <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0]}>{infoAlertStat[1]}</Alert>
         <p></p>
         <Box sx={{ width: '100%' }}>
