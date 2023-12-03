@@ -54,6 +54,12 @@ export function StdMore({ data, user, handleError }) {
   };
 
   const handleRowClick = (params) => {
+
+
+  };
+
+  const handleCellClick = (params) => {
+    console.log(params)
     if (params.field == "scoreTitle" || params.field == "scoreid") {
       window.location.href = `/score/more/?q=${params.row.scoreid}`
     }
@@ -65,11 +71,6 @@ export function StdMore({ data, user, handleError }) {
     else if (params.field == "long_block") {
 
     }
-
-  };
-
-  const handleCellClick = (params) => {
-    console.log(params)
   };
 
   const columns = [
