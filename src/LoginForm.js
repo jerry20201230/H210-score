@@ -134,7 +134,7 @@ function LoginForm({ set, callback }) {
           <p></p>
           <ReCAPTCHA
             sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
-            onChange={e => { console.log(e); setRecaptcha(e) }}
+            onChange={e => { setRecaptcha(e) }}
             onExpired={e => { setRecaptcha("") }}
             theme={theme}
           />

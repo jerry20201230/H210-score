@@ -110,7 +110,7 @@ export function Homepage({ user, data, handleError }) {
           : <></>} */}
         {scoreTab}
         <p></p>
-        <Button variant="contained" onClick={() => getScore()}>重新整理</Button>
+        <Button variant="contained" hidden onClick={() => getScore()}>重新整理</Button>
       </Box>
 
       <Backdrop

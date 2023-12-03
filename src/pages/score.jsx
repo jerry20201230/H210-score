@@ -9,6 +9,8 @@ import { styled } from '@mui/material/styles';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export function Score({ data, user, handleError }) {
 
@@ -29,6 +31,7 @@ export function Score({ data, user, handleError }) {
   const [loadingState, setLoadingState] = React.useState("")
   const [loadingState2, setLoadingState2] = React.useState("")
 
+  const [recaptcha, setRecaptcha] = React.useState("")
   const [isrank, setIsRank] = React.useState(false)
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -40,7 +43,12 @@ export function Score({ data, user, handleError }) {
     color: theme.palette.text.secondary,
   }));
 
-
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = (
+    localStorage.getItem("theme") == "light" ? "light" :
+      localStorage.getItem("theme") == "dark" ? "dark" :
+        prefersDarkMode ? "dark" : "light"
+  )
 
   function UrlParam(name) {
     var url = new URL(window.location.href),
@@ -204,8 +212,9 @@ export function Score({ data, user, handleError }) {
 
 
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
+      {recaptcha !== "" || data.data.role == "std" ?
 
-      <div className='backdrop-slash'>
+
         <Box sx={{ p: 3 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
@@ -258,8 +267,19 @@ export function Score({ data, user, handleError }) {
             </Grid>
           </Box>
         </Box>
-      </div>
 
+        : <>
+          <Box sx={{ p: 3, textAlign: "center" }}>
+            <p>為了預防機器人爬取成績資料，請先完成以下驗證</p>
+            <ReCAPTCHA
+              sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
+              onChange={e => { setRecaptcha(e) }}
+              onExpired={e => { setRecaptcha("") }}
+              theme={theme}
+            />
+          </Box>
+        </>
+      }
     </>
   )
 }
