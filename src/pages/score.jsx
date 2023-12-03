@@ -277,12 +277,14 @@ export function Score({ data, user, handleError }) {
         : <>
           <Box sx={{ p: 3, textAlign: "center" }}>
             <p>為了預防機器人爬取成績資料，請完成以下驗證</p>
-            <ReCAPTCHA
-              sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
-              onChange={async e => { await delay(1); setRecaptcha(e) }}
-              onExpired={e => { setRecaptcha("") }}
-              theme={theme}
-            />
+            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+              <ReCAPTCHA
+                sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
+                onChange={async e => { await delay(1); setRecaptcha(e) }}
+                onExpired={e => { setRecaptcha("") }}
+                theme={theme}
+              />
+            </Box>
             <p></p>
           </Box>
         </>
