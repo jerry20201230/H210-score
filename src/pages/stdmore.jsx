@@ -88,7 +88,7 @@ export function StdMore({ data, user, handleError }) {
     else if (params.field == "long_block") {
       console.log(params.row.long_block.split(" "))
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
-      if (Number(params.row.long_block.split(" "))[3] == 0 || params.row.long_block.split(" ").includes("開啟")) { setOpen2(true); return }
+      if ((params.row.long_block.split(" "))[3] == "0" || params.row.long_block.split(" ").includes("開啟") || params.row.long_block.includes("還有 0 次機會")) { setOpen2(true); return }
 
       setOpen(true)
     }
