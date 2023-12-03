@@ -81,14 +81,14 @@ export function StdMore({ data, user, handleError }) {
     else if (params.field == "temp_block") {
       console.log(params.row.temp_block.split(" "))
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
-      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
+      if (Number(params.row.temp_block.split(" "))[3] <= 0 || params.row.temp_block.split(" ").includes("到")) { setOpen2(true); return }
 
       setOpen(true)
     }
     else if (params.field == "long_block") {
       console.log(params.row.temp_block.split(" "))
       setDialogObj({ id: params.row.scoreid, scoreName: params.row.scoreTitle, featureName: "關閉家長查詢權限", remainTimes: params.row.long_block.split(" ")[3] })
-      if (Number(params.row.temp_block.split(" "))[3] == 0 || !Number(params.row.temp_block.split(" "))[3]) { setOpen2(true); return }
+      if (Number(params.row.long_block.split(" "))[3] == 0 || params.row.long_block.split(" ").includes("開啟")) { setOpen2(true); return }
 
       setOpen(true)
     }
@@ -360,7 +360,7 @@ export function StdMore({ data, user, handleError }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              <h3>目前無法對{dialogObj.scoreName}啟用{dialogObj.featureName}</h3>
+              <h3>目前無法對 {dialogObj.scoreName} 啟用 {dialogObj.featureName} </h3>
               請確認以下資訊:<br />
               <ol>
                 <li>你是否已經對{dialogObj.scoreName}啟用了{dialogObj.featureName}?</li>
