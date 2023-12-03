@@ -135,7 +135,7 @@ export function StdMore({ data, user, handleError }) {
     }
 
 
-    else if (params.field == "querytimes" && params.row.querytimes.includes("目前無資料")) {
+    else if (params.field == "lastquery" && params.row.lastquery.includes("目前無資料")) {
       refreshSpecificData()
     }
   };
@@ -306,7 +306,8 @@ export function StdMore({ data, user, handleError }) {
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
         </Alert>
         <p></p>
-        <Alert severity={infoAlertStat[2]} hidden={infoAlertStat[0] == "hide" || infoAlertStat[1] == "NULL"}>{infoAlertStat[1]}</Alert>
+
+        <div hidden={infoAlertStat[0] == "hide" || infoAlertStat[1] == "NULL"}><Alert severity={infoAlertStat[2]}>{infoAlertStat[1]}</Alert></div>
         <p></p>
         <Box sx={{ width: '100%' }}>
           <DataGrid
@@ -339,7 +340,7 @@ export function StdMore({ data, user, handleError }) {
               if (!params.field.includes("block") || params.value == null) {
                 return '';
               }
-              return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : "green";
+              return params.value.includes("未開啟") || (params.value.includes("關閉") && params.field == "long_block") ? "yellow" : params.value.includes("無資料") ? "red" : "green"
             }}
             pageSizeOptions={[10]}
 
