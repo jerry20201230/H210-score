@@ -47,7 +47,7 @@ export function StdMore({ data, user, handleError }) {
   };
 
   const handleClose = (n) => {
-    setOpen3(false);
+    setOpen(false);
     if (n) {
       // blockScore()
     }
@@ -65,7 +65,7 @@ export function StdMore({ data, user, handleError }) {
     }
     else if (params.field == "temp_block") {
       console.log(params.row.temp_block.split(" "))
-      setDialogObj({ scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[2] })
+      setDialogObj({ scoreName: params.row.scoreTitle, featureName: "短暫維持家庭和睦", remainTimes: params.row.temp_block.split(" ")[3] })
       setOpen(true)
     }
     else if (params.field == "long_block") {
