@@ -31,7 +31,7 @@ export function Score({ data, user, handleError }) {
   const [loadingState, setLoadingState] = React.useState("")
   const [loadingState2, setLoadingState2] = React.useState("")
 
-  const [recaptcha, setRecaptcha] = React.useState("12345678")
+  const [recaptcha, setRecaptcha] = React.useState("")
   const [isrank, setIsRank] = React.useState(false)
 
   function delay(n) {
@@ -133,8 +133,16 @@ export function Score({ data, user, handleError }) {
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
 
-  React.useEffect(() => {
-    getScore(UrlParam("q"))
+  React.useEffect(async () => {
+    if (data.data.role == "par") {
+      await delay(5)
+      setRecaptcha("success")
+      getScore(UrlParam("q"))
+    } else {
+      setRecaptcha("success")
+      getScore(UrlParam("q"))
+    }
+
   }, [])
 
   React.useEffect(() => {
@@ -276,15 +284,17 @@ export function Score({ data, user, handleError }) {
 
         : <>
           <Box sx={{ p: 3, textAlign: "center" }}>
-            <p>為了預防機器人爬取成績資料，請完成以下驗證</p>
-            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+            <CircularProgress color="secondary" />
+            <h3>正在連線到資料庫</h3>
+            <p>連線完成後就可以查看成績</p>
+            {/* <Box sx={{ display: "flex", justifyContent: "space-around" }}>
               <ReCAPTCHA
                 sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
                 onChange={async e => { await delay(1); setRecaptcha(e) }}
                 onExpired={e => { setRecaptcha("") }}
                 theme={theme}
               />
-            </Box>
+            </Box> */}
             <p></p>
           </Box>
         </>
