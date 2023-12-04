@@ -135,7 +135,7 @@ export function Score({ data, user, handleError }) {
 
   React.useEffect(async () => {
 
-    setRecaptcha("success")
+
     getScore(UrlParam("q"))
 
 
@@ -222,7 +222,7 @@ export function Score({ data, user, handleError }) {
 
 
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
-      {recaptcha !== "" || data.data.role == "std" ?
+      {true ?
 
 
         <Box sx={{ p: 3 }}>
