@@ -134,14 +134,10 @@ export function Score({ data, user, handleError }) {
   }
 
   React.useEffect(async () => {
-    if (data.data.role == "par") {
-      await delay(5)
-      setRecaptcha("success")
-      getScore(UrlParam("q"))
-    } else {
-      setRecaptcha("success")
-      getScore(UrlParam("q"))
-    }
+
+    setRecaptcha("success")
+    getScore(UrlParam("q"))
+
 
   }, [])
 
