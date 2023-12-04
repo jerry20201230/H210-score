@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TopBar from '../Topbar'
-import { Box, Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 import "../App.css"
 import { red, yellow, green } from '@mui/material/colors';
 import Paper from '@mui/material/Paper';
@@ -108,16 +108,18 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                 <p>
                     <Button sx={{ m: 1 }} variant="contained" onClick={() => window.location.reload()} disabled={countdown > 0}>{countdown > 0 ? `可於${countdown}秒內重新整理` : "重新整理"}</Button>
                     <Button sx={{ m: 1 }} color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
+                    <br />{errorId == 500 || errorId >= 700 && errorId < 800 ? <Alert severity="error">請勿提前重新載入</Alert> : <></>}
                 </p>
                 <hr />
                 <code>
                     錯誤代碼: {errorId}
                     <p></p>
                     詳細資料如下:<br />
-                    路徑:{window.location.pathname}{window.location.search}<br />
-                    使用者:{data.data.username}<br />
-                    時間:{errorTime}<br />
-                    隨機碼:{randomCode}<br />
+                    <pre>
+                        path:{window.location.pathname}{window.location.search}<br />
+                        user:{data.data.userid}<br />
+                        time:{errorTime}<br />
+                        uuid:{randomCode}</pre><br />
                     {reportState}
                 </code>
 

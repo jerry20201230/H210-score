@@ -31,7 +31,7 @@ export function Score({ data, user, handleError }) {
   const [loadingState, setLoadingState] = React.useState("")
   const [loadingState2, setLoadingState2] = React.useState("")
 
-  const [recaptcha, setRecaptcha] = React.useState("")
+  const [recaptcha, setRecaptcha] = React.useState("12345678")
   const [isrank, setIsRank] = React.useState(false)
 
   function delay(n) {
