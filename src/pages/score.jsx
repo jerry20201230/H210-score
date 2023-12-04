@@ -133,7 +133,7 @@ export function Score({ data, user, handleError }) {
     //  list.push({ title: res2.data.result[i].scoreName, id: res2.data.result[i].uid })
   }
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
 
 
     getScore(UrlParam("q"))
@@ -222,79 +222,64 @@ export function Score({ data, user, handleError }) {
 
 
       <TopBar needCheckLogin={true} logined={true} data={data.data} user={user} title={scoreTitle.title ? scoreTitle.title : "資料讀取中..."} />
-      {true ?
 
 
-        <Box sx={{ p: 3 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
-              <Grid xs={6}>
+
+      <Box sx={{ p: 3 }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            {annousment ? annousment : <></>}{privateTalk ? privateTalk : <></>}
+            <Grid xs={6}>
+              <Item>
+                <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的{isrank ? "名次" : "成績"}</h3>
+                <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
+              </Item>
+            </Grid>
+            {
+              isrank ? <></> : <Grid xs={6}>
                 <Item>
-                  <h3>{data.data.userid.toLowerCase().includes("s") ? "你" : "孩子"}的{isrank ? "名次" : "成績"}</h3>
-                  <p>{(scoreData.your !== 'null' && scoreData.your !== 'undefined') ? scoreData.your : "缺考"}</p>
+                  <h3>全班平均</h3>
+                  <p>{scoreData.avg}</p>
                 </Item>
               </Grid>
-              {
-                isrank ? <></> : <Grid xs={6}>
-                  <Item>
-                    <h3>全班平均</h3>
-                    <p>{scoreData.avg}</p>
+            }
+            <Grid xs={6}>
+              <Item>
+                <h3>{isrank ? "班級最低名次" : "班級最高分"}</h3>
+                <p>{scoreData.hi}</p>
+              </Item>
+            </Grid>
+            <Grid xs={6}>
+              <Item>
+                <h3>{isrank ? "班級最高名次" : "班級最低分"}</h3>
+                <p>{scoreData.lo}</p>
+              </Item>
+            </Grid>
+
+            {
+              data.data.role == "std" ?
+
+                <Grid xs={6}>
+                  <Item sx={{ background: scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600]) : blue[500], color: "#fff" }}>
+                    <h3>學生專屬功能</h3>
+                    <p>
+                      {
+                        scoreData.queryTimes == null ? <>暫時無資料</> :
+                          Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績</> : <>家長還沒看過這筆成績</>
+                      }</p>
+                    <Button variant="contained" component={Link} to={`/score/more?q=${UrlParam("q")}`} color={
+                      scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? "primary" : "success") : "primary"
+                    }>{scoreData.queryTimes == null ? "重新讀取" : "更多"}</Button>
                   </Item>
                 </Grid>
-              }
-              <Grid xs={6}>
-                <Item>
-                  <h3>{isrank ? "班級最低名次" : "班級最高分"}</h3>
-                  <p>{scoreData.hi}</p>
-                </Item>
-              </Grid>
-              <Grid xs={6}>
-                <Item>
-                  <h3>{isrank ? "班級最高名次" : "班級最低分"}</h3>
-                  <p>{scoreData.lo}</p>
-                </Item>
-              </Grid>
-
-              {
-                data.data.role == "std" ?
-
-                  <Grid xs={6}>
-                    <Item sx={{ background: scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? blue[500] : green[600]) : blue[500], color: "#fff" }}>
-                      <h3>學生專屬功能</h3>
-                      <p>
-                        {
-                          scoreData.queryTimes == null ? <>暫時無資料</> :
-                            Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? <>家長已經看過這筆成績</> : <>家長還沒看過這筆成績</>
-                        }</p>
-                      <Button variant="contained" component={Link} to={`/score/more?q=${UrlParam("q")}`} color={
-                        scoreData.queryTimes ? (Number(scoreData.queryTimes.split("%|%")[0]) > 0 ? "primary" : "success") : "primary"
-                      }>{scoreData.queryTimes == null ? "重新讀取" : "更多"}</Button>
-                    </Item>
-                  </Grid>
-                  : <></>
-              }
-            </Grid>
-          </Box>
+                : <></>
+            }
+          </Grid>
         </Box>
+      </Box>
 
-        : <>
-          <Box sx={{ p: 3, textAlign: "center" }}>
-            <CircularProgress color="secondary" />
-            <h3>正在連線到資料庫</h3>
-            <p>連線完成後就可以查看成績</p>
-            {/* <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-              <ReCAPTCHA
-                sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
-                onChange={async e => { await delay(1); setRecaptcha(e) }}
-                onExpired={e => { setRecaptcha("") }}
-                theme={theme}
-              />
-            </Box> */}
-            <p></p>
-          </Box>
-        </>
-      }
+
+
     </>
   )
 }
