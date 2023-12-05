@@ -70,19 +70,22 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
             setTimeout(resolve, n * 1000);
         });
     }
-    React.useEffect(async () => {
+    React.useEffect(() => {
 
-        if (errorId == 500 || errorId >= 700 && errorId < 800) {
-            setCountdown(60)
+        async function wait() {
+            if (errorId == 500 || errorId >= 700 && errorId < 800) {
+                setCountdown(60)
 
-            for (let i = 0; i < 60; i++) {
-                await delay(1)
-                setCountdown((old) => old - 1)
+                for (let i = 0; i < 60; i++) {
+                    await delay(1)
+                    setCountdown((old) => old - 1)
+                }
+
+            } else {
+                setCountdown(0)
             }
-
-        } else {
-            setCountdown(0)
         }
+        wait()
     }, []);
 
 

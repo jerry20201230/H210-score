@@ -277,21 +277,24 @@ export function StdMore({ data, user, handleError }) {
   }, [rows, score])
 
 
-  React.useEffect(async () => {
-    await fetchData()
-    setCountdown(30)
-    for (let j = 0; j < 10; j++) {
-      setRefTimes(j + 1)
-      for (let i = 0; i < 30; i++) {
-        await delay(1)
-        setCountdown(o => o - 1)
-      }
-
+  React.useEffect(() => {
+    const runCountDown = async () => {
       await fetchData()
       setCountdown(30)
-      setInfoAlertStat(["hide", "NULL", "success"])
+      for (let j = 0; j < 10; j++) {
+        setRefTimes(j + 1)
+        for (let i = 0; i < 30; i++) {
+          await delay(1)
+          setCountdown(o => o - 1)
+        }
 
+        await fetchData()
+        setCountdown(30)
+        setInfoAlertStat(["hide", "NULL", "success"])
+
+      }
     }
+    runCountDown()
   }, [])
 
   return (
@@ -306,7 +309,12 @@ export function StdMore({ data, user, handleError }) {
           {refTimes == 10 && countdown == 30 ? <>自動刷新已經結束</> : <>已經刷新過{refTimes}次 | 將在{countdown}秒後刷新</>}
         </Alert>
         <p></p>
-
+        <Alert severity='info'>
+          <AlertTitle>操作說明</AlertTitle>
+          點擊成績名稱或成績ID : 跳到該成績的學生專屬功能頁<br />
+          點擊學生專屬功能 : 快速開啟該功能
+        </Alert>
+        <p></p>
         <div hidden={infoAlertStat[0] == "hide" || infoAlertStat[1] == "NULL"}><Alert severity={infoAlertStat[2]}>{infoAlertStat[1]}</Alert></div>
         <p></p>
         <Box sx={{ width: '100%' }}>

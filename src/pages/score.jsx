@@ -134,11 +134,7 @@ export function Score({ data, user, handleError }) {
   }
 
   React.useEffect(() => {
-
-
     getScore(UrlParam("q"))
-
-
   }, [])
 
   React.useEffect(() => {
