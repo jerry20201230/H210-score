@@ -134,7 +134,19 @@ export function Score({ data, user, handleError }) {
   }
 
   React.useEffect(() => {
-    getScore(UrlParam("q"))
+    function getRandom(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    async function _getData() {
+      if (data.data.role == "par") {
+        await delay(getRandom(1, 5))
+        getScore(UrlParam("q"))
+      } else {
+        getScore(UrlParam("q"))
+
+      }
+    }
+    _getData()
   }, [])
 
   React.useEffect(() => {
