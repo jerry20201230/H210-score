@@ -617,7 +617,7 @@ app.post("/api/getscorebyid", (req, res) => {
     }
   }
 
-
+  console.log(`[GET SCORE BY ID] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Delay:${req.body.waitsec}`)
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT * FROM scoreData WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {

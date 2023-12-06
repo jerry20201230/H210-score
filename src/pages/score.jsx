@@ -68,7 +68,7 @@ export function Score({ data, user, handleError }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: UrlParam("q"), waiting: waitsec }),
+      body: JSON.stringify({ id: UrlParam("q") }),
     })
       .then(res => res.json())
       .then(res => {
@@ -94,7 +94,7 @@ export function Score({ data, user, handleError }) {
                   'Content-Type': 'application/json',
                 },
 
-                body: JSON.stringify({ id: UrlParam("q"), isrank: res.data.result[i].isrank > 0, countScore: true }),
+                body: JSON.stringify({ id: UrlParam("q"), isrank: res.data.result[i].isrank > 0, countScore: true, waitsec: waitsec }),
               })
                 .then(res2 => res2.json())
                 .then(res2 => {
@@ -140,7 +140,7 @@ export function Score({ data, user, handleError }) {
     async function _getData() {
       if (data.data.role == "par") {
         var waitsec = getRandom(1, 15)
-        await delay()
+        await delay(waitsec)
         getScore(UrlParam("q"), waitsec)
       } else {
         getScore(UrlParam("q"), 0)
