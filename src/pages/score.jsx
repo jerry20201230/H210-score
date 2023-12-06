@@ -62,13 +62,13 @@ export function Score({ data, user, handleError }) {
     return result
   }
 
-  function getScore(id) {
+  function getScore(id, waitsec) {
     fetch("/api/getscoremap", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: UrlParam("q") }),
+      body: JSON.stringify({ id: UrlParam("q"), waiting: waitsec }),
     })
       .then(res => res.json())
       .then(res => {
@@ -139,10 +139,11 @@ export function Score({ data, user, handleError }) {
     };
     async function _getData() {
       if (data.data.role == "par") {
-        await delay(getRandom(1, 5))
-        getScore(UrlParam("q"))
+        var waitsec = getRandom(1, 15)
+        await delay()
+        getScore(UrlParam("q"), waitsec)
       } else {
-        getScore(UrlParam("q"))
+        getScore(UrlParam("q"), 0)
 
       }
     }
