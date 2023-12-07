@@ -1191,7 +1191,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                     if (error) {
                       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
                       console.warn("[SEVER ERROR]", error)
-
+                      connection3.release()
                       return
                     }
 
@@ -1336,8 +1336,8 @@ var connectionTest =
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  // refreshData.start()
-  connectionTest.start()
+  refreshData.start()
+  //connectionTest.start()
 
   console.log(`Server is running on port ${PORT}`);
 });
