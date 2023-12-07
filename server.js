@@ -40,6 +40,7 @@ app.use(session({
 }));
 const mysql = require('mysql2');
 const e = require('express');
+const { connect } = require('node:http2');
 var sql_Connect = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -53,12 +54,6 @@ var sql_Connect = mysql.createPool({
   connectionLimit: 15
 });
 
-
-
-io.on('connection', (socket) => {
-  console.log('a user connected');
-});
-
 // app.use(express.json());
 app.get('*', (req, res) => {
   res.sendFile('index.html', { root: './build' });
@@ -66,6 +61,45 @@ app.get('*', (req, res) => {
 
 
 app.post('/api/login', async (req, res) => {
+  function login() {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+          return
+        }
+        if (results.length > 0) {
+          req.session.loggedin = true;
+          req.session.username = results[0].username;
+          req.session.userid = results[0].userid
+          req.session.role = results[0].role
+          console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
+          if (req.session.role == "par") {
+            sql_Connect.getConnection(function (err, connection) {
+              connection.query(`
+                  UPDATE parentAccountMonitor
+                  SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+                  WHERE userid = "${req.session.userid}"
+                  `, function (error, results, field) {
+              })
+              if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+              console.log("parent monitor updated")
+              connection.release()
+            })
+          }
+          res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+        } else {
+          req.session = null
+          console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
+          res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
+        }
+        res.end();
+      })
+      connection.release();
+
+    })
+  }
   const { userid, password, recaptcha } = req.body;
   const secretKey = process.env.recaptcha
   var passlen = ""
@@ -79,47 +113,15 @@ app.post('/api/login', async (req, res) => {
   ).then(gres => gres.json())
     .then(googleRes => {
       if (googleRes.success) {
-        sql_Connect.getConnection(function (err, connection) {
-          connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
-            if (error) {
-              res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-              console.warn("[SEVER ERROR]", error)
-              return
-            }
-            if (results.length > 0) {
-              req.session.loggedin = true;
-              req.session.username = results[0].username;
-              req.session.userid = results[0].userid
-              req.session.role = results[0].role
-              console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
-              if (req.session.role == "par") {
-                sql_Connect.getConnection(function (err, connection) {
-                  connection.query(`
-                  UPDATE parentAccountMonitor
-                  SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-                  WHERE userid = "${req.session.userid}"
-                  `, function (error, results, field) {
-                  })
-                  if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-                  console.log("parent monitor updated")
-                  connection.release()
-                })
-              }
-              res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
-            } else {
-              req.session = null
-              console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
-              res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
-            }
-            res.end();
-          })
-          connection.release();
-
-        })
+        login()
       } else {
         console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:recaptcha verify error`)
         res.status(403).json({ message: 'recaptcha驗證失敗，請重新驗證', ok: false, code: 401 });
       }
+    })
+    .catch((e) => {
+      console.warn("recaptcha res failed")
+      login()
     })
 });
 
@@ -155,17 +157,20 @@ app.post("/api/getallstudents", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
           return
         }
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+          connection.release();
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+          connection.release();
         }
 
         res.end();
       })
-      connection.release();
+
 
     })
   } else {
@@ -182,12 +187,18 @@ app.post("/api/getallstudentsforscore", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
+
           return
         }
         if (results.length > 0) {
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+          connection.release();
+
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+          connection.release();
+
         }
 
         res.end();
@@ -208,6 +219,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -215,8 +227,12 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
           console.log(`[SQL RESULT] /api/getallstudentscorebyid\nUser:${req.session.username} \nResult:`)
           console.log(results)
           res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+          connection.release();
+
         } else {
           res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+          connection.release();
+
         }
         res.end();
       })
@@ -241,6 +257,7 @@ app.post("/api/changepassword/student", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -250,6 +267,7 @@ app.post("/api/changepassword/student", (req, res) => {
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
 
         res.end();
+        connection.release();
 
 
       })
@@ -278,6 +296,7 @@ app.post("/api/updatescore", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -315,6 +334,7 @@ app.post("/api/updatescoresetting", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -345,6 +365,7 @@ app.post("/api/deletescore", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -361,6 +382,7 @@ app.post("/api/deletescore", (req, res) => {
             if (error2) {
               res.status(500).json({ message: 'server error 500', ok: false, code: 500 });
               console.warn("[SEVER ERROR]", error2)
+              connection2.release();
 
               return
             }
@@ -380,6 +402,7 @@ app.post("/api/deletescore", (req, res) => {
             `, function (error3, results3, fields) {
                 if (error3) {
                   console.warn("[SEVER ERROR]", error3)
+                  connection3.release()
 
                 }
                 console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
@@ -429,6 +452,7 @@ app.post("/api/uploadnewscore", (req, res) => {
         if (error) {
           // res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release();
 
           return
         }
@@ -443,6 +467,8 @@ app.post("/api/uploadnewscore", (req, res) => {
               // res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
 
               console.warn("[SEVER ERROR]", error2)
+              connection2.release();
+
               return
             }
             req.body.score.scoreData.forEach((score, i) => {
@@ -624,7 +650,7 @@ app.post("/api/getscorebyid", (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
-
+          connection.release()
           return
         }
         if (results.length > 0) {
@@ -636,7 +662,7 @@ app.post("/api/getscorebyid", (req, res) => {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                 console.warn("[SEVER ERROR]", error2)
-
+                connection2.release();
               };
               connection2.release();
 
@@ -646,7 +672,7 @@ app.post("/api/getscorebyid", (req, res) => {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                     console.warn("[SEVER ERROR]", error3)
-
+                    connection3.release();
                   };
 
                   var queryTimes
@@ -701,8 +727,6 @@ app.post("/api/getscorebyid", (req, res) => {
                   if (results3[0][req.body.id]) {
                     if (results2.length > 0) {
                       if (results3[0][req.body.id].split("%|%")[6] == "1" && req.session.role !== "std") {
-
-
 
                         var data = results3[0][req.body.id].split("%|%")
                         sql_Connect.getConnection(function (err, connection5) {
@@ -769,14 +793,19 @@ app.post("/api/getscoremap", (req, res) => {
       if (error) {
         res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
         console.warn("[SEVER ERROR]", error)
+        connection.release();
 
         return
       };
       if (results.length > 0) {
 
         res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+        connection.release();
+
       } else {
         res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+        connection.release();
+
       }
 
       res.end();
@@ -970,6 +999,7 @@ app.post("/api/setsearchtiles", (req, res) => {
 
 
 app.post("/api/getparentaccountctrl/all", (req, res) => {
+  console.log(`[getparentaccountctrl/all] User:${req.session.username} IP:${req.ip} `)
   if (req.session.role === "std") {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
@@ -1002,15 +1032,22 @@ app.post("/api/service/annoucement", (req, res) => {
     `, function (error, results, field) {
       if (error) {
         res.status(500).json({ title: null, body: null, type: null, updateTime: null })
+        connection.release()
+
         return
       }
       if (results.length > 0) {
         res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type, updateTime: results[0].time })
+        connection.release()
+
       } else {
         res.status(200).json({ title: null, body: null, type: null, updateTime: null })
+        connection.release()
+
       }
 
     })
+    connection.release()
   })
 })
 
@@ -1165,9 +1202,12 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
               })
 
             })
+
           })
+          connection2.release()
         })
       })
+      connection.release()
     })
   })
 });
@@ -1296,7 +1336,7 @@ var connectionTest =
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  refreshData.start()
+  // refreshData.start()
   connectionTest.start()
 
   console.log(`Server is running on port ${PORT}`);
