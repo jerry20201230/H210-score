@@ -58,7 +58,7 @@ export default function TopBar({ logined, title, data, needCheckLogin }) {
 
   return (
     <>
-      <CheckLogin run={needCheckLogin} />
+      <CheckLogin run={needCheckLogin} userData={data} />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed">
           <Toolbar>
