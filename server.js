@@ -46,24 +46,25 @@ var sql_Connect = mysql.createPool({
 
 
 async function isIPinBlackList(userip) {
-  sql_Connect.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
-      if (error) {
-        res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-        console.warn("[SEVER ERROR]", error)
-        connection.release()
-        return false
-      }
-      if (results.length > 0) {
-        console.log(results)
-        connection.release()
-        return true
-      } else {
-        connection.release()
-        return false
-      }
-    })
-  })
+  // sql_Connect.getConnection(function (err, connection) {
+  //   connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
+  //     if (error) {
+  //       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+  //       console.warn("[SEVER ERROR]", error)
+  //       connection.release()
+  //       return false
+  //     }
+  //     if (results.length > 0) {
+  //       console.log(results)
+  //       connection.release()
+  //       return true
+  //     } else {
+  //       connection.release()
+  //       return false
+  //     }
+  //   })
+  // })
+  return false
 
 }
 
