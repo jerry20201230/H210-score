@@ -45,7 +45,7 @@ var sql_Connect = mysql.createPool({
 });
 
 
-function isIPinBlackList(userip) {
+async function isIPinBlackList(userip) {
   sql_Connect.getConnection(function (err, connection) {
     connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
       if (error) {
@@ -1076,7 +1076,7 @@ app.post("/api/service/annoucement", (req, res) => {
 
 
 
-app.post("/api/checklogin", (req, res) => {
+app.post("/api/checklogin", async (req, res) => {
   console.log(`[CHECK LOGIN] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
 
 
@@ -1103,7 +1103,7 @@ app.post("/api/checklogin", (req, res) => {
           userid: req.session.userid,
           username: req.session.username,
           role: req.session.role,
-          isIPInBlacklist: isIPinBlackList(req.ip)
+          isIPInBlacklist: await isIPinBlackList(req.ip)
         }
       }
     }))
