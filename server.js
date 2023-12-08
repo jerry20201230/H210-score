@@ -54,8 +54,8 @@ async function isIPinBlackList(userip) {
         connection.release()
         return false
       }
-      console.log(results)
       if (results.length > 0) {
+        console.log(results)
         connection.release()
         return true
       } else {
@@ -1093,7 +1093,10 @@ app.post("/api/checklogin", async (req, res) => {
       connection.release()
     })
   }
-
+  if (await isIPinBlackList(req.ip)) {
+    res.status(403).json({ message: "BLOCKED" })
+    return
+  }
 
   res.send(JSON.stringify(
     {
@@ -1103,7 +1106,7 @@ app.post("/api/checklogin", async (req, res) => {
           userid: req.session.userid,
           username: req.session.username,
           role: req.session.role,
-          isIPInBlacklist: await isIPinBlackList(req.ip)
+          isIPInBlacklist: false
         }
       }
     }))
