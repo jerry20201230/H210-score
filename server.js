@@ -54,6 +54,7 @@ function isIPinBlackList(userip) {
         connection.release()
         return false
       }
+      console.log(results)
       if (results.length > 0) {
         connection.release()
         return true
