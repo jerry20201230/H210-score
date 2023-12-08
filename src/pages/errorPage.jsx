@@ -19,8 +19,9 @@ const { v4: uuidv4 } = require('uuid');
 
 export function ErrorPage({ errorId, errorSummery, data, user }) {
     const [countdown, setCountdown] = React.useState(30)
+    const [block, setBlock] = React.useState([0, 1, 2])
 
-    const errorIdList = [0, 403, 404, 500, 700, 701, 702, 1000]
+    const errorIdList = [0, 403, 404, 500, 700, 701, 702, 1000, 4680]
     const errorDefSummery = [
         ["未偵測到錯誤", ": )"],//0
         ["沒有權限使用", "請確定你登入的帳號是否正確"],//403
@@ -29,7 +30,9 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
         ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//700
         ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//701
         ["暫時性錯誤", "請等待幾分鐘，然後再試一次"],//702
-        ["網路錯誤", "請檢查你的網路連線，然後再試一次"]]//1000
+        ["網路錯誤", "請檢查你的網路連線，然後再試一次"],//1000
+        [`系統已經封鎖你的查詢權限", "原因:你的IP之前有異常的活動紀錄(${block[0]})，因此系統已經封鎖了你的IP。如果你確信自己沒有使用非正當的手段查詢，那麼可能是跟你同一個區域的網路服務或VPN上有使用者使用非正當的手段查詢，你可以試著更換網路服務或VPN端點。`]//4680
+    ]
 
     const [pageContent, setPageContent] = React.useState(["正在偵測錯誤類型", "正在偵測錯誤類型"])
 
@@ -37,6 +40,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
     const [reportState, setReportState] = React.useState("錯誤報告處理中...")
 
     const [errorTime, setErrorTime] = React.useState(dayjs().format("YYYY/MM/DD HH:mm:ss"))
+
 
 
 
@@ -93,6 +97,19 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
 
     React.useEffect(() => {
         sendReport()
+        if (errorId == 4680) {
+            fetch("/api/getblockedreason", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+
+                }),
+            })
+                .then(res => res.json())
+                .then(res => setBlock([res.data.reason.replace(",", "、")]))
+        }
     }, [])
     return (
         <>
@@ -108,11 +125,13 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                 <p>
                     {errorDefSummery[errorIdList.indexOf(errorId)][1]}
                 </p>
-                <p>
-                    <Button sx={{ mr: 1 }} variant="contained" onClick={() => window.location.reload()} disabled={countdown > 0}>{countdown > 0 ? `可於${countdown}秒內重新整理` : "重新整理"}</Button>
-                    <Button color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
-                    <br />{errorId == 500 || errorId >= 700 && errorId < 800 ? <Alert severity="error">請勿提前重新載入</Alert> : <></>}
-                </p>
+                {errorId !== 4680 ?
+                    <p>
+                        <Button sx={{ mr: 1 }} variant="contained" onClick={() => window.location.reload()} disabled={countdown > 0}>{countdown > 0 ? `可於${countdown}秒內重新整理` : "重新整理"}</Button>
+                        <Button color="secondary" variant="outlined" onClick={() => window.location.href = "/"}>回首頁</Button>
+                        <br />{errorId == 500 || errorId >= 700 && errorId < 800 ? <Alert sx={{ mt: 1 }} severity="error">請勿提前重新整理</Alert> : <></>}
+                    </p>
+                    : <></>}
                 <hr />
                 <code>
                     錯誤代碼: {errorId}
@@ -122,7 +141,7 @@ export function ErrorPage({ errorId, errorSummery, data, user }) {
                         path:{window.location.pathname}{window.location.search}<br />
                         user:{data.data.userid}<br />
                         time:{errorTime}<br />
-                        uuid:{randomCode}</pre><br />
+                        uuid:{randomCode}</pre>
                     {reportState}
                 </code>
 

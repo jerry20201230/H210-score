@@ -79,9 +79,13 @@ function App() {
       .then(res => res.json())
       .then(res => {
         setLoading(false)
-        if (res.logined) {
-          setIsLoggedIn(res.logined)
-          setUserData(res.data)
+        if (res.data.data.isIPInBlacklist) {
+          setPageError([true, 4680, 0])
+        } else {
+          if (res.logined) {
+            setIsLoggedIn(res.logined)
+            setUserData(res.data)
+          }
         }
 
       })
@@ -170,7 +174,7 @@ function App() {
             >
               <CircularProgress color="inherit" />
             </Backdrop>
-          : <ErrorPage errorId={pageError[1]} data={userData} />
+          : <ErrorPage errorId={pageError[1]} data={userData} errorSummery={pageError < 2 ? "NULL" : pageError[2]} />
       }
     </ThemeProvider>
   );
