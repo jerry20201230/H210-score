@@ -45,28 +45,6 @@ var sql_Connect = mysql.createPool({
 });
 
 
-async function isIPinBlackList(userip) {
-  var flag = false
-  sql_Connect.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
-      if (error) {
-        res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-        console.warn("[SEVER ERROR]", error)
-        connection.release()
-
-      }
-      if (results.length > 0) {
-        console.log(results)
-        connection.release()
-        flag = true
-      } else {
-        connection.release()
-      }
-    })
-  })
-  return flag
-
-}
 
 // app.use(express.json());
 app.get('*', (req, res) => {
@@ -76,49 +54,46 @@ app.get('*', (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   function login() {
-    if (!isIPinBlackList(req.ip)) {
-      sql_Connect.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
-          if (error) {
-            res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-            console.warn("[SEVER ERROR]", error)
-            return
-          }
-          if (results.length > 0) {
-            req.session.loggedin = true;
-            req.session.username = results[0].username;
-            req.session.userid = results[0].userid
-            req.session.role = results[0].role
-            console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
-            if (req.session.role == "par") {
-              sql_Connect.getConnection(function (err, connection) {
-                connection.query(`
+
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+          return
+        }
+        if (results.length > 0) {
+          req.session.loggedin = true;
+          req.session.username = results[0].username;
+          req.session.userid = results[0].userid
+          req.session.role = results[0].role
+          console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
+          if (req.session.role == "par") {
+            sql_Connect.getConnection(function (err, connection) {
+              connection.query(`
                   UPDATE parentAccountMonitor
                   SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
                   WHERE userid = "${req.session.userid}"
                   `, function (error, results, field) {
-                })
-                if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-                console.log("parent monitor updated")
-                connection.release()
               })
-            }
-            res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
-          } else {
-            req.session = null
-            console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
-            res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
+              if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+              console.log("parent monitor updated")
+              connection.release()
+            })
           }
-          res.end();
-        })
-        connection.release();
-
+          res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+        } else {
+          req.session = null
+          console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
+          res.status(401).json({ message: '帳號或密碼錯誤\n如果持續無法登入，請聯絡老師重設密碼', ok: false, code: 401 });
+        }
+        res.end();
       })
-    } else {
-      console.log(`[IP BLOCKED] IP:${req.ip}`)
-      res.status(401).json({ message: 'blocked owing to safety reason', ok: false, code: 401 });
-    }
+      connection.release();
+
+    })
   }
+
   const { userid, password, recaptcha } = req.body;
   const secretKey = process.env.recaptcha
   var passlen = ""
@@ -146,7 +121,7 @@ app.post('/api/login', async (req, res) => {
 
 app.post("/api/getscore", (req, res) => {
 
-  if (req.session.role && !isIPinBlackList(req.ip)) {
+  if (req.session.role) {
     // sql_Connect.getConnection(function (err, connection) {
     //   connection.query('SELECT * FROM scoreData WHERE stdId = ? ', [req.session.userid.replace("p", "s")], function (error, results, fields) {
     //     if (error) throw error;
@@ -170,7 +145,7 @@ app.post("/api/getscore", (req, res) => {
 })
 
 app.post("/api/getallstudents", (req, res) => {
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query('SELECT id,username,userid,userpassword FROM userData', function (error, results, fields) {
         if (error) {
@@ -200,7 +175,7 @@ app.post("/api/getallstudents", (req, res) => {
 
 
 app.post("/api/getallstudentsforscore", (req, res) => {
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT id,username,userid,role FROM userData WHERE role = 'std' `, function (error, results, fields) {
         if (error) {
@@ -232,7 +207,7 @@ app.post("/api/getallstudentsforscore", (req, res) => {
 })
 
 app.post("/api/getallstudentscorebyid", (req, res) => {
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT id,stdId, ${req.body.uid} FROM scoreData`, function (error, results, fields) {
         if (error) {
@@ -266,7 +241,7 @@ app.post("/api/getallstudentscorebyid", (req, res) => {
 
 app.post("/api/changepassword/student", (req, res) => {
   // console.log(`[HTTP POST] /api/changepassword/student User:${req.session.username}`)
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE userData
@@ -305,7 +280,7 @@ app.post("/api/changepassword/student", (req, res) => {
 app.post("/api/updatescore", (req, res) => {
   console.log(`[HTTP POST] /api/updatescore\nUser:${req.session.username}`)
 
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreData
@@ -343,7 +318,7 @@ app.post("/api/updatescore", (req, res) => {
 app.post("/api/updatescoresetting", (req, res) => {
   console.log(`[HTTP POST] /api/updatescoresetting User:${req.session.username}`)
 
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             UPDATE scoreUid
@@ -375,7 +350,7 @@ app.post("/api/updatescoresetting", (req, res) => {
 
 app.post("/api/deletescore", (req, res) => {
   console.log(`[HTTP POST] /api/deletescore\n${req.body.scoreid}\nUser:${req.session.username}`)
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
             ALTER TABLE scoreData
@@ -452,7 +427,7 @@ app.post("/api/uploadnewscore", (req, res) => {
     return a[getRandomInt(0, (a.length - 1))]
   }
 
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     var theUUID = uuidv4().slice(0, 7).replace("e", "k") + getRandomLatter()
     //create uuid
     //add new column
@@ -551,7 +526,7 @@ app.post("/api/uploadnewscore/test", (req, res) => {
     return a[getRandomInt(0, (a.length - 1))]
   }
 
-  if (req.session.role === "teacher" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "teacher") {
     var theUUID = uuidv4().slice(0, 7).replace("e", "k") + getRandomLatter()
     //create uuid
     //add new column
@@ -663,7 +638,7 @@ app.post("/api/getscorebyid", (req, res) => {
   }
 
   console.log(`[GET SCORE BY ID] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Delay:${req.body.waitsec}`)
-  if (req.session.role && !isIPinBlackList(req.ip)) {
+  if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`SELECT * FROM scoreData WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {
         if (error) {
@@ -807,40 +782,36 @@ app.post("/api/getscorebyid", (req, res) => {
 })
 
 app.post("/api/getscoremap", (req, res) => {
-  if (!isIPinBlackList(req.ip)) {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM scoreUid', function (error, results, fields) {
-        if (error) {
-          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-          console.warn("[SEVER ERROR]", error)
-          connection.release();
 
-          return
-        };
-        if (results.length > 0) {
-
-          res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
-          connection.release();
-
-        } else {
-          res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
-          connection.release();
-
-        }
-
-        res.end();
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query('SELECT * FROM scoreUid', function (error, results, fields) {
+      if (error) {
+        res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+        console.warn("[SEVER ERROR]", error)
         connection.release();
-      })
-    })
-  } else {
-    res.status(403).json({ message: '', ok: false, code: 404 });
 
-  }
+        return
+      };
+      if (results.length > 0) {
+
+        res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+        connection.release();
+
+      } else {
+        res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
+        connection.release();
+
+      }
+
+      res.end();
+      connection.release();
+    })
+  })
 })
 
 app.post("/api/changepass", (req, res) => {
   console.log("[CHANGE PASSWORD] \nUser: ", req.session.username, "\n")
-  if (req.session.userid === req.body.userid && !isIPinBlackList(req.ip)) {
+  if (req.session.userid === req.body.userid) {
     //要再檢查一遍舊密碼
 
     sql_Connect.getConnection(function (err, connection) {
@@ -899,7 +870,7 @@ app.post("/api/changepass", (req, res) => {
 })
 
 app.post("/api/blocksearch", (req, res) => {
-  if (req.session.role === "std" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "std") {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
@@ -944,7 +915,7 @@ app.post("/api/blocksearch", (req, res) => {
 
 
 app.post("/api/blocksearch2", (req, res) => {
-  if (req.session.role === "std" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "std") {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
@@ -986,7 +957,7 @@ app.post("/api/blocksearch2", (req, res) => {
 
 
 app.post("/api/setsearchtiles", (req, res) => {
-  if (req.session.role === "std" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "std") {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
@@ -1024,7 +995,7 @@ app.post("/api/setsearchtiles", (req, res) => {
 
 app.post("/api/getparentaccountctrl/all", (req, res) => {
   console.log(`[getparentaccountctrl/all] User:${req.session.username} IP:${req.ip} `)
-  if (req.session.role === "std" && !isIPinBlackList(req.ip)) {
+  if (req.session.role === "std") {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl 
@@ -1081,7 +1052,7 @@ app.post("/api/checklogin", async (req, res) => {
   console.log(`[CHECK LOGIN] Page:${req.body.page} User:${req.session.username} IP:${req.ip}`)
 
 
-  if (req.session.role == "par" && !isIPinBlackList(req.ip)) {
+  if (req.session.role == "par") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
       UPDATE parentAccountMonitor
@@ -1103,7 +1074,7 @@ app.post("/api/checklogin", async (req, res) => {
           userid: req.session.userid,
           username: req.session.username,
           role: req.session.role,
-          isIPInBlacklist: isIPinBlackList(req.ip)
+
         }
       }
     }))
@@ -1115,7 +1086,7 @@ app.post("/api/logout", (req, res) => {
   console.log(`[USER LOGOUT] User:${req.session.username} IP:${req.ip}`)
 
 
-  if (req.session.role == "par" && !isIPinBlackList(req.ip)) {
+  if (req.session.role == "par") {
     var s = req.session
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
@@ -1158,7 +1129,7 @@ app.post("/api/getblockedreason", (req, res) => {
 
 app.post("/api/getparentaccountlogs", (req, res) => {
   //  console.log("[GET MONITOR]")
-  if (req.session.role == "std" && !isIPinBlackList(req.ip)) {
+  if (req.session.role == "std") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
       SELECT * FROM parentAccountMonitor

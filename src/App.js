@@ -79,14 +79,12 @@ function App() {
       .then(res => res.json())
       .then(res => {
         setLoading(false)
-        if (res.data.data.isIPInBlacklist) {
-          setPageError([true, 4680, 0])
-        } else {
-          if (res.logined) {
-            setIsLoggedIn(res.logined)
-            setUserData(res.data)
-          }
+
+        if (res.logined) {
+          setIsLoggedIn(res.logined)
+          setUserData(res.data)
         }
+
 
       })
   }, [])

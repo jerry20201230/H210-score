@@ -22,11 +22,7 @@ export function CheckLogin({ run, userData }) {
                         alert("請重新登入")
                         window.location.reload()
                     }
-                    if (res.data.data.isIPInBlacklist) {
-                        alert("發生錯誤")
-                        setPageError([true, 4680, 0])
-                        setUi(<ErrorPage errorId={pageError[1]} data={userData} errorSummery={pageError < 2 ? "NULL" : pageError[2]} />)
-                    }
+
                 })
         }
     }, [])
