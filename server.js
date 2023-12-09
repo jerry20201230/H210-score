@@ -46,25 +46,25 @@ var sql_Connect = mysql.createPool({
 
 
 async function isIPinBlackList(userip) {
-  // sql_Connect.getConnection(function (err, connection) {
-  //   connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
-  //     if (error) {
-  //       res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
-  //       console.warn("[SEVER ERROR]", error)
-  //       connection.release()
-  //       return false
-  //     }
-  //     if (results.length > 0) {
-  //       console.log(results)
-  //       connection.release()
-  //       return true
-  //     } else {
-  //       connection.release()
-  //       return false
-  //     }
-  //   })
-  // })
-  return false
+  var flag = false
+  sql_Connect.getConnection(function (err, connection) {
+    connection.query('SELECT * FROM blacklist WHERE ip = ? AND vaild = 1', [userip], function (error, results, fields) {
+      if (error) {
+        res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+        console.warn("[SEVER ERROR]", error)
+        connection.release()
+
+      }
+      if (results.length > 0) {
+        console.log(results)
+        connection.release()
+        flag = true
+      } else {
+        connection.release()
+      }
+    })
+  })
+  return flag
 
 }
 
@@ -1094,10 +1094,6 @@ app.post("/api/checklogin", async (req, res) => {
       connection.release()
     })
   }
-  if (await isIPinBlackList(req.ip)) {
-    res.status(403).json({ message: "BLOCKED" })
-    return
-  }
 
   res.send(JSON.stringify(
     {
@@ -1107,7 +1103,7 @@ app.post("/api/checklogin", async (req, res) => {
           userid: req.session.userid,
           username: req.session.username,
           role: req.session.role,
-          isIPInBlacklist: false
+          isIPInBlacklist: isIPinBlackList(req.ip)
         }
       }
     }))
