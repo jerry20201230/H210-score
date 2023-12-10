@@ -147,12 +147,12 @@ function LoginForm({ set, callback }) {
             disabled={recaptcha == "" || isLogining}>{isLogining ? <><CircularProgress size={"1rem"} /> 正在登入</> : "開始查詢"}</Button>
           &nbsp;
           <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
-          <p>
+          {/* <p>
             google登入 : 測試中
             <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
               <GoogleLoginBtn />
             </GoogleOAuthProvider>
-          </p>
+          </p> */}
         </center>
       </Paper >
 
