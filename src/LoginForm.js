@@ -18,12 +18,15 @@ import dayjs from 'dayjs';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginBtn from './googleLogin';
 
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 
 function LoginForm({ set, callback }) {
   const [userid, setuserid] = useState(localStorage.getItem("loginedUserid") ? localStorage.getItem("loginedUserid") : "");
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
   const [showDialog2, setShowDialog2] = useState(false)
+
+  const [loginType, setLoginType] = React.useState("password")
 
   const [recaptcha, setRecaptcha] = useState("")
   const [serverAnnouncement, setServerAnnouncement] = React.useState(
@@ -122,39 +125,65 @@ function LoginForm({ set, callback }) {
         left: "50%",
         transform: "translateX(-50%) translateY(-50%)",
       }}>
-        <center>
+        {
+          loginType == "password" ?
+            <center>
 
-          <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
-            <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
-              action={<Button onClick={() => setShowDialog2(true)} size='small' color={serverAnnouncement.type ? serverAnnouncement.type : "info"}>更多</Button>}>
-              {serverAnnouncement.title}
-            </Alert></div>
+              <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
+                <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
+                  action={<Button onClick={() => setShowDialog2(true)} size='small' color={serverAnnouncement.type ? serverAnnouncement.type : "info"}>更多</Button>}>
+                  {serverAnnouncement.title}
+                </Alert></div>
 
-          <h1 style={{ margin: 0 }}>H210</h1>
-          <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
-          <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
-          <p></p>
-          <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
-          <p></p>
-          <ReCAPTCHA
-            sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
-            onChange={e => { setRecaptcha(e) }}
-            onExpired={e => { setRecaptcha("") }}
-            theme={theme}
-          />
-          <p></p>
-          <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}
-            disabled={recaptcha == "" || isLogining}>{isLogining ? <><CircularProgress size={"1rem"} /> 正在登入</> : "開始查詢"}</Button>
-          &nbsp;
-          <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
-          {/* <p>
+              <h1 style={{ margin: 0 }}>H210</h1>
+              <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
+              <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
+              <p></p>
+              <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
+              <p></p>
+              <ReCAPTCHA
+                sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
+                onChange={e => { setRecaptcha(e) }}
+                onExpired={e => { setRecaptcha("") }}
+                theme={theme}
+              />
+              <p></p>
+              <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}
+                disabled={recaptcha == "" || isLogining}>{isLogining ? <><CircularProgress size={"1rem"} /> 正在登入</> : "開始查詢"}</Button>
+              &nbsp;
+              <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
+              {/* <p>
             google登入 : 測試中
             <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
               <GoogleLoginBtn />
             </GoogleOAuthProvider>
           </p> */}
-        </center>
-      </Paper >
+            </center> :
+            <center>
+
+              <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
+                <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
+                  action={<Button onClick={() => setShowDialog2(true)} size='small' color={serverAnnouncement.type ? serverAnnouncement.type : "info"}>更多</Button>}>
+                  {serverAnnouncement.title}
+                </Alert></div>
+
+              <h1 style={{ margin: 0 }}>H210</h1>
+              <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
+
+
+              <p>
+                google登入 : 測試中
+                <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
+                  <GoogleLoginBtn />
+                </GoogleOAuthProvider>
+              </p>
+            </center>
+        }
+
+        <p>
+          <Button variant="text"><SyncAltIcon /> 使用{loginType == "password" ? "Google" : "帳號密碼"}登入</Button>
+        </p>
+      </Paper>
 
       <Dialog
         open={showDialog}
