@@ -151,15 +151,9 @@ function LoginForm({ set, callback }) {
               <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}
                 disabled={recaptcha == "" || isLogining}>{isLogining ? <><CircularProgress size={"1rem"} /> 正在登入</> : "開始查詢"}</Button>
               &nbsp;
-              <Button variant="text" onClick={() => { setLoginType(loginType == "password" ? "Google" : "password") }}><SyncAltIcon /> 使用{loginType == "password" ? "Google" : "帳號密碼"}登入</Button>
+              {/* <Button variant="text" onClick={() => { setLoginType(loginType == "password" ? "Google" : "password") }}><SyncAltIcon /> 使用{loginType == "password" ? "Google" : "帳號密碼"}登入</Button> */}
 
               <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
-              {/* <p>
-            google登入 : 測試中
-            <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
-              <GoogleLoginBtn />
-            </GoogleOAuthProvider>
-          </p> */}
             </center> :
             <center>
 
@@ -174,7 +168,7 @@ function LoginForm({ set, callback }) {
 
 
               <p>
-                google登入 : 測試中
+                <Alert severity="error">目前正在測試，不會有任何作用</Alert>
                 <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
                   <GoogleLoginBtn />
                 </GoogleOAuthProvider>
