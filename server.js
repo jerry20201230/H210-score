@@ -74,7 +74,48 @@ async function verifyGoogleToken(token) {
 }
 
 app.post("/auth/googlelogin", async (req, res) => {
-  res.send(JSON.stringify({ ok: true, data: await verifyGoogleToken(req.body.credential) }));
+  console.log(`[USER TRYING LOGIN (BY GOOGLE)] IP:${req.ip} User:${userid} Pass:${passlen}`)
+
+  var googleLoginUser = await verifyGoogleToken(req.body.credential)
+  if (googleLoginUser.payload.email) {
+    sql_Connect.getConnection(function (err, connection) {
+      connection.query('SELECT * FROM userData WHERE email = ? ', [googleLoginUser.payload.email], function (error, results, fields) {
+        if (error) {
+          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          console.warn("[SEVER ERROR]", error)
+          connection.release()
+          return
+        }
+        if (results.length > 0) {
+          req.session.loggedin = true;
+          req.session.username = results[0].username;
+          req.session.userid = results[0].userid
+          req.session.role = results[0].role
+          console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
+          if (req.session.role == "par") {
+            sql_Connect.getConnection(function (err, connection) {
+              connection.query(`
+                  UPDATE parentAccountMonitor
+                  SET action = "登入系統(使用Google)",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+                  WHERE userid = "${req.session.userid}"
+                  `, function (error, results, field) {
+              })
+              if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+              console.log("parent monitor updated")
+              connection.release()
+            })
+          }
+          res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
+        } else {
+          req.session = null
+          console.log(`[USER LOGIN (FAILED) ] IP:${req.ip} reason:incorrect password or id`)
+          res.status(401).json({ message: '找不到你的Google信箱，請再次確認綁定狀態', ok: false, code: 401 });
+        }
+        res.end();
+      })
+      connection.release()
+    })
+  }
 
 })
 
@@ -86,6 +127,7 @@ app.post('/api/login', async (req, res) => {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
+          connection.release()
           return
         }
         if (results.length > 0) {

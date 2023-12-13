@@ -2,7 +2,7 @@ import React from 'react';
 
 import { GoogleLogin } from '@react-oauth/google';
 
-const GoogleLoginBtn = () => {
+const GoogleLoginBtn = ({ set, callback }) => {
 
     return (
         <GoogleLogin
@@ -19,9 +19,15 @@ const GoogleLoginBtn = () => {
                     .then(res => {
                         console.log(res.data)
                         if (res.ok) {
-
+                            //alert("登入成功")
+                            set(true)
+                            // localStorage.setItem("loginedUserid", userid)
+                            callback(res)
+                            //window.location.reload()
                         } else {
-
+                            alert(res.message)
+                            window.location.reload()
+                            // AlertDialog({ title: "登入失敗", message: res.message })
                         }
                     })
             }}
