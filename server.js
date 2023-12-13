@@ -29,6 +29,10 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
+const { OAuth2Client } = require("google-auth-library");
+const jwt = require("jsonwebtoken");
+
 const mysql = require('mysql2');
 
 var sql_Connect = mysql.createPool({
@@ -51,6 +55,29 @@ app.get('*', (req, res) => {
   res.sendFile('index.html', { root: './build' });
 })
 
+/**
+ *  This function is used verify a google account
+ */
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+async function verifyGoogleToken(token) {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: GOOGLE_CLIENT_ID,
+    });
+    return { payload: ticket.getPayload() };
+  } catch (error) {
+    return { error: "Invalid user detected. Please try again" };
+  }
+}
+
+app.post("/auth/googlelogin", async (req, res) => {
+  res.send(JSON.stringify({ ok: true, data: await verifyGoogleToken(req.body.credentialResponse) }));
+
+
+})
 
 app.post('/api/login', async (req, res) => {
   function login() {
