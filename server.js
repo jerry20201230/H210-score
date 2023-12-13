@@ -74,7 +74,7 @@ async function verifyGoogleToken(token) {
 }
 
 app.post("/auth/googlelogin", async (req, res) => {
-  console.log(`[USER TRYING LOGIN (BY GOOGLE)] IP:${req.ip} User:${userid} Pass:${passlen}`)
+  console.log(`[USER TRYING LOGIN (BY GOOGLE)] IP:${req.ip}`)
 
   var googleLoginUser = await verifyGoogleToken(req.body.credential)
   if (googleLoginUser.payload.email) {
