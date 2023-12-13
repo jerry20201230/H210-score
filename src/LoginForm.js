@@ -156,7 +156,7 @@ function LoginForm({ set, callback }) {
 
               <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
             </center> :
-            <center>
+            <center style={{ width: "100%" }}>
 
               <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
                 <Alert severity={serverAnnouncement.type ? serverAnnouncement.type : "info"}
@@ -169,7 +169,7 @@ function LoginForm({ set, callback }) {
 
 
               <p>
-                <Alert severity="error">目前正在測試，不會有任何作用</Alert>
+                <Alert severity="info">目前僅學生帳號可使用學校Gmail信箱登入，未來將開放所有使用者綁定個人信箱</Alert>
                 <p></p>
                 <GoogleOAuthProvider clientId="1048282007741-hhr4o66b1u5n38gevv17lp8s4vlu31vp.apps.googleusercontent.com">
                   <GoogleLoginBtn set={set} callback={callback} />
