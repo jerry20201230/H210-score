@@ -74,8 +74,7 @@ async function verifyGoogleToken(token) {
 }
 
 app.post("/auth/googlelogin", async (req, res) => {
-  res.send(JSON.stringify({ ok: true, data: await verifyGoogleToken(req.body.credentialResponse.credential) }));
-
+  res.send(JSON.stringify({ ok: true, data: await verifyGoogleToken(req.body.credential) }));
 
 })
 

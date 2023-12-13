@@ -13,7 +13,7 @@ const GoogleLoginBtn = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ credentialResponse }),
+                    body: JSON.stringify({ credential: credentialResponse.credential }),
                 })
                     .then(res => res.json())
                     .then(res => {
