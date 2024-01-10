@@ -137,7 +137,7 @@ function LoginForm({ set, callback }) {
                       {serverAnnouncement.title}
                     </Alert></div>
 
-                  <h1 style={{ margin: 0 }}>H210</h1>
+                  <h1 style={{ margin: 0 }}>H210 </h1>
                   <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
                   <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
                   <p></p>
@@ -160,10 +160,12 @@ function LoginForm({ set, callback }) {
 
                 </> :
                 <>
-                  <h1 style={{ margin: 0 }}>H210</h1>
-                  <h2 style={{ marginTop: 0 }}>成績查詢系統</h2>
+                  <h3 style={{ margin: 0 }}>H210 成績查詢系統</h3>
+
                   <p></p>
-                  <h1><ConstructionIcon /></h1>
+                  <Typography variant="h4" gutterBottom>
+                    <ConstructionIcon />
+                  </Typography>
                   <h2>{serverAnnouncement.title}</h2>
                   <p>{serverAnnouncement.body}</p>
                 </>}
