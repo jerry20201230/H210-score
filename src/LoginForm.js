@@ -160,13 +160,11 @@ function LoginForm({ set, callback }) {
 
                 </> :
                 <>
-                  <h3 style={{ margin: 0 }}>H210 成績查詢系統</h3>
+                  <h2 style={{ margin: 0 }}>H210 成績查詢系統</h2>
 
                   <p></p>
-                  <Typography variant="h4" gutterBottom>
-                    <ConstructionIcon />
-                  </Typography>
-                  <h2>{serverAnnouncement.title}</h2>
+
+                  <Typography variant="h4" gutterBottom>{serverAnnouncement.title}</Typography>
                   <p>{serverAnnouncement.body}</p>
                 </>}
 
