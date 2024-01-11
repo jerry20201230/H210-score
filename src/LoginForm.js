@@ -86,6 +86,7 @@ function LoginForm({ set, callback }) {
     }
     ).then(res => res.json())
       .then(res => {
+        console.log(res)
         setServerAnnouncement(res)
         console.log("serverAnnouncement updated")
       })
