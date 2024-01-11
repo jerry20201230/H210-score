@@ -1100,11 +1100,11 @@ app.post("/api/service/annoucement", (req, res) => {
         return
       }
       if (results.length > 0) {
-        res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type, updateTime: results[0].time })
+        res.status(200).json({ title: results[0].title, body: results[0].body, type: results[0].type, updateTime: results[0].time, action: results[0].action })
         connection.release()
 
       } else {
-        res.status(200).json({ title: null, body: null, type: null, updateTime: null })
+        res.status(200).json({ title: null, body: null, type: null, updateTime: null, action: null })
         connection.release()
 
       }
