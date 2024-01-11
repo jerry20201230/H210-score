@@ -128,7 +128,17 @@ function LoginForm({ set, callback }) {
         {
           loginType == "password" ?
             <center>
-              {serverAnnouncement.action !== "not_allow_login" ?
+              {serverAnnouncement.action == "not_allow_login" ?
+                <>
+
+                  <h2 style={{ margin: 0 }}>H210 成績查詢系統</h2>
+
+                  <p></p>
+
+                  <Typography variant="h4" gutterBottom>{serverAnnouncement.title}</Typography>
+                  <p>{serverAnnouncement.body}</p>
+
+                </> :
                 <>
 
                   <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
@@ -158,14 +168,6 @@ function LoginForm({ set, callback }) {
 
                   <Button variant="outlined" sx={{ ml: 1, display: "none" }} onClick={() => showDialogF()}>帳密提示</Button>
 
-                </> :
-                <>
-                  <h2 style={{ margin: 0 }}>H210 成績查詢系統</h2>
-
-                  <p></p>
-
-                  <Typography variant="h4" gutterBottom>{serverAnnouncement.title}</Typography>
-                  <p>{serverAnnouncement.body}</p>
                 </>}
 
             </center> :
