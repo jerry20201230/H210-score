@@ -132,13 +132,13 @@ function LoginForm({ set, callback }) {
               {serverAnnouncement.action == "not_allow_login" ?
                 <>
 
-                  <h2 style={{ margin: 0 }}>H210 成績查詢系統</h2>
+                  <h2 style={{ margin: 0 }}>H210<br />成績查詢系統</h2>
 
                   <p></p>
 
                   <Typography variant="h4" gutterBottom>{serverAnnouncement.title}</Typography>
                   <p>{serverAnnouncement.body}</p>
-
+                  <p>最後更新於{serverAnnouncement.updateTime == "now" ? dayjs(new Date()).format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</p>
                 </> :
                 <>
 
