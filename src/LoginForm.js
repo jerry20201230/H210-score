@@ -128,7 +128,7 @@ function LoginForm({ set, callback }) {
         {
           loginType == "password" ?
             <center>
-              {serverAnnouncement.action === "ok" ?
+              {serverAnnouncement.action !== "not_allow_login" ?
                 <>
 
                   <div hidden={serverAnnouncement.title == "null" || serverAnnouncement.title == null}>
