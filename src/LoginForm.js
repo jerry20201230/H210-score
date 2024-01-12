@@ -136,7 +136,7 @@ function LoginForm({ set, callback }) {
 
                   <p></p>
 
-                  <Typography variant="h4" gutterBottom>{serverAnnouncement.title}</Typography>
+                  <Typography variant="h4" sx={{ minWidth: "250px" }} gutterBottom>{serverAnnouncement.title}</Typography>
                   <p>{serverAnnouncement.body}</p>
                   <p>最後更新於{serverAnnouncement.updateTime == "now" ? dayjs(new Date()).format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</p>
                 </> :
