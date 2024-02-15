@@ -44,7 +44,7 @@ export function Setting({ data, user, handleError }) {
                     <code>
                         成績查詢系統 v1.0
                         BY Jerry <br />
-                        2023.10<br />
+                        2024.01<br />
                         SVG Background by <Button component="a" target="_blank" href="https://bgjar.com" variant="text">BGJar</Button>
                     </code>
                 </Paper>
