@@ -1392,56 +1392,56 @@ app.post("/api/sqltest", (req, res) => {
 
 
 
-//
-var connectionTest =
-  cron.schedule('0 */2 * * *', () => {
+// //
+// var connectionTest =
+//   cron.schedule('0 */2 * * *', () => {
 
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-       
-        SELECT * FROM connectionTest
-        `, function (error, results, fields) {
-        if (error) { console.log("[CRON][SQL TEST] get SQL data : [ERR!]", error) }
-        else {
-          console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
-        }
-        connection.release()
+//     sql_Connect.getConnection(function (err, connection) {
+//       connection.query(`
 
-        sql_Connect.getConnection(function (err, connection2) {
-          connection2.query(`
-           DELETE FROM connectionTest
-            WHERE id > 1;
-       
-        `, function (error2, results2, fields) {
-            if (error2) {
-              console.log("[CRON][SQL TEST] delete SQL data : [ERR!]", error2)
-            } else {
-              console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
-            }
-            connection2.release()
+//         SELECT * FROM connectionTest
+//         `, function (error, results, fields) {
+//         if (error) { console.log("[CRON][SQL TEST] get SQL data : [ERR!]", error) }
+//         else {
+//           console.log("[CRON][SQL TEST] get SQL data : SUCCESS")
+//         }
+//         connection.release()
 
-            sql_Connect.getConnection(function (err, connection3) {
-              connection3.query(`
-            INSERT INTO connectionTest (k,time)
-            VALUES(${1},"${dayjs().add(8, "hours").format("YYYY/MM/DD HH:mm:ss")}")
+//         sql_Connect.getConnection(function (err, connection2) {
+//           connection2.query(`
+//            DELETE FROM connectionTest
+//             WHERE id > 1;
 
-        `, function (error3, results3, fields) {
-                if (error3) {
-                  console.log("[CRON][SQL TEST] insert SQL data : [ERR]", error3)
+//         `, function (error2, results2, fields) {
+//             if (error2) {
+//               console.log("[CRON][SQL TEST] delete SQL data : [ERR!]", error2)
+//             } else {
+//               console.log("[CRON][SQL TEST] delete SQL data : SUCCESS")
+//             }
+//             connection2.release()
 
-                } else {
-                  console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
-                }
-                connection3.release()
-              })
-            })
-          })
-        })
-      })
-    })
+//             sql_Connect.getConnection(function (err, connection3) {
+//               connection3.query(`
+//             INSERT INTO connectionTest (k,time)
+//             VALUES(${1},"${dayjs().add(8, "hours").format("YYYY/MM/DD HH:mm:ss")}")
+
+//         `, function (error3, results3, fields) {
+//                 if (error3) {
+//                   console.log("[CRON][SQL TEST] insert SQL data : [ERR]", error3)
+
+//                 } else {
+//                   console.log("[CRON][SQL TEST] insert SQL data : SUCCESS")
+//                 }
+//                 connection3.release()
+//               })
+//             })
+//           })
+//         })
+//       })
+//     })
 
 
-  })
+//   })
 
 
 const PORT = process.env.PORT || 3000;
