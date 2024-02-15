@@ -89,6 +89,11 @@ function LoginForm({ set, callback }) {
         console.log(res)
         setServerAnnouncement(res)
         console.log("serverAnnouncement updated")
+        if (res.title !== "null" && res.title !== null) {
+          if (res.action.includes("dialog")) {
+            setShowDialog2(true)
+          }
+        }
       })
   }, [])
 
