@@ -134,7 +134,7 @@ function LoginForm({ set, callback }) {
         {
           loginType == "password" ?
             <center>
-              {serverAnnouncement.action == "not_allow_login" ?
+              {serverAnnouncement.action == "not_allow_login" || serverAnnouncement.title == "連線中..." ?
                 <>
 
                   <h2 style={{ margin: 0 }}>H210<br />成績查詢系統</h2>
@@ -143,7 +143,9 @@ function LoginForm({ set, callback }) {
 
                   <Typography variant="h4" sx={{ minWidth: "200px", }} gutterBottom>{serverAnnouncement.title}</Typography>
                   <p>{serverAnnouncement.body}</p>
-                  <p>最後更新於{serverAnnouncement.updateTime == "now" ? dayjs(new Date()).format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</p>
+                  {serverAnnouncement.action == "not_allow_login" ?
+                    <p>最後更新於{serverAnnouncement.updateTime == "now" ? dayjs(new Date()).format("YYYY-MM-DD HH:mm") : serverAnnouncement.updateTime}</p>
+                    : <></>}
                 </> :
                 <>
 

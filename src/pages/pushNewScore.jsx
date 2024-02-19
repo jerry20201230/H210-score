@@ -315,6 +315,8 @@ export function PushNewScore({ data, user, handleError }) {
           />
           <Alert severity="error">為避免伺服器錯誤，請至少選擇一個標籤</Alert>
           <p></p>
+          
+          <p></p>
           <TextField
             label="對全班的公告"
             multiline
