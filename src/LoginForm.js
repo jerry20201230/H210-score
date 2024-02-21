@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginBtn from './googleLogin';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ConstructionIcon from '@mui/icons-material/Construction';
@@ -140,7 +141,8 @@ function LoginForm({ set, callback }) {
                   <h2 style={{ margin: 0 }}>H210<br />成績查詢系統</h2>
 
                   <p></p>
-
+                  {serverAnnouncement.title == "連線中..." ? <LinearProgress />
+                    : <></>}
                   <Typography variant="h4" sx={{ minWidth: "200px", }} gutterBottom>{serverAnnouncement.title}</Typography>
                   <p>{serverAnnouncement.body}</p>
                   {serverAnnouncement.action == "not_allow_login" ?
