@@ -860,16 +860,12 @@ app.post("/api/getscoremap", (req, res) => {
 
         return
       };
-      if (results.length > 0) {
 
-        res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
-        connection.release();
 
-      } else {
-        res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
-        connection.release();
+      res.send(JSON.stringify({ message: 'Login successful', data: { result: results }, ok: true }));
+      connection.release();
 
-      }
+
 
       res.end();
       connection.release();
