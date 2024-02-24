@@ -171,6 +171,7 @@ function LoginForm({ set, callback }) {
                     onChange={e => { setRecaptcha(e) }}
                     onExpired={e => { setRecaptcha("") }}
                     theme={theme}
+                    onLoad={e => console.log("rec. on load.")}
                   />
                   <p></p>
                   <Button ref={submitButttonRef} variant="contained" onClick={handleLogin}

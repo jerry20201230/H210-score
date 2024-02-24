@@ -483,8 +483,7 @@ export function StdScore({ data, user, handleError }) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <>
-              此處顯示的查詢次數包含家長查詢失敗的次數<br />
-              在2023/10/27之前的最後查詢時間與次數<b>是由伺服器紀錄檔推算的大約值，並非實際值</b>
+              此處顯示的查詢次數包含家長查詢失敗的次數
             </>
           </DialogContentText>
         </DialogContent>
