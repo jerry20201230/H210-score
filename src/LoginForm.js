@@ -26,6 +26,7 @@ function LoginForm({ set, callback }) {
   const [password, setPassword] = useState('');
   const [showDialog, setShowDialog] = useState(false)
   const [showDialog2, setShowDialog2] = useState(false)
+  const [recaptchaLoading, setRecaptchaLoading] = React.useState(true);
 
   const [loginType, setLoginType] = React.useState("password")
 
@@ -74,6 +75,7 @@ function LoginForm({ set, callback }) {
 
   function recaptchaOnLoad() {
     console.log("recaptcha is loaded")
+    setRecaptchaLoading(false)
   }
 
   function showDialogF() {
@@ -169,6 +171,8 @@ function LoginForm({ set, callback }) {
                   <TextField type='text' value={userid} id="userid-input" label="帳號" variant="standard" onChange={(e) => setuserid(e.target.value)} />
                   <p></p>
                   <TextField type='password' value={password} onChange={(e) => setPassword(e.target.value)} id="userpassword-input" label="密碼" variant="standard" />
+                  <p></p>
+                  {recaptchaLoading ? <>正在載入驗證碼...</> : <></>}
                   <p></p>
                   <ReCAPTCHA
                     sitekey="6LeoWJ0oAAAAAN9LRkvYIdq3uenaZ6xENqSPLr9_"
