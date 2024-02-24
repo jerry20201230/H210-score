@@ -389,7 +389,7 @@ app.post("/api/updatescoresetting", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreUid
+            UPDATE scoreUid2
             SET scoreName = "${req.body.title}", subject = "${req.body.tags}", summery = "${req.body.annousment}"
             WHERE uid = "${req.body.scoreid}"
             `, function (error, results, fields) {
@@ -438,7 +438,7 @@ app.post("/api/deletescore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-            DELETE FROM scoreUid
+            DELETE FROM scoreUid2
             WHERE uid = ?;
             `, [req.body.scoreid], function (error2, results2, fields) {
             if (error2) {
@@ -508,7 +508,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
+            INSERT INTO scoreUid2 (uid,scoreName,scoresetuid,subject,summery,publish)
             VALUES(?,?,?,?,?,?)
             `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
         if (error) {
@@ -607,7 +607,7 @@ app.post("/api/uploadnewscore/test", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            INSERT INTO scoreUid (uid,scoreName,scoresetuid,subject,summery,publish)
+            INSERT INTO scoreUid2 (uid,scoreName,scoresetuid,subject,summery,publish)
             VALUES(?,?,?,?,?,?)
             `, [theUUID, req.body.score.title, theUUID, req.body.score.subject, req.body.score.annousment, req.body.method === "publish"], function (error, results, fields) {
         if (error) {
@@ -852,7 +852,7 @@ app.post("/api/getscorebyid", (req, res) => {
 app.post("/api/getscoremap", (req, res) => {
 
   sql_Connect.getConnection(function (err, connection) {
-    connection.query('SELECT * FROM scoreUid', function (error, results, fields) {
+    connection.query('SELECT * FROM scoreUid2', function (error, results, fields) {
       if (error) {
         res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
         console.warn("[SEVER ERROR]", error)
@@ -1237,7 +1237,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
       sql_Connect.getConnection(function (err, connection2) {
         connection2.query(`
-      SELECT * FROM scoreUid 
+      SELECT * FROM scoreUid2 
     `, function (error, results2, field) {
           results.forEach((k, i) => {
             var index = i
