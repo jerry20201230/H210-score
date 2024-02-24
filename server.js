@@ -79,7 +79,7 @@ app.post("/auth/googlelogin", async (req, res) => {
   var googleLoginUser = await verifyGoogleToken(req.body.credential)
   if (googleLoginUser.payload.email) {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM userData WHERE email = ? ', [googleLoginUser.payload.email], function (error, results, fields) {
+      connection.query('SELECT * FROM userData2 WHERE email = ? ', [googleLoginUser.payload.email], function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -123,7 +123,7 @@ app.post('/api/login', async (req, res) => {
   function login() {
 
     sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT * FROM userData WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
+      connection.query('SELECT * FROM userData2 WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -215,7 +215,7 @@ app.post("/api/getscore", (req, res) => {
 app.post("/api/getallstudents", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query('SELECT id,username,userid,userpassword FROM userData', function (error, results, fields) {
+      connection.query('SELECT id,username,userid,userpassword FROM userData2', function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -245,7 +245,7 @@ app.post("/api/getallstudents", (req, res) => {
 app.post("/api/getallstudentsforscore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT id,username,userid,role FROM userData WHERE role = 'std' `, function (error, results, fields) {
+      connection.query(`SELECT id,username,userid,role FROM userData2 WHERE role = 'std' `, function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -312,7 +312,7 @@ app.post("/api/changepassword/student", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE userData
+            UPDATE userData2
             SET userpassword = ?
             WHERE id = ?
             `, [req.body.password, req.body.id], function (error, results, fields) {
@@ -884,7 +884,7 @@ app.post("/api/changepass", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-    SELECT * FROM userData
+    SELECT * FROM userData2
     WHERE userid = ?
     `, [req.body.userid], function (error, results, fields) {
         if (error) {
@@ -900,7 +900,7 @@ app.post("/api/changepass", (req, res) => {
 
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
-          UPDATE userData
+          UPDATE userData2
           SET userpassword = ?
           WHERE userid = ?
           `, [req.body.newpass, req.body.userid], function (error, results2, fields) {
