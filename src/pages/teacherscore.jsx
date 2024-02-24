@@ -333,7 +333,7 @@ export function TeacherScore({ data, user, handleError }) {
         )
       }
     } catch (e) {
-
+      console.warn(e)
       setTbody(<>讀取成績資料時發生錯誤，請重新輸入成績資料<br />如果是系統產生的測試資料，可以直接刪除</>)
 
     }
