@@ -103,7 +103,7 @@ export default function ScoreTabs({ data, role, href }) {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}
           variant={tabType}
           allowScrollButtonsMobile={tabType === "scrollable"}
@@ -169,7 +169,24 @@ export default function ScoreTabs({ data, role, href }) {
               : <></>
           )
         })
-      }
+      } */}
+      <List>
+
+        {
+          (data.map((d2, i2) => {
+            return (
+
+
+              <ListItem disablePadding key={d2.id}>
+                <ListItemButton component={Link} to={`/route/to/score/${role === "std" ? (href === "more" ? "more" : "") : "class/"}?q=${d2.id}`}>
+                  <ListItemText primary={d2.title} />
+                </ListItemButton>
+              </ListItem>
+
+            )
+          }))
+        }
+      </List>
     </Box>
   );
 }
