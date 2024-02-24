@@ -277,7 +277,7 @@ app.post("/api/getallstudentsforscore", (req, res) => {
 app.post("/api/getallstudentscorebyid", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT id,stdId, ${req.body.uid} FROM scoreData`, function (error, results, fields) {
+      connection.query(`SELECT id,stdId, ${req.body.uid} FROM scoreData2`, function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -421,7 +421,7 @@ app.post("/api/deletescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            ALTER TABLE scoreData
+            ALTER TABLE scoreData2
             DROP COLUMN ${req.body.scoreid};
             `, function (error, results, fields) {
         if (error) {
@@ -522,7 +522,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData
+                    ALTER TABLE scoreData2
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error2, results, fields) {
             if (error2) {
@@ -541,7 +541,7 @@ app.post("/api/uploadnewscore", (req, res) => {
                   text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
-                  UPDATE scoreData
+                  UPDATE scoreData2
                   SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
                   WHERE id = ${index};`, function (error3, results, fields) {
                   if (error3) {
@@ -621,7 +621,7 @@ app.post("/api/uploadnewscore/test", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                    ALTER TABLE scoreData
+                    ALTER TABLE scoreData2
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error2, results, fields) {
             if (error2) {
@@ -638,7 +638,7 @@ app.post("/api/uploadnewscore/test", (req, res) => {
                   text = `${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}`
 
                 connection3.query(`
-                  UPDATE scoreData
+                  UPDATE scoreData2
                   SET ${theUUID} = "${req.body.score.scoreData[index] !== null && req.body.score.scoreData[index] ? req.body.score.scoreData[index] : null}%|%${req.body.score.summeryData[index] !== null && req.body.score.summeryData[index] ? req.body.score.summeryData[index] : null}"
                   WHERE id = ${index};`, function (error3, results, fields) {
                   if (error3) {
@@ -708,7 +708,7 @@ app.post("/api/getscorebyid", (req, res) => {
   console.log(`[GET SCORE BY ID] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Delay:${req.body.waitsec}`)
   if (req.session.role) {
     sql_Connect.getConnection(function (err, connection) {
-      connection.query(`SELECT * FROM scoreData WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {
+      connection.query(`SELECT * FROM scoreData2 WHERE stdId = "${req.session.userid.replace("p", "s")}" `, function (error, results, fields) {
         if (error) {
           res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
@@ -720,7 +720,7 @@ app.post("/api/getscorebyid", (req, res) => {
           //繼續查最高/最低/平均
 
           sql_Connect.getConnection(function (err, connection2) {
-            connection2.query(`SELECT ${req.body.id} FROM scoreData`, function (error2, results2, fields2) {
+            connection2.query(`SELECT ${req.body.id} FROM scoreData2`, function (error2, results2, fields2) {
               if (error2) {
                 res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                 console.warn("[SEVER ERROR]", error2)
