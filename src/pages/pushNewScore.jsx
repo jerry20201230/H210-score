@@ -28,8 +28,8 @@ import SelectSubject from '../selectSubject';
 
 export function PushNewScore({ data, user, handleError }) {
 
-  const [inputValues, setInputValues] = React.useState(Array(46));
-  const [summeryValue, setSummeryValue] = React.useState(Array(46));
+  const [inputValues, setInputValues] = React.useState(Array(47));
+  const [summeryValue, setSummeryValue] = React.useState(Array(47));
 
   const [gradeTitle, setGradeTitle] = React.useState()
   const [gradeSubject, setGradeSubject] = React.useState()
@@ -179,98 +179,94 @@ export function PushNewScore({ data, user, handleError }) {
 
 
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    const testconnect = async () => {
 
+      setConnectionStatus({ status: false, message: "連線中...", finished: false })
 
-    setConnectionStatus({ status: false, message: "連線中...", finished: false })
-
-    fetch("/api/uploadnewscore/test", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        page: window.location.pathname + window.location.search,
-        method: "publish",
-        score: {
-          title: "測試用資料",
-          subject: gradeSubject ? gradeSubject.join(",") : "測試",
-          annousment: annousment,
-          scoreData: inputValues,
-          summeryData: summeryValue,
-        }
-      })
-    }).then(res => res.json())
-      .then(res => {
-
-        setConnectionStatus({ status: res.ok, message: res.message, finished: false })
-
-        fetch('/api/deletescore', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(
-            {
-              scoreid: res.uuid,
-            }),
-        }).then(res2 => res2.json())
-          .then((res2) => {
-            if (res.ok && res2.ok) {
-              setConnectionStatus({ status: res.ok, message: res.message, finished: true })
-
-            } else {
-              setConnectionStatus({ status: res.ok, message: res.message, finished: true })
-              alert("伺服器連線測試失敗!\n請重新載入，再試一次")
-            }
-
-          })
-          .catch(() => {
-            window.alert("伺服器連線測試失敗!\n請重新載入，再試一次")
-          })
-      })
-
-
-
-
-
-
-    // alert("系統維護中，暫時無法輸入新成績")
-    // window.location.href = "/"
-    await fetch("/api/getallstudents", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.ok) {
-          console.log(".......0", res)
-          var list = []
-          for (let i = 0; i < res.data.result.length; i++) {
-            if (res.data.result[i].userid.includes("s")) {
-              var object = res.data.result[i]
-              object.scoreInput = <TextField type='number' inputProps={{ pattern: "[0-9]*", inputmode: "numeric" }} min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
-              object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
-
-              console.log(object, i, inputValues[i])
-              list.push(object)
-            }
+      fetch("/api/uploadnewscore/test", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          page: window.location.pathname + window.location.search,
+          method: "publish",
+          score: {
+            title: "測試用資料",
+            subject: gradeSubject ? gradeSubject.join(",") : "測試",
+            annousment: annousment,
+            scoreData: inputValues,
+            summeryData: summeryValue,
           }
-          setStudents(list)
+        })
+      }).then(res => res.json())
+        .then(res => {
 
-          // if (localScore("get") !== null) {
-          //   setOpen2(true)
-          // }
+          setConnectionStatus({ status: res.ok, message: res.message, finished: false })
 
-        } else {
-          handleError([true, 500])
-          alert("發生錯誤，請刷新網站!!")
-        }
+          fetch('/api/deletescore', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+              {
+                scoreid: res.uuid,
+              }),
+          }).then(res2 => res2.json())
+            .then((res2) => {
+              if (res.ok && res2.ok) {
+                setConnectionStatus({ status: res.ok, message: res.message, finished: true })
 
+              } else {
+                setConnectionStatus({ status: res.ok, message: res.message, finished: true })
+                alert("伺服器連線測試失敗!\n請重新載入，再試一次")
+              }
+
+            })
+            .catch(() => {
+              window.alert("伺服器連線測試失敗!\n請重新載入，再試一次")
+            })
+        })
+      // alert("系統維護中，暫時無法輸入新成績")
+      // window.location.href = "/"
+      await fetch("/api/getallstudents", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
       })
+        .then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            console.log(".......0", res)
+            var list = []
+            for (let i = 0; i < res.data.result.length; i++) {
+              if (res.data.result[i].userid.includes("s")) {
+                var object = res.data.result[i]
+                object.scoreInput = <TextField type='number' inputProps={{ pattern: "[0-9]*", inputmode: "numeric" }} min="0" max="100" value={inputValues[i]} onChange={(e) => handleGradeChange(i, e.target.value)} label="輸入成績" variant="standard" />
+                object.summeryInput = <TextField value={summeryValue[i]} onChange={(e) => handleSummeryChange(i, e.target.value)} label="輸入備註" variant="standard" />
+
+                console.log(object, i, inputValues[i])
+                list.push(object)
+              }
+            }
+            setStudents(list)
+
+            // if (localScore("get") !== null) {
+            //   setOpen2(true)
+            // }
+
+          } else {
+            handleError([true, 500])
+            alert("發生錯誤，請刷新網站!!")
+          }
+
+        })
+    }
+    testconnect()
   }, [])
 
 
@@ -315,7 +311,7 @@ export function PushNewScore({ data, user, handleError }) {
           />
           <Alert severity="error">為避免伺服器錯誤，請至少選擇一個標籤</Alert>
           <p></p>
-          
+
           <p></p>
           <TextField
             label="對全班的公告"
