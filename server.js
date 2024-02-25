@@ -93,17 +93,17 @@ app.post("/auth/googlelogin", async (req, res) => {
           req.session.role = results[0].role
           console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
           if (req.session.role == "par") {
-            sql_Connect.getConnection(function (err, connection) {
-              connection.query(`
-                  UPDATE parentAccountMonitor
-                  SET action = "登入系統(使用Google)",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-                  WHERE userid = "${req.session.userid}"
-                  `, function (error, results, field) {
-              })
-              if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-              console.log("parent monitor updated")
-              connection.release()
-            })
+            // sql_Connect.getConnection(function (err, connection) {
+            //   connection.query(`
+            //       UPDATE parentAccountMonitor
+            //       SET action = "登入系統(使用Google)",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+            //       WHERE userid = "${req.session.userid}"
+            //       `, function (error, results, field) {
+            //   })
+            //   if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+            //   console.log("parent monitor updated")
+            //   connection.release()
+            // })
           }
           res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
         } else {
@@ -137,17 +137,17 @@ app.post('/api/login', async (req, res) => {
           req.session.role = results[0].role
           console.log(`[USER LOGIN (SUCCESS)] IP:${req.ip} User:${req.session.username}`)
           if (req.session.role == "par") {
-            sql_Connect.getConnection(function (err, connection) {
-              connection.query(`
-                  UPDATE parentAccountMonitor
-                  SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-                  WHERE userid = "${req.session.userid}"
-                  `, function (error, results, field) {
-              })
-              if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-              console.log("parent monitor updated")
-              connection.release()
-            })
+            // sql_Connect.getConnection(function (err, connection) {
+            //   connection.query(`
+            //       UPDATE parentAccountMonitor
+            //       SET action = "登入系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+            //       WHERE userid = "${req.session.userid}"
+            //       `, function (error, results, field) {
+            //   })
+            //   if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+            //   console.log("parent monitor updated")
+            //   connection.release()
+            // })
           }
           res.send(JSON.stringify({ message: '登入成功', data: { userid: results[0].userid, username: results[0].username, role: results[0].role }, ok: true }));
         } else {
@@ -459,7 +459,7 @@ app.post("/api/deletescore", (req, res) => {
 
             sql_Connect.getConnection(function (err, connection3) {
               connection3.query(`
-              ALTER TABLE parentAccountCtrl 
+              ALTER TABLE parentAccountCtrl2 
               DROP COLUMN ${req.body.scoreid};
             `, function (error3, results3, fields) {
                 if (error3) {
@@ -467,7 +467,7 @@ app.post("/api/deletescore", (req, res) => {
                   connection3.release()
 
                 }
-                console.log("[REMOVED DATA] parentAccountCtrl / ", req.body.scoreid)
+                console.log("[REMOVED DATA] parentAccountCtrl2 / ", req.body.scoreid)
                 connection3.release()
               })
             })
@@ -562,7 +562,7 @@ app.post("/api/uploadnewscore", (req, res) => {
 
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-                  ALTER TABLE parentAccountCtrl
+                  ALTER TABLE parentAccountCtrl2
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error, results, fields) {
             connection2.release()
@@ -663,7 +663,7 @@ app.post("/api/uploadnewscore/test", (req, res) => {
     })
     sql_Connect.getConnection(function (err, connection2) {
       connection2.query(`
-                  ALTER TABLE parentAccountCtrl
+                  ALTER TABLE parentAccountCtrl2
                     ADD COLUMN ${theUUID} TEXT;
                     `, function (error, results, fields) {
         connection2.release()
@@ -730,7 +730,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
 
               sql_Connect.getConnection(function (err, connection3) {
-                connection3.query(`SELECT * FROM parentAccountCtrl WHERE stdId = "${req.session.userid.replace("s", "p")}"`, function (error3, results3, fields3) {
+                connection3.query(`SELECT * FROM parentAccountCtrl2 WHERE stdId = "${req.session.userid.replace("s", "p")}"`, function (error3, results3, fields3) {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                     console.warn("[SEVER ERROR]", error3)
@@ -744,7 +744,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     if (req.session.role == "std") {
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
-                      UPDATE parentAccountCtrl
+                      UPDATE parentAccountCtrl2
                       SET ${req.body.id} = "0%|%null%|%6%|%null%|%1,2,3,4%|%1%|%0"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
@@ -755,7 +755,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     } else {
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
-                      UPDATE parentAccountCtrl
+                      UPDATE parentAccountCtrl2
                       SET ${req.body.id} = "1%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%6%|%null%|%1,2,3,4%|%1%|%0"
                       WHERE stdId = "${req.session.userid.replace("s", "p")}";
                     `, function (error4, results4, fields4) {
@@ -772,7 +772,7 @@ app.post("/api/getscorebyid", (req, res) => {
                       queryTimes = false
                       sql_Connect.getConnection(function (err, connection4) {
                         connection4.query(`
-                      UPDATE parentAccountCtrl
+                      UPDATE parentAccountCtrl2
                       SET ${req.body.id} = "${Number(results3[0][req.body.id].split("%|%")[0]) + 1}%|%${dayjs(new Date()).format("YYYY/MM/DD HH:mm:ss")}%|%${results3[0][req.body.id].split("%|%")[2]}%|%${results3[0][req.body.id].split("%|%")[3]}%|%${results3[0][req.body.id].split("%|%")[4]}%|%${results3[0][req.body.id].split("%|%")[5]}%|%${results3[0][req.body.id].split("%|%")[6]}"
                       WHERE stdId = "${req.session.userid}";
                     `, function (error4, results4, fields4) {
@@ -793,7 +793,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         var data = results3[0][req.body.id].split("%|%")
                         sql_Connect.getConnection(function (err, connection5) {
                           connection5.query(`
-                         UPDATE parentAccountCtrl
+                         UPDATE parentAccountCtrl2
                          SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${data[5]}%|%${0}"
                          WHERE stdId = "${req.session.userid.replace("s", "p")}";
                           `, function (error2, results2, fields) {
@@ -938,7 +938,7 @@ app.post("/api/blocksearch", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
-      SELECT * FROM parentAccountCtrl 
+      SELECT * FROM parentAccountCtrl2 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
@@ -949,7 +949,7 @@ app.post("/api/blocksearch", (req, res) => {
         } else {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
-      UPDATE parentAccountCtrl
+      UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(5, "minute").format("YYYY/MM/DD HH:mm:ss")}%|%${data[4]}%|%${data[5]}%|%${data[6]}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
@@ -983,7 +983,7 @@ app.post("/api/blocksearch2", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
-      SELECT * FROM parentAccountCtrl 
+      SELECT * FROM parentAccountCtrl2 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
@@ -994,7 +994,7 @@ app.post("/api/blocksearch2", (req, res) => {
         } else {
           sql_Connect.getConnection(function (err, connection2) {
             connection2.query(`
-      UPDATE parentAccountCtrl
+      UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${Number(data[5]) - 1}%|%${1}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
@@ -1025,14 +1025,14 @@ app.post("/api/setsearchtiles", (req, res) => {
 
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
-      SELECT * FROM parentAccountCtrl 
+      SELECT * FROM parentAccountCtrl2 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
         //not changed yet
         sql_Connect.getConnection(function (err, connection2) {
           connection2.query(`
-      UPDATE parentAccountCtrl
+      UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${req.body.tileid}%|%${data[5]}%|%${data[6]}"
       WHERE stdId = "${req.session.userid.replace("s", "p")}";
     `, function (error2, results2, fields) {
@@ -1062,7 +1062,7 @@ app.post("/api/getparentaccountctrl/all", (req, res) => {
   if (req.session.role === "std") {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
-      SELECT * FROM parentAccountCtrl 
+      SELECT * FROM parentAccountCtrl2 
       WHERE stdId = "${req.session.userid.replace("s", "p")}"
     `, function (error3, results3, fields) {
         res.status(200).json({ message: "ok", ok: true, code: 200, data: results3[0] });
@@ -1117,17 +1117,17 @@ app.post("/api/checklogin", async (req, res) => {
 
 
   if (req.session.role == "par") {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-      UPDATE parentAccountMonitor
-      SET action = "開啟",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-      WHERE userid = "${req.session.userid}"
-    `, function (error, results, field) {
-      })
-      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      console.log("parent monitor updated")
-      connection.release()
-    })
+    // sql_Connect.getConnection(function (err, connection) {
+    //   connection.query(`
+    //   UPDATE parentAccountMonitor
+    //   SET action = "開啟",path = "${req.body.page}",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+    //   WHERE userid = "${req.session.userid}"
+    // `, function (error, results, field) {
+    //   })
+    //   if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+    //   console.log("parent monitor updated")
+    //   connection.release()
+    // })
   }
 
   res.send(JSON.stringify(
@@ -1151,19 +1151,19 @@ app.post("/api/logout", (req, res) => {
 
 
   if (req.session.role == "par") {
-    var s = req.session
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-      UPDATE parentAccountMonitor
-      SET action = "登出系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
-      WHERE userid = "${s.userid}"
-    `, function (error, results, field) {
-      })
-      if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-      console.log("parent monitor updated")
+    // var s = req.session
+    // sql_Connect.getConnection(function (err, connection) {
+    //   connection.query(`
+    //   UPDATE parentAccountMonitor
+    //   SET action = "登出系統",path = "/",time = "${dayjs().format("YYYY/MM/DD HH:mm:ss")}",ip="${req.ip}"
+    //   WHERE userid = "${s.userid}"
+    // `, function (error, results, field) {
+    //   })
+    //   if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+    //   console.log("parent monitor updated")
 
-      connection.release()
-    })
+    //   connection.release()
+    // })
   }
   req.session = null
   res.send(JSON.stringify({ message: 'logout successful', ok: true }))
@@ -1194,17 +1194,17 @@ app.post("/api/getblockedreason", (req, res) => {
 app.post("/api/getparentaccountlogs", (req, res) => {
   //  console.log("[GET MONITOR]")
   if (req.session.role == "std") {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-      SELECT * FROM parentAccountMonitor
-      WHERE userid = "${req.session.userid.replace("s", "p")}"
-    `, function (error, results, field) {
-        if (err) { console.log("[SERVER ERROR]", err); connection.release() }
-        res.status(200).json({ data: results[0] })
+    // sql_Connect.getConnection(function (err, connection) {
+    //   connection.query(`
+    //   SELECT * FROM parentAccountMonitor
+    //   WHERE userid = "${req.session.userid.replace("s", "p")}"
+    // `, function (error, results, field) {
+    //     if (err) { console.log("[SERVER ERROR]", err); connection.release() }
+    //     res.status(200).json({ data: results[0] })
 
-        connection.release()
-      })
-    })
+    //     connection.release()
+    //   })
+    // })
   } else {
     res.status(403).json({ code: 403, message: 'error 403', ok: false });
     res.end();
@@ -1228,7 +1228,7 @@ app.post("/api/report/pusherrorlog", (req, res) => {
 var refreshData = cron.schedule('0 16 * * * ', () => {
   sql_Connect.getConnection(function (err, connection) {
     connection.query(`
-      SELECT * FROM parentAccountCtrl 
+      SELECT * FROM parentAccountCtrl2 
     `, function (error, results, field) {
 
       sql_Connect.getConnection(function (err, connection2) {
@@ -1248,7 +1248,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
 
                 if (data.length > 1) {
                   connection3.query(`
-                  UPDATE parentAccountCtrl 
+                  UPDATE parentAccountCtrl2 
                 
                   SET ${r.uid} = "${data[0]}%|%${data[1]}%|%${6}%|%${data[3]}%|%${data[4]}%|%${1}%|%${data[6]}"
                   WHERE id = ${index + 1};`, function (error, results, fields) {
@@ -1264,7 +1264,7 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
                   })
                 } else {
                   connection3.query(`
-                  UPDATE parentAccountCtrl 
+                  UPDATE parentAccountCtrl2 
                 
                   SET ${r.uid} = "0%|%null%|%6%|%null%|%1,2,3,4%|%1%|%0"
                   WHERE id = ${index + 1};`, function (error, results, fields) {

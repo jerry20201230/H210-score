@@ -322,6 +322,7 @@ export function StdMore({ data, user, handleError }) {
             sx={{
               // height: 600,
               width: '100%',
+              minHeight: '150',
               '& .green': {
                 backgroundColor: green[100],
                 color: "#000"
