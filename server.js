@@ -939,7 +939,7 @@ app.post("/api/blocksearch", (req, res) => {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl2 
-      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+      WHERE stdId = "${req.session.userid.replace("p", "s")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
         if (Number(data[2]) <= 0) {
