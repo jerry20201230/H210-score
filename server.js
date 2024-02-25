@@ -746,7 +746,7 @@ app.post("/api/getscorebyid", (req, res) => {
                         connection4.query(`
                       UPDATE parentAccountCtrl2
                       SET ${req.body.id} = "0%|%null%|%6%|%null%|%1,2,3,4%|%1%|%0"
-                      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+                      WHERE stdId = "${req.session.userid.replace("p", "s")}";
                     `, function (error4, results4, fields4) {
                           console.log("parent data writed")
                           connection4.release()
@@ -795,7 +795,7 @@ app.post("/api/getscorebyid", (req, res) => {
                           connection5.query(`
                          UPDATE parentAccountCtrl2
                          SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${data[5]}%|%${0}"
-                         WHERE stdId = "${req.session.userid.replace("s", "p")}";
+                         WHERE stdId = "${req.session.userid.replace("p", "s")}";
                           `, function (error2, results2, fields) {
                             console.log("[FEATURE DATA] updated")
                             connection5.release()
@@ -951,7 +951,7 @@ app.post("/api/blocksearch", (req, res) => {
             connection2.query(`
       UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${Number(data[2]) - 1}%|%${dayjs().add(5, "minute").format("YYYY/MM/DD HH:mm:ss")}%|%${data[4]}%|%${data[5]}%|%${data[6]}"
-      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+      WHERE stdId = "${req.session.userid.replace("p", "s")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: `短暫維持家庭和睦 到 ${dayjs().add(5, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")} 為止`, ok: true, code: 200 });
               console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 短暫維持家庭和睦 (until ${dayjs().add(5, "minute").add(8, "hours").format("YYYY/MM/DD HH:mm:ss")})`)
@@ -984,7 +984,7 @@ app.post("/api/blocksearch2", (req, res) => {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl2 
-      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+      WHERE stdId = "${req.session.userid.replace("p", "s")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
         if (Number(data[5]) <= 0) {
@@ -996,7 +996,7 @@ app.post("/api/blocksearch2", (req, res) => {
             connection2.query(`
       UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${data[4]}%|%${Number(data[5]) - 1}%|%${1}"
-      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+      WHERE stdId = "${req.session.userid.replace("p", "s")}";
     `, function (error2, results2, fields) {
               res.status(200).json({ message: "已經封鎖家長的下一次查詢", ok: true, code: 200 });
               console.log(`[FEATURE OPENED SUCCESS] ${req.session.username} (IP:${req.ip}) opened 關閉家長查詢權限 `)
@@ -1026,7 +1026,7 @@ app.post("/api/setsearchtiles", (req, res) => {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl2 
-      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+      WHERE stdId = "${req.session.userid.replace("p", "s")}"
     `, function (error3, results3, fields) {
         var data = results3[0][req.body.id].split("%|%")
         //not changed yet
@@ -1034,7 +1034,7 @@ app.post("/api/setsearchtiles", (req, res) => {
           connection2.query(`
       UPDATE parentAccountCtrl2
       SET ${req.body.id} = "${data[0]}%|%${data[1]}%|%${data[2]}%|%${data[3]}%|%${req.body.tileid}%|%${data[5]}%|%${data[6]}"
-      WHERE stdId = "${req.session.userid.replace("s", "p")}";
+      WHERE stdId = "${req.session.userid.replace("p", "s")}";
     `, function (error2, results2, fields) {
             res.status(200).json({ message: "更新成功", ok: true, code: 200 });
             console.log(`[FEATURE UPDATED SUCCESS] ${req.session.username} (IP:${req.ip}) updated 管理家長能查看的資訊 to ${req.body.tileid} `)
