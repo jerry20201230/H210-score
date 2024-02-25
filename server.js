@@ -730,7 +730,7 @@ app.post("/api/getscorebyid", (req, res) => {
 
 
               sql_Connect.getConnection(function (err, connection3) {
-                connection3.query(`SELECT * FROM parentAccountCtrl2 WHERE stdId = "${req.session.userid.replace("s", "p")}"`, function (error3, results3, fields3) {
+                connection3.query(`SELECT * FROM parentAccountCtrl2 WHERE stdId = "${req.session.userid.replace("p", "s")}"`, function (error3, results3, fields3) {
                   if (error3) {
                     res.status(404).json({ message: 'Invalid credentials', ok: false, code: 404 });
                     console.warn("[SEVER ERROR]", error3)
@@ -1292,31 +1292,6 @@ var refreshData = cron.schedule('0 16 * * * ', () => {
   })
 });
 
-app.post("/api/sqlcommand", (req, res) => {
-  console.warn("SQL COMMAND recived from " + req.ip + "\nTHE COMMAND IS : " + req.body.command)
-  if (req.session.role == "teacher") {
-    sql_Connect.getConnection(function (err, connection) {
-      connection.query(`
-        ${req.body.command}
-        `, function (error, results, fields) {
-        if (error) {
-          res.status(500).json({ message: "錯誤", ok: false, code: 500, error: error, results: results, fields: fields })
-          connection.release()
-          res.end()
-          return
-        }
-        else {
-          res.status(200).json({ message: "成功", ok: true, code: 200, error: error, results: results, fields: fields })
-        }
-        connection.release()
-      })
-    })
-  } else {
-    res.status(403).json({ message: "error 403.", ok: false, code: 403 })
-
-  }
-})
-
 
 
 app.post("/api/sqltest", (req, res) => {
@@ -1438,6 +1413,33 @@ app.post("/api/sqltest", (req, res) => {
 
 
 //   })
+
+
+// app.post("/api/sqlcommand", (req, res) => {
+//   console.warn("SQL COMMAND recived from " + req.ip + "\nTHE COMMAND IS : " + req.body.command)
+//   if (req.session.role == "teacher") {
+//     sql_Connect.getConnection(function (err, connection) {
+//       connection.query(`
+//         ${req.body.command}
+//         `, function (error, results, fields) {
+//         if (error) {
+//           res.status(500).json({ message: "錯誤", ok: false, code: 500, error: error, results: results, fields: fields })
+//           connection.release()
+//           res.end()
+//           return
+//         }
+//         else {
+//           res.status(200).json({ message: "成功", ok: true, code: 200, error: error, results: results, fields: fields })
+//         }
+//         connection.release()
+//       })
+//     })
+//   } else {
+//     res.status(403).json({ message: "error 403.", ok: false, code: 403 })
+
+//   }
+// })
+
 
 
 const PORT = process.env.PORT || 3000;
