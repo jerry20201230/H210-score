@@ -1063,7 +1063,7 @@ app.post("/api/getparentaccountctrl/all", (req, res) => {
     sql_Connect.getConnection(function (err, connection3) {
       connection3.query(`
       SELECT * FROM parentAccountCtrl2 
-      WHERE stdId = "${req.session.userid.replace("s", "p")}"
+      WHERE stdId = "${req.session.userid.replace("p", "s")}"
     `, function (error3, results3, fields) {
         res.status(200).json({ message: "ok", ok: true, code: 200, data: results3[0] });
         connection3.release()
