@@ -307,10 +307,10 @@ export function PushNewScore({ data, user, handleError }) {
           />
           <p></p>
 
-          <SelectSubject defaultValue={["小考"]} onChangeFunc={handleChange} params={"gradeSubject"}
+          {/* <SelectSubject defaultValue={["小考"]} onChangeFunc={handleChange} params={"gradeSubject"}
           />
           <Alert severity="error">為避免伺服器錯誤，請至少選擇一個標籤</Alert>
-          <p></p>
+          <p></p> */}
 
           <p></p>
           <TextField
