@@ -454,9 +454,9 @@ export function TeacherScore({ data, user, handleError }) {
               rows={2}
               type='text' variant="standard" label="輸入新公告" value={newAnnousment} onInput={(e) => setNewAnnousment(e.target.value)} />
             <p></p>
-            <SelectSubject defaultValue={scoreSetting.subject.split(",")} onChangeFunc={setNewTags}
+            {/* <SelectSubject defaultValue={scoreSetting.subject.split(",")} onChangeFunc={setNewTags}
               label={"輸入新標籤"}
-            />
+            /> */}
 
           </DialogContentText>
         </DialogContent>
