@@ -49,6 +49,9 @@ var sql_Connect = mysql.createPool({
 });
 
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+})
 
 // app.use(express.json());
 app.get('*', (req, res) => {
@@ -1439,6 +1442,7 @@ app.post("/api/sqltest", (req, res) => {
 
 //   }
 // })
+
 
 
 
