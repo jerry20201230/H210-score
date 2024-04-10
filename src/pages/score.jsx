@@ -265,7 +265,7 @@ export function Score({ data, user, handleError }) {
               </Item>
             </Grid>
 
-            {
+            {/* {
               data.data.role == "std" ?
 
                 <Grid xs={6}>
@@ -282,7 +282,7 @@ export function Score({ data, user, handleError }) {
                   </Item>
                 </Grid>
                 : <></>
-            }
+            } */}
           </Grid>
         </Box>
       </Box>

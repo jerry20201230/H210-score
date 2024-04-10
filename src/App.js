@@ -128,12 +128,12 @@ function App() {
                   <Route path='/' element={<TeacherHomePage data={userData} handleError={setPageError} />} ></Route>
                   : <Route path='/' element={<Homepage data={userData} handleError={setPageError} />} ></Route>
                 }
-                {userData.data.role === "std" ?
+                {/* {userData.data.role === "std" ?
                   <>
                     <Route path='/more' element={<StdMore data={userData} handleError={setPageError} />} ></Route>
                     <Route path='/score/more' element={<StdScore data={userData} handleError={setPageError} />} ></Route>
                     <Route path='/parentaccount' element={<ParentAccountMonitor data={userData} handleError={setPageError} />} ></Route>
-                  </> : <></>}
+                  </> : <></>} */}
 
                 {
                   userData.data.role !== "teacher" ?

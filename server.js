@@ -739,7 +739,7 @@ app.post("/api/getscorebyid", (req, res) => {
                     console.warn("[SEVER ERROR]", error3)
                     connection3.release();
                   };
-
+                  connection3.release();
                   var queryTimes
                   console.log(`[CHECKING PERMISSIONS] User:${req.session.username} IP:${req.ip} Query:${req.body.id}`)
 
@@ -804,9 +804,6 @@ app.post("/api/getscorebyid", (req, res) => {
                             connection5.release()
                           })
                         })
-
-
-
                         res.status(404).json({ message: '暫時無法查詢這筆成績，請過幾分鐘再試一次', ok: false, code: 702 });
                         console.log(`[PERMISSIONS DENIED] User:${req.session.username} IP:${req.ip} Query:${req.body.id} Reason:1`)
                       } else {
