@@ -357,7 +357,10 @@ export function TeacherScore({ data, user, handleError }) {
             <Typography variant="h5" component="div">
               {scoreSetting.scoreName}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary" component='div'>
+            <Typography>
+              對全班的公告: {scoreSetting.summery}
+            </Typography>
+            {/* <Typography sx={{ mb: 1.5 }} color="text.secondary" component='div'>
               <Stack direction="row" spacing={1}>
                 {scoreSetting.subject.split(",").map((d, i) => {
                   return (
@@ -366,7 +369,7 @@ export function TeacherScore({ data, user, handleError }) {
                   )
                 })}
               </Stack>
-            </Typography>
+            </Typography> */}
             <Typography variant="body2">
               <p>{scoreSetting.summery !== "undefined" && scoreSetting.summery ? scoreSetting.summery : "(沒有對全班的公告)"}</p>
               <p>學生與家長的查詢連結:<br />
