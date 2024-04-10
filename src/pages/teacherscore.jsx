@@ -357,9 +357,7 @@ export function TeacherScore({ data, user, handleError }) {
             <Typography variant="h5" component="div">
               {scoreSetting.scoreName}
             </Typography>
-            <Typography>
-              對全班的公告: {scoreSetting.summery}
-            </Typography>
+
             {/* <Typography sx={{ mb: 1.5 }} color="text.secondary" component='div'>
               <Stack direction="row" spacing={1}>
                 {scoreSetting.subject.split(",").map((d, i) => {
