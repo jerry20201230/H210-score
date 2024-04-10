@@ -354,7 +354,7 @@ app.post("/api/updatescore", (req, res) => {
   if (req.session.role === "teacher") {
     sql_Connect.getConnection(function (err, connection) {
       connection.query(`
-            UPDATE scoreData
+            UPDATE scoreData2
             SET ${req.body.scoreid} = "${req.body.scoreData}"
             WHERE id = ${req.body.id}
             `, function (error, results, fields) {
