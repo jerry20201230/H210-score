@@ -128,7 +128,7 @@ app.post('/api/login', async (req, res) => {
     sql_Connect.getConnection(function (err, connection) {
       connection.query('SELECT * FROM userData2 WHERE userid = ? AND userpassword = ?', [userid ? userid : "NULL", password ? password : "NULL"], function (error, results, fields) {
         if (error) {
-          res.status(500).json({ message: 'sever error 500', ok: false, code: 500 });
+          res.status(500).json({ message: '伺服器錯誤，請稍後再嘗試登入', ok: false, code: 500 });
           console.warn("[SEVER ERROR]", error)
           connection.release()
           return
